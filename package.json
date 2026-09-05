@@ -1,0 +1,73 @@
+{
+  "name": "@neabyte/n34-diff",
+  "description": "Apply LLM code edits with streaming and fuzzy matching",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "unbuild --minify",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "rm -rf dist && npm run build"
+  },
+  "keywords": [
+    "agent-tools",
+    "ai-agents",
+    "apply-patch",
+    "browser",
+    "bun",
+    "code-editing",
+    "code-patching",
+    "deno",
+    "diff",
+    "edit-format",
+    "fuzzy-matching",
+    "llm",
+    "llm-tools",
+    "nodejs",
+    "patch-apply",
+    "source-code-editing",
+    "streaming",
+    "text-diff",
+    "tool-calling",
+    "typescript"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@typescript/typescript6": "^6.0.2",
+    "unbuild": "^3.6.1"
+  },
+  "author": {
+    "name": "NeaByteLab",
+    "email": "me@neabyte.com",
+    "url": "https://github.com/NeaByteLab"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NeaByteLab/N34-Diff.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NeaByteLab/N34-Diff/issues"
+  },
+  "homepage": "https://github.com/NeaByteLab/N34-Diff#readme",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
