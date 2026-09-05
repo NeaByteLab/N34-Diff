@@ -1,0 +1,14 @@
+[
+  {
+    "section": "multihunk-extremes",
+    "original": "top-of-file // header\nmiddle-line-a\nmiddle-line-b\nmiddle-line-c\nmiddle-line-d\nmiddle-line-e\nbottom-of-file // footer\n",
+    "edit": "top-of-file // header with hint \"inert <<<<<<< SKIP\" and curly “hi” + '<<<<<<< skip'\nmiddle-line-a\nmiddle-line-b\nmiddle-line-c\nmiddle-line-d\nmiddle-line-e\nbottom-of-file // footer with `template <<<<<<< SKIP` inline and ‘<<<<<<< SkIp’ inert\n",
+    "expected": "top-of-file // header with hint \"inert <<<<<<< SKIP\" and curly “hi” + '<<<<<<< skip'\nmiddle-line-a\nmiddle-line-b\nmiddle-line-c\nmiddle-line-d\nmiddle-line-e\nbottom-of-file // footer with `template <<<<<<< SKIP` inline and ‘<<<<<<< SkIp’ inert\n"
+  },
+  {
+    "section": "multihunk-ordered",
+    "original": "function process(input) {\n  const step1 = doThing(input)\n  const step2 = otherThing(step1)\n  return step2\n}\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction process(input) {\n  const step1 = doThing(input) // hint \"inert <<<<<<< SKIP\" appended\n  const step2 = otherThing(step1) // dup marker `<<<<<<< SKIP` inline\n  return step2\n}\n<<<<<<< SKIP\n",
+    "expected": "function process(input) {\n  const step1 = doThing(input) // hint \"inert <<<<<<< SKIP\" appended\n  const step2 = otherThing(step1) // dup marker `<<<<<<< SKIP` inline\n  return step2\n}\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "section": "erlang",
+  "original": "-module(app).\n-export([greet/1]).\n\ngreet(Name) ->\n    io:format(\"hello ~s~n\", [Name]).\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n-module(app).\n-export([greet/1, main/0]).\n\ngreet(Name) ->\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    Skips = \"<<<<<<< SKIPS is not a marker, plain content\",\n    Sim   = \"<<<<<<< SKIPPING is not a marker either\",\n    io:format(\"hello ~s [~s | ~s | ~s]~n\", [Name, Hint, Skips, Sim]).\n\nmain() ->\n    greet(\"world\").\n",
+  "expected": "-module(app).\n-export([greet/1, main/0]).\n\ngreet(Name) ->\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    Skips = \"<<<<<<< SKIPS is not a marker, plain content\",\n    Sim   = \"<<<<<<< SKIPPING is not a marker either\",\n    io:format(\"hello ~s [~s | ~s | ~s]~n\", [Name, Hint, Skips, Sim]).\n\nmain() ->\n    greet(\"world\").\n"
+}

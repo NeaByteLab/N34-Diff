@@ -1,0 +1,6 @@
+{
+  "section": "sass",
+  "original": ".btn\n\tcolor: red\n\tpadding: 4px\n",
+  "edit": "<<<<<<< SKIP\n.btn\n  color: blue\n  padding: 8px 12px\n  content: \"marker <<<<<<< SKIP inside string is inert\"\n  // comment: <<<<<<< SKIP inside sass comment is content, not a marker\n<<<<<<< SKIP\n",
+  "expected": ".btn\n  color: blue\n  padding: 8px 12px\n  content: \"marker <<<<<<< SKIP inside string is inert\"\n  // comment: <<<<<<< SKIP inside sass comment is content, not a marker\n"
+}

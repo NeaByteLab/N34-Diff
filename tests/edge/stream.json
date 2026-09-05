@@ -1,0 +1,363 @@
+[
+  {
+    "section": "stream-bytebyte",
+    "original": "row-a\nrow-b\nrow-c\n",
+    "chunks": [
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "K",
+      "I",
+      "P",
+      "\n",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "s",
+      "k",
+      "i",
+      "p",
+      "\n",
+      "r",
+      "o",
+      "w",
+      "-",
+      "a",
+      "\n",
+      "r",
+      "o",
+      "w",
+      "-",
+      "b",
+      " ",
+      "c",
+      "h",
+      "a",
+      "n",
+      "g",
+      "e",
+      "d",
+      " ",
+      "\"",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "K",
+      "I",
+      "P",
+      " ",
+      "i",
+      "n",
+      "e",
+      "r",
+      "t",
+      "\"",
+      "\n",
+      "r",
+      "o",
+      "w",
+      "-",
+      "c",
+      "\n",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "k",
+      "i",
+      "p",
+      "\n"
+    ],
+    "expectedFinal": "row-a\nrow-b changed \"<<<<<<< SKIP inert\"\nrow-c\n"
+  },
+  {
+    "section": "stream-casemix",
+    "original": "k-a\nk-b\nk-c\n",
+    "chunks": [
+      "<<<<<<< s",
+      "kip\nk-a\nk-b changed \"<<<<<<< SKIP inert\"\nk-c\n<<<<<<< S",
+      "KIP\n"
+    ],
+    "expectedFinal": "k-a\nk-b changed \"<<<<<<< SKIP inert\"\nk-c\n"
+  },
+  {
+    "section": "stream-chaos",
+    "original": "c-a\nc-b\nc-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\n<<<<<<< skip\n",
+      "c-a\n",
+      "c-b changed \"<<<<<<< SKIP inert\"\n",
+      "c-b2 curly “hi” with <<<<<<< SkIp inert\n",
+      "\tc-b3 tab-indent extra\n",
+      "c-c\n",
+      "<<<<<<< Skip\n"
+    ],
+    "expectedFinal": "c-a\nc-b changed \"<<<<<<< SKIP inert\"\nc-b2 curly “hi” with <<<<<<< SkIp inert\n\tc-b3 tab-indent extra\nc-c\n"
+  },
+  {
+    "section": "stream-crlf",
+    "original": "cr-a\ncr-b\ncr-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\r",
+      "\ncr-a\r\ncr-b changed \"<<<<<<< SKIP inert\"\r",
+      "\ncr-c\r\n<<<<<<< SKIP\r\n"
+    ],
+    "expectedFinal": "cr-a\ncr-b changed \"<<<<<<< SKIP inert\"\ncr-c\n"
+  },
+  {
+    "section": "stream-delete",
+    "original": "top\nmid-a\nmid-b\nmid-c\nbottom\n",
+    "chunks": [
+      "top\n",
+      "mid-a hint \"<<<<<<< SKIP inert\"\n",
+      "bottom\n"
+    ],
+    "expectedFinal": "top\nmid-a hint \"<<<<<<< SKIP inert\"\nbottom\n"
+  },
+  {
+    "section": "stream-empty",
+    "original": "e-a\ne-b\n",
+    "chunks": [
+      "",
+      "<<<<<<< SKIP\n",
+      "",
+      "e-a\ne-b replaced \"<<<<<<< SKIP inert\"\n",
+      "",
+      "<<<<<<< SKIP\n",
+      ""
+    ],
+    "expectedFinal": "e-a\ne-b replaced \"<<<<<<< SKIP inert\"\ne-b\n"
+  },
+  {
+    "section": "stream-fullwidth",
+    "original": "fw-a\nfw-b\nfw-c\n",
+    "chunks": [
+      "＜＜＜＜＜＜＜ SKIP\n",
+      "fw-a\nfw-b replaced \"<<<<<<< SKIP inert\"\nfw-c\n",
+      "＜＜＜＜＜＜＜ SKIP\n"
+    ],
+    "expectedFinal": "fw-a\nfw-b replaced \"<<<<<<< SKIP inert\"\nfw-c\n"
+  },
+  {
+    "section": "stream-latecb",
+    "original": "l-a\nl-b\nl-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\nl-a\nl-b changed \"<<<<<<< skip inert\"\nl-c\n<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "l-a\nl-b changed \"<<<<<<< skip inert\"\nl-c\n",
+    "expectedHunkCount": 1,
+    "registerCallbackBeforePush": false
+  },
+  {
+    "section": "stream-midbracket",
+    "original": "mb-a\nmb-b\nmb-c\n",
+    "chunks": [
+      "<<<<",
+      "<<<",
+      " SKIP\nmb-a\nmb-b changed \"<<<<<<< SKIP inert\"\nmb-c\n<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "mb-a\nmb-b changed \"<<<<<<< SKIP inert\"\nmb-c\n"
+  },
+  {
+    "section": "stream-midword",
+    "original": "mw-a\nmw-b\nmw-c\n",
+    "chunks": [
+      "<<<<<<< S",
+      "KIP\nmw-a\nmw-b changed \"<<<<<<< SKIP inert\"\nmw-c\n<<<<<<< SK",
+      "IP\n"
+    ],
+    "expectedFinal": "mw-a\nmw-b changed \"<<<<<<< SKIP inert\"\nmw-c\n"
+  },
+  {
+    "section": "stream-multihunk",
+    "original": "h1\nh2\nh3\nh4\nh5\nh6\n",
+    "chunks": [
+      "<<<<<<< SKIP\n",
+      "h1\n",
+      "h2 first hunk \"<<<<<<< SKIP inert\"\n",
+      "<<<<<<< SKIP\n",
+      "h4\n",
+      "h5 second hunk \"<<<<<<< skip inert\"\n",
+      "<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "h1\nh2 first hunk \"<<<<<<< SKIP inert\"\nh2\nh3\nh4\nh5 second hunk \"<<<<<<< skip inert\"\nh5\nh6\n",
+    "expectedHunkCount": 2
+  },
+  {
+    "section": "stream-nbsp",
+    "original": "nb-a\nnb-b\nnb-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\n",
+      "nb-a\nnb-b replaced \"<<<<<<< SKIP inert\"\nnb-c\n",
+      "<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "nb-a\nnb-b replaced \"<<<<<<< SKIP inert\"\nnb-c\n"
+  },
+  {
+    "section": "stream-newline",
+    "original": "n-a\nn-b\n",
+    "chunks": [
+      "<<<<<<< SKIP",
+      "\n",
+      "n-a\nn-b replaced \"<<<<<<< SKIP inert\"",
+      "\n",
+      "<<<<<<< SKIP",
+      "\n"
+    ],
+    "expectedFinal": "n-a\nn-b replaced \"<<<<<<< SKIP inert\"\nn-b\n"
+  },
+  {
+    "section": "stream-noclose",
+    "original": "nt-a\nnt-b\nnt-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\n",
+      "nt-a\nnt-b changed \"<<<<<<< SKIP inert\"\nnt-c"
+    ],
+    "expectedFinal": "nt-a\nnt-b changed \"<<<<<<< SKIP inert\"\nnt-c\n"
+  },
+  {
+    "section": "stream-nomarkers",
+    "original": "orig-1\norig-2\norig-3\n",
+    "chunks": [
+      "brand new \"<<<<<<< SKIP inert\" line one\n",
+      "brand new line two\n",
+      "brand new line three with curly “hi”\n"
+    ],
+    "expectedFinal": "brand new \"<<<<<<< SKIP inert\" line one\nbrand new line two\nbrand new line three with curly “hi”\n"
+  },
+  {
+    "section": "stream-notrailing",
+    "original": "only line no trailing",
+    "chunks": [
+      "<<<<<<< SKIP\n",
+      "only line no trailing but \"<<<<<<< SKIP inert\"\n",
+      "<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "only line no trailing but \"<<<<<<< SKIP inert\""
+  },
+  {
+    "section": "stream-oneshot",
+    "original": "s1\ns2\ns3\ns4\n",
+    "chunks": [
+      "<<<<<<< SKIP\n<<<<<<< skip\ns1\ns2 changed with \"<<<<<<< SKIP inert\"\ns3 curly “hi”\ns4\n<<<<<<< Skip\n"
+    ],
+    "expectedFinal": "s1\ns2 changed with \"<<<<<<< SKIP inert\"\ns3 curly “hi”\ns4\n"
+  },
+  {
+    "section": "stream-parity",
+    "original": "row-a\nrow-b\nrow-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\nrow-a\nrow-b changed \"<<<<<<< SKIP inert\"\nrow-c\n<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "row-a\nrow-b changed \"<<<<<<< SKIP inert\"\nrow-c\n",
+    "expectedHunkCount": 1
+  },
+  {
+    "section": "stream-pendingcr",
+    "original": "pc-a\npc-b\npc-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\rpc-a\rpc-b changed \"<<<<<<< SKIP inert\"\rpc-c\r",
+      "\n<<<<<<< SKIP\n"
+    ],
+    "expectedFinal": "pc-a\npc-b changed \"<<<<<<< SKIP inert\"\npc-c\n"
+  },
+  {
+    "section": "stream-smallchunks",
+    "original": "sm-a\nsm-b\nsm-c\n",
+    "chunks": [
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "K",
+      "I",
+      "P",
+      "\n",
+      "s",
+      "m",
+      "-",
+      "a",
+      "\n",
+      "s",
+      "m",
+      "-",
+      "b",
+      " ",
+      "c",
+      "h",
+      "a",
+      "n",
+      "g",
+      "e",
+      "d",
+      " ",
+      "\"",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "K",
+      "I",
+      "P",
+      " ",
+      "i",
+      "n",
+      "e",
+      "r",
+      "t",
+      "\"",
+      "\n",
+      "s",
+      "m",
+      "-",
+      "c",
+      "\n",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      "<",
+      " ",
+      "S",
+      "K",
+      "I",
+      "P",
+      "\n"
+    ],
+    "expectedFinal": "sm-a\nsm-b changed \"<<<<<<< SKIP inert\"\nsm-c\n"
+  }
+]

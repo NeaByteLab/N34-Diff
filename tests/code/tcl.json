@@ -1,0 +1,6 @@
+{
+  "section": "tcl",
+  "original": "proc greet {name} {\n    return \"hello $name\"\n}\n\nputs [greet world]\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nproc greet {name} {\n    # inline hint \"<<<<<<< SKIP\" inert in tcl comment\n    set hint \"marker <<<<<<< SKIP inside string is inert\"\n    set brace {marker <<<<<<< SKIP inside braced literal is inert}\n    set curl \"curly “hi” with <<<<<<< skip inert\"\n\tset tabbed \"tab indent kept as-is\"\n    return \"hello $name | $hint | $brace | $curl | $tabbed\"\n}\n<<<<<<< Skip\nputs [greet world]\n<<<<<<< SKIP\n",
+  "expected": "proc greet {name} {\n    # inline hint \"<<<<<<< SKIP\" inert in tcl comment\n    set hint \"marker <<<<<<< SKIP inside string is inert\"\n    set brace {marker <<<<<<< SKIP inside braced literal is inert}\n    set curl \"curly “hi” with <<<<<<< skip inert\"\n\tset tabbed \"tab indent kept as-is\"\n    return \"hello $name | $hint | $brace | $curl | $tabbed\"\n}\n\nputs [greet world]\n"
+}

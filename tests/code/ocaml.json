@@ -1,0 +1,6 @@
+{
+  "section": "ocaml",
+  "original": "let greet name = \"hello \" ^ name\n\nlet () = print_endline (greet \"world\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nlet hint = \"marker <<<<<<< SKIP inside string is inert\"\nlet quoted = {|raw string with <<<<<<< SKIP inside is inert|}\n\nlet greet name = String.concat \" | \" [\"hello \" ^ name; hint; quoted]\n\nlet () = print_endline (greet \"world\")\n<<<<<<< SKIP\n",
+  "expected": "let hint = \"marker <<<<<<< SKIP inside string is inert\"\nlet quoted = {|raw string with <<<<<<< SKIP inside is inert|}\n\nlet greet name = String.concat \" | \" [\"hello \" ^ name; hint; quoted]\n\nlet () = print_endline (greet \"world\")\n"
+}

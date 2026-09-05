@@ -1,0 +1,6 @@
+{
+  "section": "ruby",
+  "original": "def greet(name)\r\n  \"hello #{name}\"\r\nend\r\n\r\nputs greet('world')\r\n",
+  "edit": "<<<<<<< SKIP\r\n<<<<<<< skip\r\ndef greet(name)\r\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\r\n  curly = \"curly “hi” with <<<<<<< skip inert\"\r\n  # ruby comment: '<<<<<<< SKIP' inert as content\r\n  heredoc = <<~DOC\r\n    heredoc with <<<<<<< SKIP inside is inert\r\n  DOC\r\n\ttabbed = \"tab indent kept as-is\"\r\n  \"hello, #{name} | #{hint} | #{curly} | #{heredoc.size} | #{tabbed}\"\r\nend\r\n<<<<<<< Skip\r\nputs greet('world')\r\n<<<<<<< SKIP\r\n",
+  "expected": "def greet(name)\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\n  curly = \"curly “hi” with <<<<<<< skip inert\"\n  # ruby comment: '<<<<<<< SKIP' inert as content\n  heredoc = <<~DOC\n    heredoc with <<<<<<< SKIP inside is inert\n  DOC\n\ttabbed = \"tab indent kept as-is\"\n  \"hello, #{name} | #{hint} | #{curly} | #{heredoc.size} | #{tabbed}\"\nend\n\nputs greet('world')\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "thrift",
+  "original": "struct User {\n  1: string id,\n  2: string name\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nnamespace go app\n\n/* block comment: <<<<<<< SKIP inside is content, not a marker */\n// thrift line comment: '<<<<<<< SKIP' inert as content\n# thrift hash comment: '<<<<<<< skip' inert as content\nstruct User {\n  1: string id,\n  2: string name,\n  3: optional string note = \"marker <<<<<<< SKIP inside string is inert\",\n  4: optional string curly = \"curly “hi” with <<<<<<< skip inert\",\n\t5: optional string tabbed = \"tab indent kept as-is\"\n}\n<<<<<<< Skip\n",
+  "expected": "namespace go app\n\n/* block comment: <<<<<<< SKIP inside is content, not a marker */\n// thrift line comment: '<<<<<<< SKIP' inert as content\n# thrift hash comment: '<<<<<<< skip' inert as content\nstruct User {\n  1: string id,\n  2: string name,\n  3: optional string note = \"marker <<<<<<< SKIP inside string is inert\",\n  4: optional string curly = \"curly “hi” with <<<<<<< skip inert\",\n\t5: optional string tabbed = \"tab indent kept as-is\"\n}\n"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "section": "keep-empty",
+    "original": "k1\nk2\nk3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP\nk1\nk2 replaced \"inert <<<<<<< SKIP\"\nk3\n<<<<<<< SKIP\n<<<<<<< SKIP\n",
+    "expected": "k1\nk2 replaced \"inert <<<<<<< SKIP\"\nk3\n"
+  },
+  {
+    "section": "keep-indent",
+    "original": "src-a\nsrc-b\nsrc-c\n",
+    "edit": "\t<<<<<<< SKIP\nsrc-a\nsrc-b replaced with \"inert <<<<<<< SKIP\"\nsrc-c\n\t<<<<<<< SKIP\n",
+    "expected": "src-a\nsrc-b replaced with \"inert <<<<<<< SKIP\"\nsrc-c\n"
+  },
+  {
+    "section": "keep-interior",
+    "original": "alpha\nbeta\ngamma\n",
+    "edit": "<<<<<<< SKIP\nalpha\nbeta\n<<<<<<< SKIP\n\t<<<<<<< SKIP\ngamma\ninserted tail \"inert <<<<<<< SKIP\"\n<<<<<<< SKIP\n",
+    "expected": "alpha\nbeta\n\t\ngamma\ninserted tail \"inert <<<<<<< SKIP\"\n"
+  }
+]

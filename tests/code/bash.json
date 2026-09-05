@@ -1,0 +1,6 @@
+{
+  "section": "bash",
+  "original": "#!/bin/bash\nset -euo pipefail\n\nGREETING=\"hello\"\nNAME=\"$1\"\n\necho \"$GREETING, $NAME\"\nexit 0\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n#!/bin/bash\nset -euo pipefail\n\nGREETING=\"hello, world\"\nNOTE=\"marker <<<<<<< SKIP inside a string is inert\"\nDUP=\"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n\nNAME=\"${1:-anon}\"\n\necho \"$GREETING, $NAME (note=$NOTE dup=$DUP)\"\nexit 0\n<<<<<<< SKIP \\\n",
+  "expected": "#!/bin/bash\nset -euo pipefail\n\nGREETING=\"hello, world\"\nNOTE=\"marker <<<<<<< SKIP inside a string is inert\"\nDUP=\"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n\nNAME=\"${1:-anon}\"\n\necho \"$GREETING, $NAME (note=$NOTE dup=$DUP)\"\nexit 0\n<<<<<<< SKIP \\\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "matlab",
+  "original": "function greet(name)\n    fprintf('hello %s\\n', name);\nend\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction greet(name)\n    hint = 'marker <<<<<<< SKIP inside string is inert';\n    dbl  = \"marker <<<<<<< SKIP inside double-quoted string is inert\";\n    curl = 'curly “hi” with <<<<<<< skip inert';\n\ttabbed = \"tab indent kept as-is\";\n    % percent comment: <<<<<<< SKIP inside is content, not a marker\n    %{\n    block comment with <<<<<<< SKIP inside is content\n    also <<<<<<< SKIP and <<<<<<< SKIP inert\n    %}\n    fprintf('hello %s | %s | %s | %s | %s\\n', name, hint, dbl, curl, tabbed);\nend\n<<<<<<< Skip\n",
+  "expected": "function greet(name)\n    hint = 'marker <<<<<<< SKIP inside string is inert';\n    dbl  = \"marker <<<<<<< SKIP inside double-quoted string is inert\";\n    curl = 'curly “hi” with <<<<<<< skip inert';\n\ttabbed = \"tab indent kept as-is\";\n    % percent comment: <<<<<<< SKIP inside is content, not a marker\n    %{\n    block comment with <<<<<<< SKIP inside is content\n    also <<<<<<< SKIP and <<<<<<< SKIP inert\n    %}\n    fprintf('hello %s | %s | %s | %s | %s\\n', name, hint, dbl, curl, tabbed);\nend\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "odin",
+  "original": "package main\n\nimport \"core:fmt\"\n\nmain :: proc() {\n    fmt.println(\"hi\")\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\npackage main\n\nimport \"core:fmt\"\n\nmain :: proc() {\n    // inline hint \"<<<<<<< SKIP\" inert in odin line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    hint := \"marker <<<<<<< SKIP inside string is inert\"\n    raw  := `raw <<<<<<< SKIP inside backtick is inert`\n    curl := \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed := \"tab indent kept as-is\"\n    fmt.println(\"hello world |\", hint, \"|\", raw, \"|\", curl, \"|\", tabbed)\n}\n<<<<<<< Skip\n",
+  "expected": "package main\n\nimport \"core:fmt\"\n\nmain :: proc() {\n    // inline hint \"<<<<<<< SKIP\" inert in odin line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    hint := \"marker <<<<<<< SKIP inside string is inert\"\n    raw  := `raw <<<<<<< SKIP inside backtick is inert`\n    curl := \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed := \"tab indent kept as-is\"\n    fmt.println(\"hello world |\", hint, \"|\", raw, \"|\", curl, \"|\", tabbed)\n}\n"
+}

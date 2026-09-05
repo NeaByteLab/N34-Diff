@@ -1,0 +1,6 @@
+{
+  "section": "protobuf",
+  "original": "syntax = \"proto3\";\n\nmessage User {\n  string id = 1;\n  string name = 2;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nsyntax = \"proto3\";\n\npackage app;\n\n// comment: <<<<<<< SKIP inside comment is content, not a marker\n/* block comment: \"<<<<<<<   SKIP with spaces\" inert */\nmessage User {\n  string id = 1;\n  string name = 2;\n  string note = 3; // \"marker <<<<<<< SKIP\" is content\n  string curly = 4; // \"curly “hi” with <<<<<<< skip inert\"\n\tstring tabbed = 5; // tab indent kept as-is\n}\n<<<<<<< Skip\n",
+  "expected": "syntax = \"proto3\";\n\npackage app;\n\n// comment: <<<<<<< SKIP inside comment is content, not a marker\n/* block comment: \"<<<<<<<   SKIP with spaces\" inert */\nmessage User {\n  string id = 1;\n  string name = 2;\n  string note = 3; // \"marker <<<<<<< SKIP\" is content\n  string curly = 4; // \"curly “hi” with <<<<<<< skip inert\"\n\tstring tabbed = 5; // tab indent kept as-is\n}\n"
+}

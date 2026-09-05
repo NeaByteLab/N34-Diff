@@ -1,0 +1,6 @@
+{
+  "section": "groovy",
+  "original": "def greet(name) {\n    \"hello ${name}\"\n}\n\nprintln greet('world')\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\ndef greet(name) {\n    // inline hint \"<<<<<<< SKIP\" inert in groovy line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    def hint = \"marker <<<<<<< SKIP inside string is inert\"\n    def numbered = \"1. <<<<<<< SKIP prefixed by numbering is content\"\n    def bold = \"**<<<<<<< SKIP** wrapped in bold markdown is content\"\n    def curl = 'curly “hi” with <<<<<<< skip inert'\n\tdef tabbed = \"tab indent kept as-is\"\n    \"hello, ${name} [${hint} | ${numbered} | ${bold} | ${curl} | ${tabbed}]\"\n}\n<<<<<<< Skip\nprintln greet('world')\n<<<<<<< SKIP\n",
+  "expected": "def greet(name) {\n    // inline hint \"<<<<<<< SKIP\" inert in groovy line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    def hint = \"marker <<<<<<< SKIP inside string is inert\"\n    def numbered = \"1. <<<<<<< SKIP prefixed by numbering is content\"\n    def bold = \"**<<<<<<< SKIP** wrapped in bold markdown is content\"\n    def curl = 'curly “hi” with <<<<<<< skip inert'\n\tdef tabbed = \"tab indent kept as-is\"\n    \"hello, ${name} [${hint} | ${numbered} | ${bold} | ${curl} | ${tabbed}]\"\n}\n\nprintln greet('world')\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "terraform",
+  "original": "resource \"null_resource\" \"hello\" {\n  triggers = {\n    name = \"world\"\n  }\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nresource \"null_resource\" \"hello\" {\n  # inline hint \"<<<<<<< SKIP\" inert in terraform comment\n  triggers = {\n    name = \"world\"\n    note = \"marker <<<<<<< SKIP inside string is inert\"\n    curl = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed = \"tab indent kept as-is\"\n    long = <<-EOT\n      heredoc with <<<<<<< SKIP inside is inert\n      also <<<<<<< SKIP and <<<<<<< SKIP inert\n    EOT\n  }\n}\n<<<<<<< Skip\n",
+  "expected": "resource \"null_resource\" \"hello\" {\n  # inline hint \"<<<<<<< SKIP\" inert in terraform comment\n  triggers = {\n    name = \"world\"\n    note = \"marker <<<<<<< SKIP inside string is inert\"\n    curl = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed = \"tab indent kept as-is\"\n    long = <<-EOT\n      heredoc with <<<<<<< SKIP inside is inert\n      also <<<<<<< SKIP and <<<<<<< SKIP inert\n    EOT\n  }\n}\n"
+}

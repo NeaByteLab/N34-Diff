@@ -1,0 +1,6 @@
+{
+  "section": "objective-c",
+  "original": "#import <Foundation/Foundation.h>\n\nint main(int argc, const char *argv[]) {\n    @autoreleasepool {\n        NSLog(@\"hi\");\n    }\n    return 0;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n#import <Foundation/Foundation.h>\n\nint main(int argc, const char *argv[]) {\n    // inline hint \"<<<<<<< SKIP\" inert in objc line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    @autoreleasepool {\n        NSString *hint = @\"marker <<<<<<< SKIP inside NSString is inert\";\n        NSString *curl = @\"curly “hi” with <<<<<<< skip inert\";\n\tNSString *tabbed = @\"tab indent kept as-is\";\n        NSLog(@\"hello world | %@ | %@ | %@\", hint, curl, tabbed);\n    }\n    return 0;\n}\n<<<<<<< Skip\n",
+  "expected": "#import <Foundation/Foundation.h>\n\nint main(int argc, const char *argv[]) {\n    // inline hint \"<<<<<<< SKIP\" inert in objc line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    @autoreleasepool {\n        NSString *hint = @\"marker <<<<<<< SKIP inside NSString is inert\";\n        NSString *curl = @\"curly “hi” with <<<<<<< skip inert\";\n\tNSString *tabbed = @\"tab indent kept as-is\";\n        NSLog(@\"hello world | %@ | %@ | %@\", hint, curl, tabbed);\n    }\n    return 0;\n}\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "perl",
+  "original": "#!/usr/bin/perl\ruse strict;\ruse warnings;\r\rmy $name = shift // 'world';\rprint \"hello $name\\n\";\r",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n#!/usr/bin/perl\nuse strict;\nuse warnings;\n\nmy $name = shift // 'world';\nmy $hint = \"marker <<<<<<< SKIP inside string is inert\";\nmy $heredoc = <<'END';\nthis heredoc contains <<<<<<< SKIP inside and is inert\nEND\nprint \"hello $name | $hint | $heredoc\";\n",
+  "expected": "#!/usr/bin/perl\nuse strict;\nuse warnings;\n\nmy $name = shift // 'world';\nmy $hint = \"marker <<<<<<< SKIP inside string is inert\";\nmy $heredoc = <<'END';\nthis heredoc contains <<<<<<< SKIP inside and is inert\nEND\nprint \"hello $name | $hint | $heredoc\";\n"
+}

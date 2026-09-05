@@ -1,0 +1,6 @@
+{
+  "section": "css",
+  "original": ".btn {\n  color: red;\n  padding: 4px;\n}\n\n.card {\n  border: 1px solid #ccc;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n.btn {\n\tcolor: blue;\n  padding: 8px 12px;\n  content: \"<<<<<<< SKIP.\";\n  --note: 'marker with trailing punctuation on the same line is inert';\n  --curly: 'curly “hi” with <<<<<<< skip inert';\n  /* inline hint \"<<<<<<< SKIP\" inert in css comment */\n}\n\n.card {\n\tborder: 2px dashed #333;\n  background: #fafafa; /* note '<<<<<<<   SKIP with spaces' inert */\n}\n<<<<<<< Skip\n<<<<<<< SKIP\n",
+  "expected": ".btn {\n\tcolor: blue;\n  padding: 8px 12px;\n  content: \"<<<<<<< SKIP.\";\n  --note: 'marker with trailing punctuation on the same line is inert';\n  --curly: 'curly “hi” with <<<<<<< skip inert';\n  /* inline hint \"<<<<<<< SKIP\" inert in css comment */\n}\n\n.card {\n\tborder: 2px dashed #333;\n  background: #fafafa; /* note '<<<<<<<   SKIP with spaces' inert */\n}\n"
+}

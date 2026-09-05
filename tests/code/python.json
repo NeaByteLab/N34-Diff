@@ -1,0 +1,6 @@
+{
+  "section": "python",
+  "original": "def greet(name):\r\n    return f\"hello {name}\"\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    print(greet(\"world\"))\r\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\ndef greet(name):\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    doc = \"\"\"\n    triple-quoted string with <<<<<<< SKIP inside is inert\n        indented <<<<<<< SKIP too\n    \"\"\"\n    return f\"hello {name} | {hint} | {len(doc)}\"\n\n\nif __name__ == \"__main__\":\n    print(greet(\"world\"))\n",
+  "expected": "def greet(name):\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    doc = \"\"\"\n    triple-quoted string with <<<<<<< SKIP inside is inert\n        indented <<<<<<< SKIP too\n    \"\"\"\n    return f\"hello {name} | {hint} | {len(doc)}\"\n\n\nif __name__ == \"__main__\":\n    print(greet(\"world\"))\n"
+}

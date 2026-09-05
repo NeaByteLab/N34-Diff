@@ -1,0 +1,6 @@
+{
+  "section": "c++",
+  "original": "#include <iostream>\n\nint main() {\n    std::cout << \"hi\" << std::endl;\n    return 0;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n#include <iostream>\n#include <string>\n#include <vector>\n\nint main() {\n    std::string msg = \"hello world\";\n    std::string embed = \"marker <<<<<<< SKIP embedded inline\";\n    std::vector<int> nums{1, 2, 3};\n    for (auto n : nums) std::cout << n << ' ';\n    std::cout << msg << \" | \" << embed << std::endl;\n    return 0;\n}\n",
+  "expected": "#include <iostream>\n#include <string>\n#include <vector>\n\nint main() {\n    std::string msg = \"hello world\";\n    std::string embed = \"marker <<<<<<< SKIP embedded inline\";\n    std::vector<int> nums{1, 2, 3};\n    for (auto n : nums) std::cout << n << ' ';\n    std::cout << msg << \" | \" << embed << std::endl;\n    return 0;\n}\n"
+}

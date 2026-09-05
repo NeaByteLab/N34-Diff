@@ -1,0 +1,26 @@
+[
+  {
+    "section": "empty-both",
+    "original": "",
+    "edit": "",
+    "expected": ""
+  },
+  {
+    "section": "empty-edit",
+    "original": "keep me\n",
+    "edit": "",
+    "expected": "keep me\n"
+  },
+  {
+    "section": "empty-markers",
+    "original": "stay1\nstay2\nstay3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n<<<<<<< Skip\n<<<<<<<SKIP\n<<<<<<<   SKIP\n\t<<<<<<< SKIP\n   <<<<<<< SKIP\n＜＜＜＜＜＜＜ SKIP\n<<<<<<< SKIP\n<<<<<<< SKIP\n",
+    "expected": "stay1\nstay2\nstay3\n"
+  },
+  {
+    "section": "empty-nohunk",
+    "original": "stayA\nstayB\nstayC\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP\n<<<<<<< SKIP\n<<<<<<< skip\n<<<<<<<SKIP\n",
+    "expected": "stayA\nstayB\nstayC\n"
+  }
+]

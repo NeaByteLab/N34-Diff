@@ -1,0 +1,6 @@
+{
+  "section": "apl",
+  "original": "greet←{'hello ',⍺}\n\ngreet 'world'\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nhint←'marker <<<<<<< SKIP inside string is inert 🚀​❤'\ndup←'also <<<<<<< SKIP and <<<<<<< SKIP inert'\ngreet←{'hello ',⍺,' | ',hint,' | ',dup}\n\ngreet 'world'\n<<<<<<< SKIP\n",
+  "expected": "hint←'marker <<<<<<< SKIP inside string is inert 🚀​❤'\ndup←'also <<<<<<< SKIP and <<<<<<< SKIP inert'\ngreet←{'hello ',⍺,' | ',hint,' | ',dup}\n\ngreet 'world'\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "php",
+  "original": "<?php\r\nfunction greet($name) {\r\n    return \"hello $name\";\r}\n\r\necho greet('world');\r",
+  "edit": "<<<<<<< SKIP\r<<<<<<< skip\r<?php\n\r\nfunction greet($name) {\r    $hint = \"marker <<<<<<< SKIP inside string is inert\";\n    $curly = \"curly “hi” with <<<<<<< skip inert\";\r\n    // php comment: '<<<<<<< SKIP' inert as content\n    $nowdoc = <<<'EOT'\r\ncontains <<<<<<< SKIP and is inert since embedded\rEOT;\n    return \"hello $name | $hint | $curly | \" . strlen($nowdoc);\r\n}\r<<<<<<< Skip\necho greet('world');\r\n<<<<<<< SKIP\r",
+  "expected": "<?php\n\nfunction greet($name) {\n    $hint = \"marker <<<<<<< SKIP inside string is inert\";\n    $curly = \"curly “hi” with <<<<<<< skip inert\";\n    // php comment: '<<<<<<< SKIP' inert as content\n    $nowdoc = <<<'EOT'\ncontains <<<<<<< SKIP and is inert since embedded\nEOT;\n    return \"hello $name | $hint | $curly | \" . strlen($nowdoc);\n}\n\necho greet('world');\n"
+}

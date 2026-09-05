@@ -1,0 +1,6 @@
+{
+  "section": "fortran",
+  "original": "program hello\n    implicit none\n    print *, “hi”\nend program hello\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nprogram hello\n    implicit none\n    character(len=64) :: hint\n    hint = “marker <<<<<<< SKIP inside string is inert”\n    print *, “hello world”\n    print *, trim(hint)\nend program hello\n",
+  "expected": "program hello\n    implicit none\n    character(len=64) :: hint\n    hint = “marker <<<<<<< SKIP inside string is inert”\n    print *, “hello world”\n    print *, trim(hint)\nend program hello\n"
+}

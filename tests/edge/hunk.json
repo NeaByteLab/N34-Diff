@@ -1,0 +1,20 @@
+[
+  {
+    "section": "hunk-duplicates",
+    "original": "x\ny\nz\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nrepeat me \"inert <<<<<<< SKIP\"\nrepeat me \"inert <<<<<<< SKIP\"\nrepeat me curly “hi” with '<<<<<<< skip' inert\n\trepeat me tab-indent variant\nrepeat me \"inert <<<<<<< SkIp\"\n<<<<<<< Skip\n",
+    "expected": "repeat me \"inert <<<<<<< SKIP\"\nrepeat me \"inert <<<<<<< SKIP\"\nrepeat me curly “hi” with '<<<<<<< skip' inert\n\trepeat me tab-indent variant\nrepeat me \"inert <<<<<<< SkIp\"\n"
+  },
+  {
+    "section": "hunk-replace",
+    "original": "old-a\nold-b\nold-c\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\ntotally new \"inert <<<<<<< SKIP\"\ncontent with curly “hi” and '<<<<<<< skip' inert\n\ttab-indented replacement line\n<<<<<<< Skip\n",
+    "expected": "totally new \"inert <<<<<<< SKIP\"\ncontent with curly “hi” and '<<<<<<< skip' inert\n\ttab-indented replacement line\n"
+  },
+  {
+    "section": "hunk-whitespace",
+    "original": "w1\nw2\nw3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n   \n\t\t\n   \t   \n   \n​‌‍\n<<<<<<< SKIP\n",
+    "expected": "   \n\t\t\n   \t   \n   \n​‌‍\n"
+  }
+]

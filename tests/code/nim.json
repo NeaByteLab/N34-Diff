@@ -1,0 +1,6 @@
+{
+  "section": "nim",
+  "original": "proc greet(name: string): string =\r\n  \"hello \" & name\r\n\r\necho greet(\"world\")\r\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nproc greet(name: string): string =\n  let hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  let raw  = r\"raw <<<<<<< SKIP inside is inert\"\n  result = \"hello, \" & name & \" | \" & hint & \" | \" & raw\n\necho greet(\"world\")\n",
+  "expected": "proc greet(name: string): string =\n  let hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  let raw  = r\"raw <<<<<<< SKIP inside is inert\"\n  result = \"hello, \" & name & \" | \" & hint & \" | \" & raw\n\necho greet(\"world\")\n"
+}

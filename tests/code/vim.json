@@ -1,0 +1,6 @@
+{
+  "section": "vim",
+  "original": "function! Greet(name) abort\n    echo 'hello ' . a:name\nendfunction\n\ncall Greet('world')\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<<\tskip\nfunction! Greet(name) abort\n    let l:hint = 'marker <<<<<<< SKIP inside string is inert'\n    let l:curly = 'curly “hi” with <<<<<<< skip inert'\n\tlet l:tabbed = \"tab indent kept as-is\"\n    \" vim comment: <<<<<<< SKIP inside vim comment is content, not a marker\n    echo 'hello ' . a:name . ' | ' . l:hint . ' | ' . l:curly . ' | ' . l:tabbed\nendfunction\n<<<<<<<\tSKIP\ncall Greet('world')\n<<<<<<<\tSKIP\n",
+  "expected": "function! Greet(name) abort\n    let l:hint = 'marker <<<<<<< SKIP inside string is inert'\n    let l:curly = 'curly “hi” with <<<<<<< skip inert'\n\tlet l:tabbed = \"tab indent kept as-is\"\n    \" vim comment: <<<<<<< SKIP inside vim comment is content, not a marker\n    echo 'hello ' . a:name . ' | ' . l:hint . ' | ' . l:curly . ' | ' . l:tabbed\nendfunction\n\ncall Greet('world')\n"
+}

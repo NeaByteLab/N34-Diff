@@ -1,0 +1,6 @@
+{
+  "section": "d",
+  "original": "import std.stdio;\n\nvoid main() {\n    writeln(\"hi\");\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nimport std.stdio;\n\nvoid main() {\n    // note: hint \"<<<<<<< SKIP\" inert in line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    auto hint = \"marker <<<<<<< SKIP inside string is inert\";\n    auto raw  = r\"raw <<<<<<< skip also inert\";\n    auto wysiwyg = `backtick <<<<<<< SKIP is inert too`;\n    auto curl = \"curly “hi” with <<<<<<< skip inert\";\n\tauto tabbed = \"tab indent kept as-is\";\n    writeln(\"hello world | \", hint, \" | \", raw, \" | \", wysiwyg, \" | \", curl, \" | \", tabbed);\n}\n<<<<<<< Skip\n",
+  "expected": "import std.stdio;\n\nvoid main() {\n    // note: hint \"<<<<<<< SKIP\" inert in line comment\n    /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n    auto hint = \"marker <<<<<<< SKIP inside string is inert\";\n    auto raw  = r\"raw <<<<<<< skip also inert\";\n    auto wysiwyg = `backtick <<<<<<< SKIP is inert too`;\n    auto curl = \"curly “hi” with <<<<<<< skip inert\";\n\tauto tabbed = \"tab indent kept as-is\";\n    writeln(\"hello world | \", hint, \" | \", raw, \" | \", wysiwyg, \" | \", curl, \" | \", tabbed);\n}\n"
+}

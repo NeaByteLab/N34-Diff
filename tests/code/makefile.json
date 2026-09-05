@@ -1,0 +1,6 @@
+{
+  "section": "makefile",
+  "original": "all: build\n\nbuild:\n\tgo build ./...\n\ntest:\n\tgo test ./...\n",
+  "edit": "all: build test lint\n\n# comment: <<<<<<< SKIPS is not a marker, plain content\n# comment: **<<<<<<< SKIP** wrapped in bold is content\n# comment: 1. <<<<<<< SKIP prefixed with numbering is content\n# comment: >>>>>>> SKIP with right brackets is content\n\nbuild:\n\t@echo \"marker <<<<<<< SKIP inside quoted string is inert\"\n\t@echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n\tgo build ./...\n\ntest:\n\tgo test ./... -v -race\n\nlint:\n\tgolangci-lint run\n",
+  "expected": "all: build test lint\n\n# comment: <<<<<<< SKIPS is not a marker, plain content\n# comment: **<<<<<<< SKIP** wrapped in bold is content\n# comment: 1. <<<<<<< SKIP prefixed with numbering is content\n# comment: >>>>>>> SKIP with right brackets is content\n\nbuild:\n\t@echo \"marker <<<<<<< SKIP inside quoted string is inert\"\n\t@echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n\tgo build ./...\n\ntest:\n\tgo test ./... -v -race\n\nlint:\n\tgolangci-lint run\n"
+}

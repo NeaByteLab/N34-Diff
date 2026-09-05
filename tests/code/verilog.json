@@ -1,0 +1,6 @@
+{
+  "section": "verilog",
+  "original": "module hello;\n    initial begin\n        $display(\"hi\");\n    end\nendmodule\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nmodule hello;\n    initial begin\n        $display(\"hello world\");\n        $display(\"marker <<<<<<< SKIP inside string is inert\");\n        $display(\"curly “hi” with <<<<<<< skip inert\");\n\t$display(\"tab indent kept as-is\");\n        // comment: <<<<<<< SKIP inside comment is content, not a marker\n        /* block comment: '<<<<<<< SKIP' inert as content */\n    end\nendmodule\n<<<<<<< Skip\n",
+  "expected": "module hello;\n    initial begin\n        $display(\"hello world\");\n        $display(\"marker <<<<<<< SKIP inside string is inert\");\n        $display(\"curly “hi” with <<<<<<< skip inert\");\n\t$display(\"tab indent kept as-is\");\n        // comment: <<<<<<< SKIP inside comment is content, not a marker\n        /* block comment: '<<<<<<< SKIP' inert as content */\n    end\nendmodule\n"
+}

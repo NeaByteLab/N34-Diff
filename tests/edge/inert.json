@@ -1,0 +1,26 @@
+[
+  {
+    "section": "inert-base64",
+    "original": "b0\nb1\nb2\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nb0\nconst blob = \"PDw8PDw8PCBTS0lQ<<<<<<< SKIP embedded in base64-ish blob\"\nconst url  = \"https://x/?q=aGVsbG8<<<<<<< skip&sig=zZ==\"\nconst curly = \"PDw8<<<<<<<“skip”-blob inert\"\n\tconst tabbed = \"tab-indent base64 <<<<<<< SKIP holder\"\nb1\nb2\n<<<<<<< Skip\n",
+    "expected": "b0\nconst blob = \"PDw8PDw8PCBTS0lQ<<<<<<< SKIP embedded in base64-ish blob\"\nconst url  = \"https://x/?q=aGVsbG8<<<<<<< skip&sig=zZ==\"\nconst curly = \"PDw8<<<<<<<“skip”-blob inert\"\n\tconst tabbed = \"tab-indent base64 <<<<<<< SKIP holder\"\nb1\nb2\n"
+  },
+  {
+    "section": "inert-identifier",
+    "original": "id0\nid1\nid2\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nconst arrow = \"arg <<<<<<< SKIP in template ${x + y}\"\nlet embedded = a<<<<<<<b\nlet curly = \"curly “hi” with <<<<<<< skip inert\"\n\tlet tabbed = \"tab-indent local line\"\nid0\nid1\nid2\n<<<<<<< Skip\n",
+    "expected": "const arrow = \"arg <<<<<<< SKIP in template ${x + y}\"\nlet embedded = a<<<<<<<b\nlet curly = \"curly “hi” with <<<<<<< skip inert\"\n\tlet tabbed = \"tab-indent local line\"\nid0\nid1\nid2\n"
+  },
+  {
+    "section": "inert-url",
+    "original": "u0\nu1\nu2\n",
+    "edit": "<<<<<<< SKIP\nconst url = \"https://example.com/api?q=<<<<<<< SKIP&a=1\"\nu0\nu1\nu2\n<<<<<<< SKIP\n",
+    "expected": "const url = \"https://example.com/api?q=<<<<<<< SKIP&a=1\"\nu0\nu1\nu2\n"
+  },
+  {
+    "section": "inert-zwj",
+    "original": "zj1\nzj2\nzj3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<<‍ SKIP has ZWJ between brackets and SKIP, content\n<‍<‍<‍<‍<‍<‍<‍ SKIP has ZWJ splitting brackets, content\n<<<<<<< SK‍IP has ZWJ inside phrase, content\n<<<<<<< SKIP‍ trailing zwj-after content\nconst hint = \"inert <<<<<<< SKIP alongside ZWJ chaos 🎉 and 你好\"\nzj1\nzj2\nzj3\n<<<<<<< SKIP\n",
+    "expected": "<<<<<<<‍ SKIP has ZWJ between brackets and SKIP, content\n<‍<‍<‍<‍<‍<‍<‍ SKIP has ZWJ splitting brackets, content\n<<<<<<< SK‍IP has ZWJ inside phrase, content\n<<<<<<< SKIP‍ trailing zwj-after content\nconst hint = \"inert <<<<<<< SKIP alongside ZWJ chaos 🎉 and 你好\"\nzj1\nzj2\nzj3\n"
+  }
+]

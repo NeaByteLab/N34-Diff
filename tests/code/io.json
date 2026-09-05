@@ -1,0 +1,6 @@
+{
+  "section": "io",
+  "original": "greet := method(name, \"hello \" .. name)\n\ngreet(\"world\") println\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nhint := \"marker <<<<<<< SKIP inside string is inert\"\ngreet := method(name, \"hello \" .. name .. \" | \" .. hint)\n\ngreet(\"world\") println\n<<<<<<< SKIP\n",
+  "expected": "hint := \"marker <<<<<<< SKIP inside string is inert\"\ngreet := method(name, \"hello \" .. name .. \" | \" .. hint)\n\ngreet(\"world\") println\n"
+}

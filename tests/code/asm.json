@@ -1,0 +1,6 @@
+{
+  "section": "assembly",
+  "original": "section .data\n    msg db 'hi', 0\n\nsection .text\n    global _start\n_start:\n    mov eax, 1\n    mov ebx, 0\n    int 0x80\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nsection .data\n\tmsg db 'hello world', 0 ; comment hint '<<<<<<< SKIP' inert in asm comment\n    hint db 'marker <<<<<<< SKIP inside data is inert', 0\n    curl db 'curly “hi” and ‘lo’ with <<<<<<< skip inert', 0\n<<<<<<X SKIP\n<<<<x<<< SKIP\nsection .text\n    global _start\n_start:\n\tmov eax, 1 ; note: '<<<<<<<   SKIP with spaces' inert\n    mov ebx, 0\n    int 0x80\n<<<<<<< skip\n",
+  "expected": "section .data\n\tmsg db 'hello world', 0 ; comment hint '<<<<<<< SKIP' inert in asm comment\n    hint db 'marker <<<<<<< SKIP inside data is inert', 0\n    curl db 'curly “hi” and ‘lo’ with <<<<<<< skip inert', 0\n<<<<<<X SKIP\n<<<<x<<< SKIP\nsection .text\n    global _start\n_start:\n\tmov eax, 1 ; note: '<<<<<<<   SKIP with spaces' inert\n    mov ebx, 0\n    int 0x80\n"
+}

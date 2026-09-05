@@ -1,0 +1,6 @@
+{
+  "section": "dockerfile",
+  "original": "FROM node:20-alpine\nWORKDIR /app\nCOPY . .\nRUN npm install\nRUN npm run build\nCMD [\"node\", \"index.js\"]\n",
+  "edit": "FROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package.json ./\nRUN npm install --production\nCOPY . .\n# comment: <<<<<<< SKIPS is not a marker, plain content\n# comment: **<<<<<<< SKIP** wrapped in bold is content\n# comment: >>>>>>> SKIP with right brackets is content\nRUN echo \"marker <<<<<<< SKIP inside quoted string is inert\"\nRUN echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\nRUN npm run build\nCMD [\"node\", \"dist/index.js\"]\n",
+  "expected": "FROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package.json ./\nRUN npm install --production\nCOPY . .\n# comment: <<<<<<< SKIPS is not a marker, plain content\n# comment: **<<<<<<< SKIP** wrapped in bold is content\n# comment: >>>>>>> SKIP with right brackets is content\nRUN echo \"marker <<<<<<< SKIP inside quoted string is inert\"\nRUN echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\nRUN npm run build\nCMD [\"node\", \"dist/index.js\"]\n"
+}

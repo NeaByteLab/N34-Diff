@@ -1,0 +1,6 @@
+{
+  "section": "raku",
+  "original": "sub greet($name) {\n    say \"hello $name\";\n}\n\ngreet('world');\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nsub greet($name) {\n    # inline hint \"<<<<<<< SKIP\" inert in raku comment\n    my $hint = \"marker <<<<<<< SKIP inside string is inert\";\n    my $curl = 'curly “hi” with <<<<<<< skip inert';\n\tmy $tabbed = \"tab indent kept as-is\";\n    my $heredoc = q:to/END/;\n        heredoc with <<<<<<< SKIP inside is inert\n        END\n    say \"hello $name | $hint | $curl | $tabbed | $heredoc\";\n}\n<<<<<<< Skip\ngreet('world');\n<<<<<<< SKIP\n",
+  "expected": "sub greet($name) {\n    # inline hint \"<<<<<<< SKIP\" inert in raku comment\n    my $hint = \"marker <<<<<<< SKIP inside string is inert\";\n    my $curl = 'curly “hi” with <<<<<<< skip inert';\n\tmy $tabbed = \"tab indent kept as-is\";\n    my $heredoc = q:to/END/;\n        heredoc with <<<<<<< SKIP inside is inert\n        END\n    say \"hello $name | $hint | $curl | $tabbed | $heredoc\";\n}\n\ngreet('world');\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "idris",
+  "original": "module Main\n\nimport Data.String\n\ndebug : String -> IO ()\ndebug msg = putStrLn (\"DEBUG: \" ++ msg)\n\ngreet : String -> String\ngreet name = \"hello \" ++ name\n\nmain : IO ()\nmain = do\n  debug \"starting up\"\n  putStrLn (greet \"world\")\n  debug \"shutting down\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule Main\n\nimport Data.String\n\ngreet : String -> String\ngreet name = \"hello \" ++ name\n\nmain : IO ()\nmain = do\n  putStrLn (greet \"world\")\n",
+  "expected": "module Main\n\nimport Data.String\n\ngreet : String -> String\ngreet name = \"hello \" ++ name\n\nmain : IO ()\nmain = do\n  putStrLn (greet \"world\")\n"
+}

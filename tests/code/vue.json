@@ -1,0 +1,6 @@
+{
+  "section": "vue",
+  "original": "<template>\n  <h1>hi</h1>\n</template>\n\n<script setup>\nconst name = 'world'\n</script>\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n<template>\n  <!-- inline hint '<<<<<<< SKIP' inert in html comment -->\n  <h1 :data-hint=\"'marker <<<<<<< SKIP inert'\">hello {{ name }}</h1>\n  <p :data-curl=\"'curly “hi” with <<<<<<< skip inert'\">curly</p>\n</template>\n<<<<<<< Skip\n<script setup>\n// inline hint \"<<<<<<< SKIP\" inert in js line comment\nconst name = 'world'\nconst hint = 'marker <<<<<<< SKIP inside string is inert'\nconst curl = 'curly “hi” with <<<<<<< skip inert'\n\tconst tabbed = \"tab indent kept as-is\"\n</script>\n<<<<<<< SKIP\n",
+  "expected": "<template>\n  <!-- inline hint '<<<<<<< SKIP' inert in html comment -->\n  <h1 :data-hint=\"'marker <<<<<<< SKIP inert'\">hello {{ name }}</h1>\n  <p :data-curl=\"'curly “hi” with <<<<<<< skip inert'\">curly</p>\n</template>\n\n<script setup>\n// inline hint \"<<<<<<< SKIP\" inert in js line comment\nconst name = 'world'\nconst hint = 'marker <<<<<<< SKIP inside string is inert'\nconst curl = 'curly “hi” with <<<<<<< skip inert'\n\tconst tabbed = \"tab indent kept as-is\"\n</script>\n"
+}

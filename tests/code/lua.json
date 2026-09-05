@@ -1,0 +1,6 @@
+{
+  "section": "lua",
+  "original": "local function greet(name)\r\n    return 'hello ' .. name\r\nend\r\n\r\nprint(greet('world'))\r\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nlocal function greet(name)\n    local hint = 'marker <<<<<<< SKIP inside string is inert'\n    local raw  = [[\n        raw long <<<<<<< SKIP inside is inert\n    ]]\n    return string.format('hello, %s | %s | %d', name, hint, #raw)\nend\n\nprint(greet('world'))\n",
+  "expected": "local function greet(name)\n    local hint = 'marker <<<<<<< SKIP inside string is inert'\n    local raw  = [[\n        raw long <<<<<<< SKIP inside is inert\n    ]]\n    return string.format('hello, %s | %s | %d', name, hint, #raw)\nend\n\nprint(greet('world'))\n"
+}

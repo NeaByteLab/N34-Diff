@@ -1,0 +1,44 @@
+[
+  {
+    "section": "chaos-crlf",
+    "original": "cf1\r\ncf2\r\ncf3\r\n",
+    "edit": "＜＜＜＜＜＜＜ SKIP\n<<<<<<< SKIP\ncf1\ncf2 with \"inert <<<<<<< SKIP\" and \"another <<<<<<< skip\"\ncf3\n<<<<<<< SKIP\n",
+    "expected": "cf1\ncf2 with \"inert <<<<<<< SKIP\" and \"another <<<<<<< skip\"\ncf3\n"
+  },
+  {
+    "section": "chaos-diff",
+    "original": "dw-a\ndw-b\ndw-c\n",
+    "edit": "<<<<<<< SKIP\ndiff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1,3 +1,3 @@\n-old line \"inert <<<<<<< SKIP\"\n+new line \"inert <<<<<<< SKIP\"\ndw-a\ndw-b\ndw-c\n<<<<<<< SKIP\n",
+    "expected": "diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1,3 +1,3 @@\n-old line \"inert <<<<<<< SKIP\"\n+new line \"inert <<<<<<< SKIP\"\ndw-a\ndw-b\ndw-c\n"
+  },
+  {
+    "section": "chaos-giant",
+    "original": "g1\ng2\ng3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nconst hint = \"marker <<<<<<< SKIP inside string is inert\"\nconst dup = \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\nconst raw = `template <<<<<<< SKIP with ${x + y}`\n// <<<<<<< SKIP inside comment is content\n<<<<<<<< SKIP eight brackets is content\n<<<<<<< SKIPS pluralised content\n**<<<<<<< SKIP** bold wrapped content\n>>>>>>> SKIP right brackets content\n1. <<<<<<< SKIP numbered content\n<<<<<<< HEAD git conflict head content\n@@ -1 +1 @@ patch header content\n+added prefix content\n-removed prefix content\ng1\ng2\ng3\nemoji 🎉 zwj 👨‍👩‍👧‍👦 non-latin 你好 안녕\nzero​width‌inside\n<<<<<<< SKIP\n",
+    "expected": "const hint = \"marker <<<<<<< SKIP inside string is inert\"\nconst dup = \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\nconst raw = `template <<<<<<< SKIP with ${x + y}`\n// <<<<<<< SKIP inside comment is content\n<<<<<<<< SKIP eight brackets is content\n<<<<<<< SKIPS pluralised content\n**<<<<<<< SKIP** bold wrapped content\n>>>>>>> SKIP right brackets content\n1. <<<<<<< SKIP numbered content\n<<<<<<< HEAD git conflict head content\n@@ -1 +1 @@ patch header content\n+added prefix content\n-removed prefix content\ng1\ng2\ng3\nemoji 🎉 zwj 👨‍👩‍👧‍👦 non-latin 你好 안녕\nzero​width‌inside\n"
+  },
+  {
+    "section": "chaos-heredoc",
+    "original": "h1\nh2\nh3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n\"\"\"\ndocstring line with <<<<<<< SKIP inside is inert\nmore docstring <<<<<<< SKIP text\nlowercase <<<<<<< skip inside docstring\nzero-space <<<<<<<SKIP inside docstring\nextra spaces <<<<<<<   SKIP inside docstring\n\"\"\"\n'''\npython triple-single with <<<<<<< SKIP inert\n'''\nheredoc = <<-DOC\n    heredoc <<<<<<< SKIP content is inert\n    another <<<<<<< SKIP line\n    ＜＜＜＜＜＜＜ SKIP fullwidth inside heredoc, inert\nDOC\nconst raw = r\"raw <<<<<<< SKIP and <<<<<<< SKIP inert\"\nh1\nh2\nh3\n<<<<<<< SKIP\n",
+    "expected": "\"\"\"\ndocstring line with <<<<<<< SKIP inside is inert\nmore docstring <<<<<<< SKIP text\nlowercase <<<<<<< skip inside docstring\nzero-space <<<<<<<SKIP inside docstring\nextra spaces <<<<<<<   SKIP inside docstring\n\"\"\"\n'''\npython triple-single with <<<<<<< SKIP inert\n'''\nheredoc = <<-DOC\n    heredoc <<<<<<< SKIP content is inert\n    another <<<<<<< SKIP line\n    ＜＜＜＜＜＜＜ SKIP fullwidth inside heredoc, inert\nDOC\nconst raw = r\"raw <<<<<<< SKIP and <<<<<<< SKIP inert\"\nh1\nh2\nh3\n"
+  },
+  {
+    "section": "chaos-rejection",
+    "original": "rs1\nrs2\nrs3\n",
+    "edit": "<<<<<<< SKIP\n// <<<<<<< SKIP in comment is content\n<<<<<<<< SKIP eight brackets content\n<<<<<< SKIP six brackets content\n>>>>>>> SKIP right brackets content\n<<<<<<< SKIPS pluralised content\n<<<<<<< SKIPPING content\n**<<<<<<< SKIP** bold content\n1. <<<<<<< SKIP numbered content\n<<<<<<< KEEP different word content\n<<<<<<< SKIP HERE extra tokens content\n<<<<<<< SKIP. punctuation content\n<<<<<<< SKIP \\ backslash content\ninline <<<<<<< SKIP surrounded <<<<<<< SKIP by text content\nrs1\nrs2\nrs3\n<<<<<<< SKIP\n",
+    "expected": "// <<<<<<< SKIP in comment is content\n<<<<<<<< SKIP eight brackets content\n<<<<<< SKIP six brackets content\n>>>>>>> SKIP right brackets content\n<<<<<<< SKIPS pluralised content\n<<<<<<< SKIPPING content\n**<<<<<<< SKIP** bold content\n1. <<<<<<< SKIP numbered content\n<<<<<<< KEEP different word content\n<<<<<<< SKIP HERE extra tokens content\n<<<<<<< SKIP. punctuation content\n<<<<<<< SKIP \\ backslash content\ninline <<<<<<< SKIP surrounded <<<<<<< SKIP by text content\nrs1\nrs2\nrs3\n"
+  },
+  {
+    "section": "chaos-stacked",
+    "original": "ws1\nws2\nws3\n",
+    "edit": "Here is the diff for your review:\n```typescript\n<edit>\n<<<<<<< SKIP\nws1\nws2 replaced \"inert <<<<<<< SKIP\"\nws3\n<<<<<<< SKIP\n</edit>\n```\n",
+    "expected": "Here is the diff for your review:\n```typescript\n<edit>\nws1\nws2 replaced \"inert <<<<<<< SKIP\"\nws3\n</edit>\n```\n"
+  },
+  {
+    "section": "chaos-strings",
+    "original": "sl1\nsl2\nsl3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nconst a = \"double <<<<<<< SKIP quote\"\nconst b = 'single <<<<<<< skip quote'\nconst c = `template <<<<<<< SkIp quote ${x}`\nconst d = /regex <<<<<<< SKIP inside/g\nconst e = \"curly “<<<<<<< skip” wrapper\"\n\tconst f = \"tab-indented <<<<<<< SKIP holder\"\nsl1\nsl2\nsl3\n<<<<<<< Skip\n",
+    "expected": "const a = \"double <<<<<<< SKIP quote\"\nconst b = 'single <<<<<<< skip quote'\nconst c = `template <<<<<<< SkIp quote ${x}`\nconst d = /regex <<<<<<< SKIP inside/g\nconst e = \"curly “<<<<<<< skip” wrapper\"\n\tconst f = \"tab-indented <<<<<<< SKIP holder\"\nsl1\nsl2\nsl3\n"
+  }
+]

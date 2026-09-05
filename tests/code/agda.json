@@ -1,0 +1,6 @@
+{
+  "section": "agda",
+  "original": "module Main where\n\nopen import IO\nopen import Data.String\n\nmain = run (putStrLn \"hi\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule Main where\n\nopen import IO\nopen import Data.String\n\n<<<<<< SKIP\n<<<<<<<< SKIP\nhint : String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = run (putStrLn (\"hello world | \" ++ hint))\n",
+  "expected": "module Main where\n\nopen import IO\nopen import Data.String\n\n<<<<<< SKIP\n<<<<<<<< SKIP\nhint : String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = run (putStrLn (\"hello world | \" ++ hint))\n"
+}

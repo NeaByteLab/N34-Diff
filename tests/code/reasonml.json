@@ -1,0 +1,6 @@
+{
+  "section": "reasonml",
+  "original": "let greet = (name) => \"hello \" ++ name;\n\nJs.log(greet(\"world\"));\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nlet hint = \"marker <<<<<<< SKIP inside string is inert\";\nlet greet = (name) => \"hello \" ++ name ++ \" | \" ++ hint;\n\nJs.log(greet(\"world\"));\n<<<<<<< SKIP\n",
+  "expected": "let hint = \"marker <<<<<<< SKIP inside string is inert\";\nlet greet = (name) => \"hello \" ++ name ++ \" | \" ++ hint;\n\nJs.log(greet(\"world\"));\n"
+}

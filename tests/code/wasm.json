@@ -1,0 +1,6 @@
+{
+  "section": "wasm",
+  "original": "(module\n  (func (export \"add\") (param i32 i32) (result i32)\n    local.get 0\n    local.get 1\n    i32.sub))\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n(module\n  ;; comment: <<<<<<< SKIP inside comment is content, not a marker\n  (func (export \"add\") (param i32 i32) (result i32)\n    local.get 0\n    local.get 1\n    i32.add))\n",
+  "expected": "(module\n  ;; comment: <<<<<<< SKIP inside comment is content, not a marker\n  (func (export \"add\") (param i32 i32) (result i32)\n    local.get 0\n    local.get 1\n    i32.add))\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "powershell",
+  "original": "function Greet {\n    param([string]$Name)\n    \"hello $Name\"\n}\n\nGreet -Name 'world'\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction Greet {\n    # inline hint \"<<<<<<< SKIP\" inert in powershell comment\n    <# block hint \"<<<<<<<   SKIP with spaces\" inert #>\n    param([string]$Name)\n    $hint = \"marker <<<<<<< SKIP inside string is inert\"\n    $curl = 'curly “hi” with <<<<<<< skip inert'\n\t$tabbed = \"tab indent kept as-is\"\n    $here = @'\nhere-string with <<<<<<< SKIP inside is inert\n'@\n    \"hello $Name | $hint | $curl | $tabbed | $($here.Length)\"\n}\n<<<<<<< Skip\nGreet -Name 'world'\n<<<<<<< SKIP\n",
+  "expected": "function Greet {\n    # inline hint \"<<<<<<< SKIP\" inert in powershell comment\n    <# block hint \"<<<<<<<   SKIP with spaces\" inert #>\n    param([string]$Name)\n    $hint = \"marker <<<<<<< SKIP inside string is inert\"\n    $curl = 'curly “hi” with <<<<<<< skip inert'\n\t$tabbed = \"tab indent kept as-is\"\n    $here = @'\nhere-string with <<<<<<< SKIP inside is inert\n'@\n    \"hello $Name | $hint | $curl | $tabbed | $($here.Length)\"\n}\n\nGreet -Name 'world'\n"
+}

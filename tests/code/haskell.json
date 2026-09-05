@@ -1,0 +1,6 @@
+{
+  "section": "haskell",
+  "original": "module Main where\n\ngreet :: String -> String\ngreet name = \"hello \" ++ name\n\nmain :: IO ()\nmain = putStrLn (greet \"world\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule Main where\n\nimport Data.List (intercalate)\n\nhint :: String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\ngreet :: String -> String\ngreet name = intercalate \" | \" [\"hello \" ++ name, hint]\n\nmain :: IO ()\nmain = putStrLn (greet \"world\")\n<<<<<<< SKIP\n",
+  "expected": "module Main where\n\nimport Data.List (intercalate)\n\nhint :: String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\ngreet :: String -> String\ngreet name = intercalate \" | \" [\"hello \" ++ name, hint]\n\nmain :: IO ()\nmain = putStrLn (greet \"world\")\n"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "section": "delete-empty",
+    "original": "gone1\ngone2\ngone3\n",
+    "edit": "",
+    "expected": "gone1\ngone2\ngone3\n"
+  },
+  {
+    "section": "delete-middle",
+    "original": "keep-top\nmiddle-a\nmiddle-b\nmiddle-c\nkeep-bottom\n",
+    "edit": "keep-top\n// inline hint \"inert <<<<<<< SKIP\"\n// curly “hi” with '<<<<<<< skip' inert\n\t// tab-indent inline hint\nkeep-bottom\n",
+    "expected": "keep-top\n// inline hint \"inert <<<<<<< SKIP\"\n// curly “hi” with '<<<<<<< skip' inert\n\t// tab-indent inline hint\nkeep-bottom\n"
+  }
+]

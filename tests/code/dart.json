@@ -1,0 +1,6 @@
+{
+  "section": "dart",
+  "original": "void main() {\n  var name = 'world';\n  print('hello $name');\n}",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nimport 'dart:math';\n\nvoid main() {\n  var name = 'world';\n  var hint = 'marker <<<<<<< SKIP inside string is inert';\n\n  var fake = '＜＜＜＜＜＜＜ SKIP fullwidth line above is a marker via normalise';\n  print('hello $name | $hint | $fake');\n}\n",
+  "expected": "import 'dart:math';\n\nvoid main() {\n  var name = 'world';\n  var hint = 'marker <<<<<<< SKIP inside string is inert';\n\n  var fake = '＜＜＜＜＜＜＜ SKIP fullwidth line above is a marker via normalise';\n  print('hello $name | $hint | $fake');\n}"
+}

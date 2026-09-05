@@ -1,0 +1,6 @@
+{
+  "section": "rust",
+  "original": "fn add(a: i32, b: i32) -> i32 {\r\n    a - b\r\n}\r\n\r\nfn main() {\r\n    println!(\"{}\", add(2, 3));\r\n}\r\n",
+  "edit": "<<<<<<< SKIP\r<<<<<<< skip\nfn add(a: i32, b: i32) -> i32 {\r\n    let hint = \"marker <<<<<<< SKIP inside string is inert\";\r\n    let raw  = r#\"raw <<<<<<< SKIP and <<<<<<< SKIP inert\"#;\n    let _ = (hint, raw);\r\n    a + b\n}\r\n\nfn main() {\r\n    println!(\"{}\", add(2, 3));\n}\r<<<<<<< SKIP\r\n",
+  "expected": "fn add(a: i32, b: i32) -> i32 {\n    let hint = \"marker <<<<<<< SKIP inside string is inert\";\n    let raw  = r#\"raw <<<<<<< SKIP and <<<<<<< SKIP inert\"#;\n    let _ = (hint, raw);\n    a + b\n}\n\nfn main() {\n    println!(\"{}\", add(2, 3));\n}\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "lean",
+  "original": "def greet (name : String) : String :=\n  \"hello \" ++ name\n\n#eval greet \"world\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\ndef hint : String := \"marker <<<<<<< SKIP inside string is inert\"\n\ndef greet (name : String) : String :=\n  \"hello \" ++ name ++ \" | \" ++ hint\n\n#eval greet \"world\"\n",
+  "expected": "def hint : String := \"marker <<<<<<< SKIP inside string is inert\"\n\ndef greet (name : String) : String :=\n  \"hello \" ++ name ++ \" | \" ++ hint\n\n#eval greet \"world\"\n"
+}

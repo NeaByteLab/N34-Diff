@@ -1,0 +1,6 @@
+{
+  "section": "vhdl",
+  "original": "library ieee;\nuse ieee.std_logic_1164.all;\n\nentity hello is\nend hello;\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n\nentity hello is\n    generic (\n        NOTE  : string := \"marker <<<<<<< SKIP inside string is inert\";\n        CURLY : string := \"curly “hi” with <<<<<<< skip inert\";\n\tTABBED : string := \"tab indent kept as-is\"\n    );\nend hello;\n\n-- vhdl comment: <<<<<<< SKIP inside comment is content, not a marker\n-- another: '<<<<<<< skip' still inert\n<<<<<<< Skip\n",
+  "expected": "library ieee;\nuse ieee.std_logic_1164.all;\n\nentity hello is\n    generic (\n        NOTE  : string := \"marker <<<<<<< SKIP inside string is inert\";\n        CURLY : string := \"curly “hi” with <<<<<<< skip inert\";\n\tTABBED : string := \"tab indent kept as-is\"\n    );\nend hello;\n\n-- vhdl comment: <<<<<<< SKIP inside comment is content, not a marker\n-- another: '<<<<<<< skip' still inert\n"
+}

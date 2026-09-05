@@ -1,0 +1,6 @@
+{
+  "section": "kotlin",
+  "original": "fun greet(name: String): String {\r\n    return \"hello $name\"\r\n}\r\n\r\nfun main() {\r\n    println(greet(\"world\"))\r\n}\r\n",
+  "edit": "<<<<<<< SKIP\r\n<<<<<<< skip\r\n\t<<<<<<< SKIP\r\nfun greet(name: String): String {\r\n    val hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\r\n    return \"hello $name | $hint\"\r\n}\r\n\r\nfun main() {\r\n    println(greet(\"world\"))\r\n}\r\n",
+  "expected": "fun greet(name: String): String {\n    val hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n    return \"hello $name | $hint\"\n}\n\nfun main() {\n    println(greet(\"world\"))\n}\n"
+}

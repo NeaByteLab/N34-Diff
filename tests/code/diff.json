@@ -1,0 +1,6 @@
+{
+  "section": "diff",
+  "original": "--- a/file.txt\n+++ b/file.txt\n@@ -1 +1 @@\n-hi\n+hello\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n--- a/file.txt\n+++ b/file.txt\n@@ -1,2 +1,2 @@\n-hi\n+hello world\n note: \"marker <<<<<<< SKIP inside string is inert\"\n+++foreign patch trailer must be treated as content\n",
+  "expected": "--- a/file.txt\n+++ b/file.txt\n@@ -1,2 +1,2 @@\n-hi\n+hello world\n note: \"marker <<<<<<< SKIP inside string is inert\"\n+++foreign patch trailer must be treated as content\n"
+}

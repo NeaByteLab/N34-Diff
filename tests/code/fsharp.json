@@ -1,0 +1,6 @@
+{
+  "section": "fsharp",
+  "original": "module App\n\nlet greet name = sprintf \"hello %s\" name\n\n[<EntryPoint>]\nlet main argv =\n    printfn \"%s\" (greet \"world\")\n    0\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule App\n\nlet hint = \"marker <<<<<<< SKIP inside string is inert\"\n// <<<<<<< SKIP inside a comment is plain content, not a marker\nlet raw  = @\"verbatim <<<<<<< SKIP also inert\"\n\nlet greet name = sprintf \"hello, %s [%s | %s]\" name hint raw\n\n[<EntryPoint>]\nlet main argv =\n    printfn \"%s\" (greet \"world\")\n    0\n",
+  "expected": "module App\n\nlet hint = \"marker <<<<<<< SKIP inside string is inert\"\n// <<<<<<< SKIP inside a comment is plain content, not a marker\nlet raw  = @\"verbatim <<<<<<< SKIP also inert\"\n\nlet greet name = sprintf \"hello, %s [%s | %s]\" name hint raw\n\n[<EntryPoint>]\nlet main argv =\n    printfn \"%s\" (greet \"world\")\n    0\n"
+}

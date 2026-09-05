@@ -1,0 +1,38 @@
+[
+  {
+    "section": "lineend-barecr",
+    "original": "alpha\rbeta\r",
+    "edit": "<<<<<<< SKIP\nalpha\nbeta\ngamma with \"inert <<<<<<< SKIP marker\"\n<<<<<<< SKIP\n",
+    "expected": "alpha\nbeta\ngamma with \"inert <<<<<<< SKIP marker\"\n"
+  },
+  {
+    "section": "lineend-crlfedit",
+    "original": "alpha\nbeta\ngamma\n",
+    "edit": "<<<<<<< SKIP\r\n<<<<<<< skip\r\nalpha\r\nbeta with \"inert <<<<<<< SKIP inside string\"\r\ngamma\r\ndelta\r\n<<<<<<< SKIP\r\n",
+    "expected": "alpha\nbeta with \"inert <<<<<<< SKIP inside string\"\ngamma\ndelta\n"
+  },
+  {
+    "section": "lineend-crlforigin",
+    "original": "line1\r\nline2\r\nline3\r\n",
+    "edit": "<<<<<<< SKIP\nheader \"marker <<<<<<< SKIP inside string is inert\"\nline1\nline2\nline3\nfooter \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n<<<<<<< SKIP\n",
+    "expected": "header \"marker <<<<<<< SKIP inside string is inert\"\nline1\nline2\nline3\nfooter \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n"
+  },
+  {
+    "section": "lineend-mixed",
+    "original": "first\nsecond\r\nthird\rfourth\n",
+    "edit": "<<<<<<< SKIP\nfirst\nsecond\r\nthird replaced with \"marker <<<<<<< SKIP inert\"\rfourth\nfifth\n<<<<<<< SKIP\n",
+    "expected": "first\nsecond\nthird replaced with \"marker <<<<<<< SKIP inert\"\nfourth\nfifth\n"
+  },
+  {
+    "section": "lineend-nonewline",
+    "original": "single-line",
+    "edit": "replaced single \"inert <<<<<<< SKIP\" and 'inert <<<<<<< skip' plus `template <<<<<<< SKIP` line",
+    "expected": "replaced single \"inert <<<<<<< SKIP\" and 'inert <<<<<<< skip' plus `template <<<<<<< SKIP` line"
+  },
+  {
+    "section": "lineend-notrailing",
+    "original": "only line without trailing",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nonly line without trailing but \"marker <<<<<<< SKIP inert\" and curly “hi” with <<<<<<< SkIp\n<<<<<<< Skip\n",
+    "expected": "only line without trailing but \"marker <<<<<<< SKIP inert\" and curly “hi” with <<<<<<< SkIp"
+  }
+]

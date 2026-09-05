@@ -1,0 +1,6 @@
+{
+  "section": "roc",
+  "original": "app \"hello\"\n    packages { pf: \"basic-cli\" }\n    imports [pf.Stdout]\n    provides [main] to pf\n\nmain = Stdout.line \"hi\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\napp \"hello\"\n    packages { pf: \"basic-cli\" }\n    imports [pf.Stdout]\n    provides [main] to pf\n\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = Stdout.line \"hello world | \\(hint)\"\n",
+  "expected": "app \"hello\"\n    packages { pf: \"basic-cli\" }\n    imports [pf.Stdout]\n    provides [main] to pf\n\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = Stdout.line \"hello world | \\(hint)\"\n"
+}

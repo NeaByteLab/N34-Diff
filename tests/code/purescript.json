@@ -1,0 +1,6 @@
+{
+  "section": "purescript",
+  "original": "module Main where\n\nimport Prelude\nimport Effect.Console (log)\n\nmain = log \"hi\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule Main where\n\nimport Prelude\nimport Effect.Console (log)\n\nhint :: String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = log (\"hello world | \" <> hint)\n",
+  "expected": "module Main where\n\nimport Prelude\nimport Effect.Console (log)\n\nhint :: String\nhint = \"marker <<<<<<< SKIP inside string is inert\"\n\nmain = log (\"hello world | \" <> hint)\n"
+}

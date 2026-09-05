@@ -1,0 +1,6 @@
+{
+  "section": "cobol",
+  "original": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"hi\".\n           STOP RUN.\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n      *> note: hint \"<<<<<<< SKIP\" inert in cobol comment\n       PROCEDURE DIVISION.\n<<<<<<< SIKP\n<<<<<<< SKP\n<<<<<<< SKIPS\n           DISPLAY \"hello world\".\n           DISPLAY \"marker <<<<<<< SKIP inside string is inert\".\n           DISPLAY 'curly “hi” with <<<<<<< skip inert'.\n\t   DISPLAY \"tab indent kept as-is\".\n           STOP RUN.\n<<<<<<< Skip\n",
+  "expected": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n      *> note: hint \"<<<<<<< SKIP\" inert in cobol comment\n       PROCEDURE DIVISION.\n<<<<<<< SIKP\n<<<<<<< SKP\n<<<<<<< SKIPS\n           DISPLAY \"hello world\".\n           DISPLAY \"marker <<<<<<< SKIP inside string is inert\".\n           DISPLAY 'curly “hi” with <<<<<<< skip inert'.\n\t   DISPLAY \"tab indent kept as-is\".\n           STOP RUN.\n"
+}

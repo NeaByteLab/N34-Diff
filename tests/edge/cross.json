@@ -1,0 +1,20 @@
+[
+  {
+    "section": "cross-patch",
+    "original": "ph1\nph2\nph3\n",
+    "edit": "<<<<<<< SKIP\ndiff --git a/x b/x\nindex 0000000..1111111 100644\n--- a/x\n+++ b/x\n@@ -1,3 +1,3 @@\n@@ -10,3 +10,3 @@\n+++foreign patch trailer content\n---foreign patch leader content\nconst hint = \"inert <<<<<<< SKIP with `template <<<<<<< skip`\"\nph1\nph2\nph3\n<<<<<<< SKIP\n",
+    "expected": "diff --git a/x b/x\nindex 0000000..1111111 100644\n--- a/x\n+++ b/x\n@@ -1,3 +1,3 @@\n@@ -10,3 +10,3 @@\n+++foreign patch trailer content\n---foreign patch leader content\nconst hint = \"inert <<<<<<< SKIP with `template <<<<<<< skip`\"\nph1\nph2\nph3\n"
+  },
+  {
+    "section": "cross-scm",
+    "original": "s1\ns2\ns3\n",
+    "edit": "commit abc123\nAuthor: dev <dev@example.com>\nDate:   Mon Jan 1 00:00:00 2024\n\nFix bug in x\n<<<<<<< SKIP\n<<<<<<< skip\ns1\ns2 replaced \"inert <<<<<<< SKIP\"\ns2b curly “hi” with <<<<<<< skip inert\n\ts2c tab-indent replacement line\ns3\n<<<<<<< Skip\n",
+    "expected": "commit abc123\nAuthor: dev <dev@example.com>\nDate:   Mon Jan 1 00:00:00 2024\n\nFix bug in x\ns1\ns2 replaced \"inert <<<<<<< SKIP\"\ns2b curly “hi” with <<<<<<< skip inert\n\ts2c tab-indent replacement line\ns3\n"
+  },
+  {
+    "section": "cross-unified",
+    "original": "ud1\nud2\nud3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n+added-looking line \"inert <<<<<<< SKIP\"\n-removed-looking line \"inert <<<<<<< SKIP\"\n+curly “hi” with '<<<<<<< skip' inert\n\t+tab-indented plus-prefixed content\nud1\nud2\nud3\n<<<<<<< Skip\n",
+    "expected": "+added-looking line \"inert <<<<<<< SKIP\"\n-removed-looking line \"inert <<<<<<< SKIP\"\n+curly “hi” with '<<<<<<< skip' inert\n\t+tab-indented plus-prefixed content\nud1\nud2\nud3\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "section": "hcl",
+  "original": "variable \"name\" {\n  type    = string\n  default = \"world\"\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nvariable \"name\" {\n  # inline hint \"<<<<<<< SKIP\" inert in hcl comment\n  type        = string\n  default     = \"world\"\n  description = \"marker <<<<<<< SKIP inside string is inert\"\n  curly       = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed      = \"tab indent kept as-is\"\n  extra       = \"'<<<<<<<   SKIP with spaces' inert\"\n}\n<<<<<<< Skip\n",
+  "expected": "variable \"name\" {\n  # inline hint \"<<<<<<< SKIP\" inert in hcl comment\n  type        = string\n  default     = \"world\"\n  description = \"marker <<<<<<< SKIP inside string is inert\"\n  curly       = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed      = \"tab indent kept as-is\"\n  extra       = \"'<<<<<<<   SKIP with spaces' inert\"\n}\n"
+}

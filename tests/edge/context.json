@@ -1,0 +1,14 @@
+[
+  {
+    "section": "context-brace",
+    "original": "function alpha() {\n  return 1\n}\nfunction beta() {\n  return 2\n}\nfunction gamma() {\n  return 3\n}\n",
+    "edit": "function alpha() {\n  return 1 // \"inert <<<<<<< SKIP\"\n}\nfunction beta() {\n  return 2 // \"inert <<<<<<< SKIP\"\n}\nfunction gamma() {\n  return 3 // \"inert <<<<<<< SKIP\"\n}\n",
+    "expected": "function alpha() {\n  return 1 // \"inert <<<<<<< SKIP\"\n}\nfunction beta() {\n  return 2 // \"inert <<<<<<< SKIP\"\n}\nfunction gamma() {\n  return 3 // \"inert <<<<<<< SKIP\"\n}\n"
+  },
+  {
+    "section": "context-neighbor",
+    "original": "anchor-above\nchange-me\nanchor-below\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nanchor-above\nchange-me REPLACED // \"inert <<<<<<< SKIP\"\nanchor-below\n<<<<<<< SKIP\n",
+    "expected": "anchor-above\nchange-me REPLACED // \"inert <<<<<<< SKIP\"\nanchor-below\n"
+  }
+]

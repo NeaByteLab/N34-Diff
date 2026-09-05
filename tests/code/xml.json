@@ -1,0 +1,6 @@
+{
+  "section": "xml",
+  "original": "<?xml version=\"1.0\"?>\n<root>\n  <item name=\"a\"/>\n</root>\n",
+  "edit": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <item name=\"a\" note=\"marker <<<<<<< SKIP inside attribute is inert\"/>\n  <!-- comment: <<<<<<< SKIP inside comment is content, not a marker -->\n  <![CDATA[literal <<<<<<< SKIP inside CDATA is inert]]>\n  <item name=\"b\"/>\n</root>\n<<<<<<< SKIP\n<<<<<<< skip\n",
+  "expected": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <item name=\"a\" note=\"marker <<<<<<< SKIP inside attribute is inert\"/>\n  <!-- comment: <<<<<<< SKIP inside comment is content, not a marker -->\n  <![CDATA[literal <<<<<<< SKIP inside CDATA is inert]]>\n  <item name=\"b\"/>\n</root>\n"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "section": "wrapper-backticks",
+    "original": "wp1\nwp2\nwp3\n",
+    "edit": "```\n<<<<<<< SKIP\nwp1\nwp2 replaced with \"inert <<<<<<< SKIP\"\nwp3\n<<<<<<< SKIP\n```\n",
+    "expected": "```\nwp1\nwp2 replaced with \"inert <<<<<<< SKIP\"\nwp3\n```\n"
+  },
+  {
+    "section": "wrapper-filename",
+    "original": "fb1\nfb2\nfb3\n",
+    "edit": "# src/main.ts\n## Section header\n<<<<<<< SKIP\nfb1\nfb2 replaced with \"inert <<<<<<< SKIP\"\nfb3\n<<<<<<< SKIP\n",
+    "expected": "# src/main.ts\n## Section header\nfb1\nfb2 replaced with \"inert <<<<<<< SKIP\"\nfb3\n"
+  },
+  {
+    "section": "wrapper-preamble",
+    "original": "pp1\npp2\npp3\n",
+    "edit": "Here is the diff:\nStep 1: apply this edit.\n<<<<<<< SKIP\npp1\npp2 replaced with \"inert <<<<<<< SKIP\"\npp3\n<<<<<<< SKIP\n",
+    "expected": "Here is the diff:\nStep 1: apply this edit.\npp1\npp2 replaced with \"inert <<<<<<< SKIP\"\npp3\n"
+  },
+  {
+    "section": "wrapper-xml",
+    "original": "xe1\nxe2\nxe3\n",
+    "edit": "<edit>\n<<<<<<< SKIP\nxe1\nxe2 replaced with \"inert <<<<<<< SKIP\"\nxe3\n<<<<<<< SKIP\n</edit>\n",
+    "expected": "<edit>\nxe1\nxe2 replaced with \"inert <<<<<<< SKIP\"\nxe3\n</edit>\n"
+  }
+]

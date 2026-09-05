@@ -1,0 +1,6 @@
+{
+  "section": "coq",
+  "original": "Definition greet (name : string) : string :=\n  \"hello \" ++ name.\n\nCompute greet \"world\".\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nDefinition hint : string := \"marker <<<<<<< SKIP inside string is inert\".\n<<<<<<< SALTAR\n<<<<<<< OMITIR\n<<<<<<< KEEP\nDefinition greet (name : string) : string :=\n  \"hello \" ++ name ++ \" | \" ++ hint.\n\nCompute greet \"world\".\n",
+  "expected": "Definition hint : string := \"marker <<<<<<< SKIP inside string is inert\".\n<<<<<<< SALTAR\n<<<<<<< OMITIR\n<<<<<<< KEEP\nDefinition greet (name : string) : string :=\n  \"hello \" ++ name ++ \" | \" ++ hint.\n\nCompute greet \"world\".\n"
+}

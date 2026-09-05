@@ -1,0 +1,6 @@
+{
+  "section": "json",
+  "original": "{\n  \"name\": \"app\",\n  \"version\": \"1.0.0\"\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n{\n  \"name\": \"app\",\n  \"version\": \"2.0.0\",\n  \"description\": \"marker <<<<<<< SKIP inside JSON string is inert\",\n  \"note\": \"also '<<<<<<< skip' and '<<<<<<< SKIP' inert\",\n  \"curly\": \"curly “hi” and ‘lo’ with <<<<<<< skip inert\",\n\t\"tabbed\": \"tab indent kept as-is\",\n  \"extra\": \"'<<<<<<<   SKIP with spaces' inert\",\n  \"keywords\": [\"a\", \"b\", \"c\"]\n}\n<<<<<<< Skip\n",
+  "expected": "{\n  \"name\": \"app\",\n  \"version\": \"2.0.0\",\n  \"description\": \"marker <<<<<<< SKIP inside JSON string is inert\",\n  \"note\": \"also '<<<<<<< skip' and '<<<<<<< SKIP' inert\",\n  \"curly\": \"curly “hi” and ‘lo’ with <<<<<<< skip inert\",\n\t\"tabbed\": \"tab indent kept as-is\",\n  \"extra\": \"'<<<<<<<   SKIP with spaces' inert\",\n  \"keywords\": [\"a\", \"b\", \"c\"]\n}\n"
+}

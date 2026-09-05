@@ -1,0 +1,20 @@
+[
+  {
+    "section": "determ-earliest",
+    "original": "x\nx\nx\nx\nx\n",
+    "edit": "<<<<<<< SKIP\nx\nx replaced first \"inert <<<<<<< SKIP\"\nx\nx\nx\n<<<<<<< SKIP\n",
+    "expected": "x\nx replaced first \"inert <<<<<<< SKIP\"\nx\nx\nx\nx\n"
+  },
+  {
+    "section": "determ-idempotent",
+    "original": "after1 \"inert <<<<<<< SKIP\"\nafter2\nafter3\n",
+    "edit": "<<<<<<< SKIP\nafter1 \"inert <<<<<<< SKIP\"\nafter2\nafter3\n<<<<<<< SKIP\n",
+    "expected": "after1 \"inert <<<<<<< SKIP\"\nafter2\nafter3\n"
+  },
+  {
+    "section": "determ-identity",
+    "original": "id-a\nid-b\nid-c\n",
+    "edit": "id-a\nid-b\nid-c\n",
+    "expected": "id-a\nid-b\nid-c\n"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "section": "blank-insert",
+    "original": "a\nb\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\na\n\nblank inserted \"inert <<<<<<< SKIP\"\nsecond insert curly “hi” with <<<<<<< skip inert\n\ttab-indented insert line\nb\n<<<<<<< Skip\n",
+    "expected": "a\n\nblank inserted \"inert <<<<<<< SKIP\"\nsecond insert curly “hi” with <<<<<<< skip inert\n\ttab-indented insert line\nb\n"
+  },
+  {
+    "section": "blank-leading",
+    "original": "\n\n\nfirst content\nsecond\n",
+    "edit": "\n\n\nfirst content changed with hint \"inert <<<<<<< SKIP\" and 'inert <<<<<<< skip' and `template <<<<<<< SKIP`\nsecond\n",
+    "expected": "\n\n\nfirst content changed with hint \"inert <<<<<<< SKIP\" and 'inert <<<<<<< skip' and `template <<<<<<< SKIP`\nsecond\n"
+  },
+  {
+    "section": "blank-trimend",
+    "original": "top\n\nbottom\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\ntop\ninserted before blank \"inert <<<<<<< SKIP\"\ncurly “hi” with '<<<<<<< skip' inert\n\ttab-indented insert line\n\nbottom\n<<<<<<< Skip\n",
+    "expected": "top\ninserted before blank \"inert <<<<<<< SKIP\"\ncurly “hi” with '<<<<<<< skip' inert\n\ttab-indented insert line\n\nbottom\n"
+  },
+  {
+    "section": "blank-trimstart",
+    "original": "head\n\ntail\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nhead\n\ninserted \"inert <<<<<<< SKIP\"\ncurly “hi” with '<<<<<<< skip' inert\n\ttab-indented insert line\ntail\n<<<<<<< Skip\n",
+    "expected": "head\n\ninserted \"inert <<<<<<< SKIP\"\ncurly “hi” with '<<<<<<< skip' inert\n\ttab-indented insert line\ntail\n"
+  }
+]

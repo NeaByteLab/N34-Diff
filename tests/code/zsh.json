@@ -1,0 +1,6 @@
+{
+  "section": "zsh",
+  "original": "#!/usr/bin/env zsh\nname=world\necho \"hello $name\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n#!/usr/bin/env zsh\nname=world\nhint=\"marker <<<<<<< SKIP inside string is inert\"\nhere=$(cat <<'EOF'\nheredoc with <<<<<<< SKIP inside is inert\nEOF\n)\necho \"hello $name | $hint | $here\"\n",
+  "expected": "#!/usr/bin/env zsh\nname=world\nhint=\"marker <<<<<<< SKIP inside string is inert\"\nhere=$(cat <<'EOF'\nheredoc with <<<<<<< SKIP inside is inert\nEOF\n)\necho \"hello $name | $hint | $here\"\n"
+}

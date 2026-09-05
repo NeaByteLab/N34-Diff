@@ -1,0 +1,26 @@
+[
+  {
+    "section": "insert-between",
+    "original": "same\nsame\nsame\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nsame\nINSERTED between same lines // \"inert <<<<<<< SKIP\"\nsame\nsame\n<<<<<<< SKIP\n",
+    "expected": "same\nINSERTED between same lines // \"inert <<<<<<< SKIP\"\nsame\nsame\n"
+  },
+  {
+    "section": "insert-duplicate",
+    "original": "seg1\nseg2\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nseg1\nseg1 duplicated \"inert <<<<<<< SKIP\"\nseg1 curly “hi” with <<<<<<< skip inert\n\tseg1 tab-indent duplicate\nseg2\n<<<<<<< Skip\n",
+    "expected": "seg1\nseg1 duplicated \"inert <<<<<<< SKIP\"\nseg1 curly “hi” with <<<<<<< skip inert\n\tseg1 tab-indent duplicate\nseg2\n"
+  },
+  {
+    "section": "insert-head",
+    "original": "existing-a\nexisting-b\n",
+    "edit": "new-header-line // hint \"inert <<<<<<< SKIP\"\nnew-second-line // 'inert <<<<<<< skip'\nexisting-a\nexisting-b\n",
+    "expected": "new-header-line // hint \"inert <<<<<<< SKIP\"\nnew-second-line // 'inert <<<<<<< skip'\nexisting-a\nexisting-b\n"
+  },
+  {
+    "section": "insert-tail",
+    "original": "existing-x\nexisting-y\n",
+    "edit": "existing-x\nexisting-y\nnew-tail-line // \"inert <<<<<<< SKIP\" appended\nanother-tail // `template <<<<<<< SKIP`\ncurly-tail // \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed-tail // tab-indent tail line\n",
+    "expected": "existing-x\nexisting-y\nnew-tail-line // \"inert <<<<<<< SKIP\" appended\nanother-tail // `template <<<<<<< SKIP`\ncurly-tail // \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed-tail // tab-indent tail line\n"
+  }
+]

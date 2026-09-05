@@ -1,0 +1,6 @@
+{
+  "section": "scala",
+  "original": "object App {\r  def greet(name: String): String = s\"hello $name\"\n\r\n  def main(args: Array[String]): Unit = println(greet(\"world\"))\r}\n",
+  "edit": "<<<<<<< SKIP\r<<<<<<< skip\n\t<<<<<<< SKIP\r\nobject App {\r  def greet(name: String): String = {\n    val hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\r\n    val raw  = \"\"\"\r      triple <<<<<<< SKIP inside is inert\n    \"\"\"\r\n    s\"hello $name | $hint | ${raw.length}\"\r  }\n\r\n  def main(args: Array[String]): Unit = println(greet(\"world\"))\r}\n",
+  "expected": "object App {\n  def greet(name: String): String = {\n    val hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n    val raw  = \"\"\"\n      triple <<<<<<< SKIP inside is inert\n    \"\"\"\n    s\"hello $name | $hint | ${raw.length}\"\n  }\n\n  def main(args: Array[String]): Unit = println(greet(\"world\"))\n}\n"
+}

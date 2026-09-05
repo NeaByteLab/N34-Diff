@@ -1,0 +1,6 @@
+{
+  "section": "r",
+  "original": "greet <- function(name) {\n  paste(\"hello\", name)\n}\n\nprint(greet(\"world\"))\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\ngreet <- function(name) {\n  # inline hint \"<<<<<<< SKIP\" inert in R line comment\n  hint <- \"marker <<<<<<< SKIP inside string is inert\"\n  raw  <- r\"(raw string with <<<<<<< SKIP inside is inert)\"\n  curl <- \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed <- \"tab indent kept as-is\"\n  paste(\"hello\", name, \"|\", hint, \"|\", raw, \"|\", curl, \"|\", tabbed)\n}\n<<<<<<< Skip\nprint(greet(\"world\"))\n<<<<<<< SKIP\n",
+  "expected": "greet <- function(name) {\n  # inline hint \"<<<<<<< SKIP\" inert in R line comment\n  hint <- \"marker <<<<<<< SKIP inside string is inert\"\n  raw  <- r\"(raw string with <<<<<<< SKIP inside is inert)\"\n  curl <- \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed <- \"tab indent kept as-is\"\n  paste(\"hello\", name, \"|\", hint, \"|\", raw, \"|\", curl, \"|\", tabbed)\n}\n\nprint(greet(\"world\"))\n"
+}

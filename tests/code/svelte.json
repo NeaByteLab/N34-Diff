@@ -1,0 +1,6 @@
+{
+  "section": "svelte",
+  "original": "<script>\n  let name = 'world'\n</script>\n\n<h1>hello {name}</h1>\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n<script>\n  let name = 'world'\n  const hint = 'marker <<<<<<< SKIP inside string is inert'\n</script>\n\n<h1 data-hint=\"<<<<<<< SKIP inside attribute is inert\">hello {name} ({hint})</h1>\n",
+  "expected": "<script>\n  let name = 'world'\n  const hint = 'marker <<<<<<< SKIP inside string is inert'\n</script>\n\n<h1 data-hint=\"<<<<<<< SKIP inside attribute is inert\">hello {name} ({hint})</h1>\n"
+}

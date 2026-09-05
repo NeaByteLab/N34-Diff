@@ -1,0 +1,6 @@
+{
+  "section": "elisp",
+  "original": "(defun greet (name)\n  (message \"hello %s\" name))\n\n(greet \"world\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n(defvar hint \"marker <<<<<<< SKIP inside string is inert\")\n(defvar dup  \"also <<<<<<< SKIP and <<<<<<< SKIP inert\")\n\n(defun greet (name)\n  ;; comment: <<<<<<< SKIP inside comment is content, not a marker\n  (message \"hello %s | %s | %s\" name hint dup))\n\n(greet \"world\")\n",
+  "expected": "(defvar hint \"marker <<<<<<< SKIP inside string is inert\")\n(defvar dup  \"also <<<<<<< SKIP and <<<<<<< SKIP inert\")\n\n(defun greet (name)\n  ;; comment: <<<<<<< SKIP inside comment is content, not a marker\n  (message \"hello %s | %s | %s\" name hint dup))\n\n(greet \"world\")\n"
+}

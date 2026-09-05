@@ -1,0 +1,6 @@
+{
+  "section": "coffeescript",
+  "original": "greet = (name) ->\n  \"hello #{name}\"\n\nconsole.log greet 'world'\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\ngreet = (name) ->\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\n  extra = \"<<<<<<< SKIPS is not a marker, treated as content\"\n  more  = \"<<<<<<< SKIP HERE also content\"\n  \"hello, #{name} (#{hint}|#{extra}|#{more})\"\n\nconsole.log greet 'world'\n",
+  "expected": "greet = (name) ->\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\n  extra = \"<<<<<<< SKIPS is not a marker, treated as content\"\n  more  = \"<<<<<<< SKIP HERE also content\"\n  \"hello, #{name} (#{hint}|#{extra}|#{more})\"\n\nconsole.log greet 'world'\n"
+}

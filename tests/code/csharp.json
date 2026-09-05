@@ -1,0 +1,6 @@
+{
+  "section": "csharp",
+  "original": "using System;\n\nnamespace App {\n    class Program {\n        static void Main(string[] args) {\n            Console.WriteLine(\"hi\");\n        }\n    }\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nusing System;\nusing System.Collections.Generic;\n\nnamespace App {\n    class Program {\n        static void Main(string[] args) {\n            var hint = \"marker \\\"<<<<<<< SKIP\\\" is inert\";\n            var items = new List<string>{ \"a\", \"b\", \"c\" };\n            Console.WriteLine($\"{hint} | count={items.Count}\");\n        }\n    }\n}\n",
+  "expected": "using System;\nusing System.Collections.Generic;\n\nnamespace App {\n    class Program {\n        static void Main(string[] args) {\n            var hint = \"marker \\\"<<<<<<< SKIP\\\" is inert\";\n            var items = new List<string>{ \"a\", \"b\", \"c\" };\n            Console.WriteLine($\"{hint} | count={items.Count}\");\n        }\n    }\n}\n"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "section": "quote-anchor",
+    "original": "const greet = \"hello world\"\nconst farewell = \"bye world\"\nconst other = 42\n",
+    "edit": "const greet = 'hello world updated with inert <<<<<<< SKIP'\nconst farewell = 'bye world with inert <<<<<<< skip too'\nconst combo = 'has \"double inside single\" and inert <<<<<<< SkIp'\nconst curly = 'curly “hi” with <<<<<<< SKIP inert'\n\tconst tabbed = 'tab-indent local'\nconst other = 42\n",
+    "expected": "const greet = 'hello world updated with inert <<<<<<< SKIP'\nconst farewell = 'bye world with inert <<<<<<< skip too'\nconst combo = 'has \"double inside single\" and inert <<<<<<< SkIp'\nconst curly = 'curly “hi” with <<<<<<< SKIP inert'\n\tconst tabbed = 'tab-indent local'\nconst other = 42\n"
+  },
+  {
+    "section": "quote-backticks",
+    "original": "const t = `simple template`\n\tconst u = 1\n// note preserved\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nconst t = `template with ${expr} and \"inert <<<<<<< SKIP\" plus “curly” and '<<<<<<< skip' inside`\n\tconst u = 1 // inline hint '<<<<<<<   SKIP with spaces' inert\n// note preserved with <<<<<<< SKIP.  punctuated (rejected as marker)\n<<<<<<< SKIP\n",
+    "expected": "const t = `template with ${expr} and \"inert <<<<<<< SKIP\" plus “curly” and '<<<<<<< skip' inside`\n\tconst u = 1 // inline hint '<<<<<<<   SKIP with spaces' inert\n// note preserved with <<<<<<< SKIP.  punctuated (rejected as marker)\n"
+  }
+]

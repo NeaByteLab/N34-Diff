@@ -1,0 +1,6 @@
+{
+  "section": "crystal",
+  "original": "def greet(name : String) : String\n  \"hello #{name}\"\nend\n\nputs greet(\"world\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<<SKIP\n<<<<<<<   SKIP\ndef greet(name : String) : String\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\n  block = <<-DOC\n    heredoc with <<<<<<< SKIP inside is inert\n  DOC\n  \"hello, #{name} [#{hint}|#{block.size}]\"\nend\n\nputs greet(name: \"world\")\n",
+  "expected": "def greet(name : String) : String\n  hint = \"marker <<<<<<< SKIP inside string is inert\"\n  block = <<-DOC\n    heredoc with <<<<<<< SKIP inside is inert\n  DOC\n  \"hello, #{name} [#{hint}|#{block.size}]\"\nend\n\nputs greet(name: \"world\")\n"
+}

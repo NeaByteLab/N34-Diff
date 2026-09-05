@@ -1,0 +1,6 @@
+{
+  "section": "pug",
+  "original": "doctype html\nhtml\n  head\n    title Home\n  body\n    h1 hi\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\ndoctype html\nhtml(lang=\"en\")\n  head\n    title Home\n  body\n    h1(data-hint=\"marker <<<<<<< SKIP inside attribute is inert\") hello world\n    p= 'marker <<<<<<< SKIP inside string is inert'\n",
+  "expected": "doctype html\nhtml(lang=\"en\")\n  head\n    title Home\n  body\n    h1(data-hint=\"marker <<<<<<< SKIP inside attribute is inert\") hello world\n    p= 'marker <<<<<<< SKIP inside string is inert'\n"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "section": "anchor-imports",
+    "original": "import { same } from 'lib-a'\nimport { same } from 'lib-b'\nimport { same } from 'lib-c'\nconst x = 1\n",
+    "edit": "import { same, extra } from 'lib-a' // hint 'inert <<<<<<< SKIP'\nimport { same, extra } from 'lib-b' // hint \"inert <<<<<<< SKIP\"\nimport { same, extra } from 'lib-c' // hint `inert <<<<<<< SKIP`\nconst x = 1\n",
+    "expected": "import { same, extra } from 'lib-a' // hint 'inert <<<<<<< SKIP'\nimport { same, extra } from 'lib-b' // hint \"inert <<<<<<< SKIP\"\nimport { same, extra } from 'lib-c' // hint `inert <<<<<<< SKIP`\nconst x = 1\n"
+  },
+  {
+    "section": "anchor-strong",
+    "original": "first strong anchor line with plenty of unique tokens\nsecond line\nthird line\n",
+    "edit": "first strong anchor line with plenty of unique tokens plus hint \"inert <<<<<<< SKIP\"\nconst also = `template with <<<<<<< SKIP inside is inert`\nconst yet = 'single quote <<<<<<< skip inline'\nsecond line\nthird line\n",
+    "expected": "first strong anchor line with plenty of unique tokens plus hint \"inert <<<<<<< SKIP\"\nconst also = `template with <<<<<<< SKIP inside is inert`\nconst yet = 'single quote <<<<<<< skip inline'\nsecond line\nthird line\n"
+  },
+  {
+    "section": "anchor-switch",
+    "original": "switch (x) {\n  case 1:\n    doThing()\n    break\n  case 2:\n    doThing()\n    break\n  case 3:\n    doThing()\n    break\n}\n",
+    "edit": "switch (x) {\n  case 1:\n    doThing() // note: \"inert <<<<<<< SKIP\"\n    break\n  case 2:\n    doThing() // note: 'inert <<<<<<< skip'\n    break\n  case 3:\n    doThing() // note: `inert <<<<<<< SKIP`\n    break\n}\n",
+    "expected": "switch (x) {\n  case 1:\n    doThing() // note: \"inert <<<<<<< SKIP\"\n    break\n  case 2:\n    doThing() // note: 'inert <<<<<<< skip'\n    break\n  case 3:\n    doThing() // note: `inert <<<<<<< SKIP`\n    break\n}\n"
+  }
+]

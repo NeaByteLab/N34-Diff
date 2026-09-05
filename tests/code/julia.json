@@ -1,0 +1,6 @@
+{
+  "section": "julia",
+  "original": "function greet(name)\n    println(\"hello \", name)\nend\n\ngreet(\"world\")\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction greet(name)\n    # inline hint \"<<<<<<< SKIP\" inert in julia line comment\n    #= block hint \"<<<<<<<   SKIP with spaces\" inert =#\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    curl = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed = \"tab indent kept as-is\"\n    println(\"hello, \", name, \" | \", hint, \" | \", curl, \" | \", tabbed)\nend\n<<<<<<< Skip\ngreet(\"world\")\n<<<<<<< SKIP\n",
+  "expected": "function greet(name)\n    # inline hint \"<<<<<<< SKIP\" inert in julia line comment\n    #= block hint \"<<<<<<<   SKIP with spaces\" inert =#\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    curl = \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed = \"tab indent kept as-is\"\n    println(\"hello, \", name, \" | \", hint, \" | \", curl, \" | \", tabbed)\nend\n\ngreet(\"world\")\n"
+}

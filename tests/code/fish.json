@@ -1,0 +1,6 @@
+{
+  "section": "fish",
+  "original": "function greet\n    echo hello $argv\nend\n\ngreet world\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction greet\n\tset -l hint \"marker <<<<<<< SKIP inside string is inert\"\n    set -l twoline \"<<<<<<< SKIP some text <<<<<<< SKIP two markers same line is content\"\n    set -l curl 'curly “hi” with <<<<<<< skip inert'\n    # inline hint \"<<<<<<< SKIP\" inert in fish comment\n    echo hello $argv \\| $hint\nend\n<<<<<<< Skip\ngreet world\n<<<<<<< SKIP\n",
+  "expected": "function greet\n\tset -l hint \"marker <<<<<<< SKIP inside string is inert\"\n    set -l twoline \"<<<<<<< SKIP some text <<<<<<< SKIP two markers same line is content\"\n    set -l curl 'curly “hi” with <<<<<<< skip inert'\n    # inline hint \"<<<<<<< SKIP\" inert in fish comment\n    echo hello $argv \\| $hint\nend\n\ngreet world\n"
+}

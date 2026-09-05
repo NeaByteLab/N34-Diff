@@ -1,0 +1,6 @@
+{
+  "section": "batch",
+  "original": "@echo off\r\nset NAME=world\r\necho hello %NAME%\r\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n@echo off\nset NAME=world\nset HINT=marker <<<<<<< SKIP inside value is inert\nREM comment: <<<<<<< SKIP inside comment is content, not a marker\necho hello %NAME% ^| %HINT%\n",
+  "expected": "@echo off\nset NAME=world\nset HINT=marker <<<<<<< SKIP inside value is inert\nREM comment: <<<<<<< SKIP inside comment is content, not a marker\necho hello %NAME% ^| %HINT%\n"
+}

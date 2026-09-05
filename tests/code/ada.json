@@ -1,0 +1,6 @@
+{
+  "section": "ada",
+  "original": "with Ada.Text_IO;\n\nprocedure Hello is\nbegin\n   Ada.Text_IO.Put_Line (\"hi\");\nend Hello;\n",
+  "edit": "\t <<<<<<< SKIP\n\t <<<<<<< skip\nwith Ada.Text_IO;\nwith Ada.Strings.Fixed;\n \t<<<<<<< SKIP\n-- inline hint \"<<<<<<< SKIP\" inert in ada line comment\nprocedure Hello is\n   Hint : constant String := \"marker <<<<<<< SKIP inside string is inert\";\n   Note : constant String := \"also <<<<<<< SKIP and <<<<<<< SKIP inert\";\n   Curl : constant String := \"curly “hi” with <<<<<<< skip inert\";\n\tTabbed : constant String := \"tab indent kept as-is\";\nbegin\n   Ada.Text_IO.Put_Line (\"hello world | \" & Hint & \" | \" & Note & \" | \" & Curl & \" | \" & Tabbed);\nend Hello;\n<<<<<<< Skip\n",
+  "expected": "with Ada.Text_IO;\nwith Ada.Strings.Fixed;\n\n-- inline hint \"<<<<<<< SKIP\" inert in ada line comment\nprocedure Hello is\n   Hint : constant String := \"marker <<<<<<< SKIP inside string is inert\";\n   Note : constant String := \"also <<<<<<< SKIP and <<<<<<< SKIP inert\";\n   Curl : constant String := \"curly “hi” with <<<<<<< skip inert\";\n\tTabbed : constant String := \"tab indent kept as-is\";\nbegin\n   Ada.Text_IO.Put_Line (\"hello world | \" & Hint & \" | \" & Note & \" | \" & Curl & \" | \" & Tabbed);\nend Hello;\n"
+}

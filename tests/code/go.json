@@ -1,0 +1,6 @@
+{
+  "section": "go",
+  "original": "package main\r\n\r\nimport \"fmt\"\r\n\r\nfunc add(a, b int) int {\r\n\treturn a - b\r\n}\r\n\r\nfunc main() {\r\n\tfmt.Println(add(2, 3))\r\n}\r\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc add(a, b int) int {\n\thint := \"marker <<<<<<< SKIP inside string is inert\"\n\thead := \"<<<<<<< HEAD from a git conflict is plain content\"\n\ttail := \">>>>>>> SKIP with right brackets is plain content\"\n\t_ = strings.ToUpper(hint + head + tail)\n\treturn a + b\n}\n\nfunc main() {\n\tfmt.Println(add(2, 3))\n}\n",
+  "expected": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc add(a, b int) int {\n\thint := \"marker <<<<<<< SKIP inside string is inert\"\n\thead := \"<<<<<<< HEAD from a git conflict is plain content\"\n\ttail := \">>>>>>> SKIP with right brackets is plain content\"\n\t_ = strings.ToUpper(hint + head + tail)\n\treturn a + b\n}\n\nfunc main() {\n\tfmt.Println(add(2, 3))\n}\n"
+}

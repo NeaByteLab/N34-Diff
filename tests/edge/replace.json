@@ -1,0 +1,38 @@
+[
+  {
+    "section": "replace-collapse",
+    "original": "a1\na2\na3\na4\na5\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\ncollapsed all \"inert <<<<<<< SKIP\" + curly “hi” + '<<<<<<< skip'\n<<<<<<< Skip\n",
+    "expected": "collapsed all \"inert <<<<<<< SKIP\" + curly “hi” + '<<<<<<< skip'\n"
+  },
+  {
+    "section": "replace-expand",
+    "original": "single\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nline1 \"inert <<<<<<< SKIP\"\nline2 \"another <<<<<<< skip\"\nline3 curly “hi” with <<<<<<< SkIp inert\n\tline4 tab-indent line\n<<<<<<< Skip\n",
+    "expected": "line1 \"inert <<<<<<< SKIP\"\nline2 \"another <<<<<<< skip\"\nline3 curly “hi” with <<<<<<< SkIp inert\n\tline4 tab-indent line\n"
+  },
+  {
+    "section": "replace-identical",
+    "original": "same1 with \"inert <<<<<<< SKIP\"\nsame2\nsame3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n＜＜＜＜＜＜＜ SKIP\nsame1 with \"inert <<<<<<< SKIP\"\nsame2\nsame3\n<<<<<<< SKIP\n",
+    "expected": "same1 with \"inert <<<<<<< SKIP\"\nsame2\nsame3\n"
+  },
+  {
+    "section": "replace-indent",
+    "original": "    two-space\n    lines\n    here\n",
+    "edit": "<<<<<<< SKIP\n\t\ttab-indented\n\t\tnow \"inert <<<<<<< SKIP\"\n\t\treplaced\n<<<<<<< SKIP\n",
+    "expected": "\t\ttab-indented\n\t\tnow \"inert <<<<<<< SKIP\"\n\t\treplaced\n"
+  },
+  {
+    "section": "replace-nomarkers",
+    "original": "orig1\norig2\norig3\n",
+    "edit": "full replacement with hint \"inert <<<<<<< SKIP inside string\"\nand 'inert <<<<<<< skip inline'\nplus `template <<<<<<< SKIP inline`\nand heredoc-like <<-DOC snippet <<<<<<< SKIP inside DOC\nend of source replacement\n",
+    "expected": "full replacement with hint \"inert <<<<<<< SKIP inside string\"\nand 'inert <<<<<<< skip inline'\nplus `template <<<<<<< SKIP inline`\nand heredoc-like <<-DOC snippet <<<<<<< SKIP inside DOC\nend of source replacement\n"
+  },
+  {
+    "section": "replace-wrapped",
+    "original": "wr1\nwr2\nwr3\n",
+    "edit": "<<<<<<< SKIP\nnew1 \"inert <<<<<<< SKIP\"\nnew2\nnew3\n<<<<<<< SKIP\n",
+    "expected": "new1 \"inert <<<<<<< SKIP\"\nnew2\nnew3\n"
+  }
+]

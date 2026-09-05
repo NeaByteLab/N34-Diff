@@ -1,0 +1,6 @@
+{
+  "section": "less",
+  "original": ".btn {\n  color: red;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n@primary: #0055ff;\n\n.btn {\n\tcolor: @primary;\n  content: \"marker <<<<<<< SKIP inside string is inert\";\n  --curly: \"curly “hi” with <<<<<<< skip inert\";\n  // inline hint '<<<<<<< SKIP' inert in less line comment\n  /* block comment: <<<<<<< SKIP inside is content, not a marker */\n}\n<<<<<<< Skip\n",
+  "expected": "@primary: #0055ff;\n\n.btn {\n\tcolor: @primary;\n  content: \"marker <<<<<<< SKIP inside string is inert\";\n  --curly: \"curly “hi” with <<<<<<< skip inert\";\n  // inline hint '<<<<<<< SKIP' inert in less line comment\n  /* block comment: <<<<<<< SKIP inside is content, not a marker */\n}\n"
+}

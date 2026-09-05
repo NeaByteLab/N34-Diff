@@ -1,0 +1,44 @@
+[
+  {
+    "section": "intent-array",
+    "original": "const list = [\n  \"alpha\",\n  \"beta\",\n  \"gamma\"\n]\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nconst list = [\n  \"alpha\",\n  \"beta modified with inert <<<<<<< SKIP inside string\",\n  \"curly “hi” with <<<<<<< skip inert\",\n\t\"tab-indented item\",\n  \"gamma\"\n]\n<<<<<<< Skip\n",
+    "expected": "const list = [\n  \"alpha\",\n  \"beta modified with inert <<<<<<< SKIP inside string\",\n  \"curly “hi” with <<<<<<< skip inert\",\n\t\"tab-indented item\",\n  \"gamma\"\n]\n"
+  },
+  {
+    "section": "intent-import",
+    "original": "import { x } from 'old-lib'\n",
+    "edit": "<<<<<<< SKIP\nimport { x } from 'new-lib' // path changed \"inert <<<<<<< SKIP\"\n<<<<<<< SKIP\n",
+    "expected": "import { x } from 'new-lib' // path changed \"inert <<<<<<< SKIP\"\n"
+  },
+  {
+    "section": "intent-json",
+    "original": "{\n  \"name\": \"old\",\n  \"version\": \"1.0.0\",\n  \"active\": true\n}\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n{\n  \"name\": \"new\",\n  \"version\": \"2.0.0\",\n  \"hint\": \"inert <<<<<<< SKIP inside string\",\n  \"curly\": \"curly “hi” with <<<<<<< skip inert\",\n\t\"tabbed\": \"tab-indent value line\",\n  \"active\": true\n}\n<<<<<<< Skip\n",
+    "expected": "{\n  \"name\": \"new\",\n  \"version\": \"2.0.0\",\n  \"hint\": \"inert <<<<<<< SKIP inside string\",\n  \"curly\": \"curly “hi” with <<<<<<< skip inert\",\n\t\"tabbed\": \"tab-indent value line\",\n  \"active\": true\n}\n"
+  },
+  {
+    "section": "intent-jsx",
+    "original": "<Button color=\"red\" size=\"sm\">Click</Button>\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n<Button\n  color=\"blue\"\n  size=\"lg\"\n  title=\"inert <<<<<<< SKIP in attr\"\n  data-curly=\"curly “hi” with <<<<<<< skip inert\"\n\tdata-tabbed=\"tab-indent attr line\"\n>Click</Button>\n<<<<<<< Skip\n",
+    "expected": "<Button\n  color=\"blue\"\n  size=\"lg\"\n  title=\"inert <<<<<<< SKIP in attr\"\n  data-curly=\"curly “hi” with <<<<<<< skip inert\"\n\tdata-tabbed=\"tab-indent attr line\"\n>Click</Button>\n"
+  },
+  {
+    "section": "intent-numeric",
+    "original": "const MAX = 100\n",
+    "edit": "<<<<<<< SKIP\nconst MAX = 12345 // was 100, \"inert <<<<<<< SKIP\"\n<<<<<<< SKIP\n",
+    "expected": "const MAX = 12345 // was 100, \"inert <<<<<<< SKIP\"\n"
+  },
+  {
+    "section": "intent-rename",
+    "original": "function oldName(x) {\n  return x * 2\n}\n\noldName(5)\n",
+    "edit": "<<<<<<< SKIP\nfunction newName(x) {\n  return x * 2 // renamed \"inert <<<<<<< SKIP\"\n}\n\nnewName(5)\n<<<<<<< SKIP\n",
+    "expected": "function newName(x) {\n  return x * 2 // renamed \"inert <<<<<<< SKIP\"\n}\n\nnewName(5)\n"
+  },
+  {
+    "section": "intent-sql",
+    "original": "SELECT * FROM users\nWHERE active = 1\nORDER BY id;\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nSELECT id, name, email FROM users -- inline note: inert <<<<<<< SKIP\nWHERE active = 1 AND note <> 'inert <<<<<<< SKIP inside literal'\n  AND alt <> \"double quoted <<<<<<< SKIP\"\n  AND tag <> 'also <<<<<<< skip and <<<<<<< SKIP inert'\n  AND raw <> `backtick <<<<<<< SKIP`\nORDER BY id DESC;\n<<<<<<< SKIP\n",
+    "expected": "SELECT id, name, email FROM users -- inline note: inert <<<<<<< SKIP\nWHERE active = 1 AND note <> 'inert <<<<<<< SKIP inside literal'\n  AND alt <> \"double quoted <<<<<<< SKIP\"\n  AND tag <> 'also <<<<<<< skip and <<<<<<< SKIP inert'\n  AND raw <> `backtick <<<<<<< SKIP`\nORDER BY id DESC;\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "section": "scheme",
+  "original": "(define (greet name)\n  (string-append \"hello \" name))\n\n(display (greet \"world\"))\n(newline)\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n(define hint \"marker <<<<<<< SKIP inside string is inert\")\n(define (greet name)\n  (string-append \"hello \" name \" | \" hint))\n\n(display (greet \"world\"))\n(newline)\n",
+  "expected": "(define hint \"marker <<<<<<< SKIP inside string is inert\")\n(define (greet name)\n  (string-append \"hello \" name \" | \" hint))\n\n(display (greet \"world\"))\n(newline)\n"
+}

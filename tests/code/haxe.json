@@ -1,0 +1,6 @@
+{
+  "section": "haxe",
+  "original": "class Main {\n    static function main() {\n        trace(\"hi\");\n    }\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nclass Main {\n    static function main() {\n        var hint = \"marker <<<<<<< SKIP inside string is inert\";\n        trace(\"hello world | \" + hint);\n    }\n}\n",
+  "expected": "class Main {\n    static function main() {\n        var hint = \"marker <<<<<<< SKIP inside string is inert\";\n        trace(\"hello world | \" + hint);\n    }\n}\n"
+}

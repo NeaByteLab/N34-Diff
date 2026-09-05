@@ -1,0 +1,44 @@
+[
+  {
+    "section": "whitespace-bom",
+    "original": "bom0\nbom1\nbom2\n",
+    "edit": "﻿<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nbom0\nbom1 replaced with \"inert <<<<<<< SKIP marker\" and 'inert <<<<<<< skip'\nplus `template <<<<<<< SKIP` inline\nbom2\n<<<<<<< SKIP\n",
+    "expected": "bom0\nbom1 replaced with \"inert <<<<<<< SKIP marker\" and 'inert <<<<<<< skip'\nplus `template <<<<<<< SKIP` inline\nbom2\n"
+  },
+  {
+    "section": "whitespace-deeper",
+    "original": "function() {\n  return 1\n}\n",
+    "edit": "<<<<<<< SKIP\nfunction() {\n        return 2 // marker \"<<<<<<< SKIP\" inert\n}\n<<<<<<< SKIP\n",
+    "expected": "function() {\n        return 2 // marker \"<<<<<<< SKIP\" inert\n}\n"
+  },
+  {
+    "section": "whitespace-flushleft",
+    "original": "    indented\n    stuff\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\nflush left content with \"inert <<<<<<< SKIP\"\nflush left curly “hi” with '<<<<<<< skip' inert\nno indent at all\n<<<<<<< Skip\n",
+    "expected": "flush left content with \"inert <<<<<<< SKIP\"\nflush left curly “hi” with '<<<<<<< skip' inert\nno indent at all\n"
+  },
+  {
+    "section": "whitespace-fullwidth",
+    "original": "fw1\nfw2\nfw3\n",
+    "edit": "＜＜＜＜＜＜＜ SKIP\nfw1\nfw2 replaced with \"inert <<<<<<< SKIP literal\"\nfw3\n＜＜＜＜＜＜＜ SKIP\n",
+    "expected": "fw1\nfw2 replaced with \"inert <<<<<<< SKIP literal\"\nfw3\n"
+  },
+  {
+    "section": "whitespace-nbsp",
+    "original": "nb1\nnb2\nnb3\n",
+    "edit": "<<<<<<< SKIP\nnb1\nnb2 replaced with \"inert <<<<<<< SKIP\"\nnb3\n<<<<<<< SKIP\n",
+    "expected": "nb1\nnb2 replaced with \"inert <<<<<<< SKIP\"\nnb3\n"
+  },
+  {
+    "section": "whitespace-shallower",
+    "original": "class Foo:\n    def bar(self):\n        return 1\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n   <<<<<<<   SKIP\nclass Foo:\n  def bar(self):  # note: inert <<<<<<< SKIP inside comment\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    also = 'inert <<<<<<< skip inline'\n    raw  = `template <<<<<<< SKIP` if False else 0\n    return 2 # tail comment \"inert <<<<<<< SKIP\"\n<<<<<<< SKIP\n",
+    "expected": "class Foo:\n  def bar(self):  # note: inert <<<<<<< SKIP inside comment\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    also = 'inert <<<<<<< skip inline'\n    raw  = `template <<<<<<< SKIP` if False else 0\n    return 2 # tail comment \"inert <<<<<<< SKIP\"\n"
+  },
+  {
+    "section": "whitespace-tabs",
+    "original": "first\nsecond\nthird\n",
+    "edit": "<<<<<<< SKIP\nfirst\n\t  second mixed tab+space \"marker <<<<<<< SKIP inert\"\n  \tthird space+tab\n<<<<<<< SKIP\n",
+    "expected": "first\n\t  second mixed tab+space \"marker <<<<<<< SKIP inert\"\n  \tthird space+tab\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "section": "clojure",
+  "original": "(ns app.core)\n\n(defn greet [name]\n  (str \"hello \" name))\n\n(defn -main [& args]\n  (println (greet \"world\")))\n",
+  "edit": "(ns app.core\n  (:require [clojure.string :as str]))\n\n;; <<<<<<< SKIPS is not a marker, plain content\n;; **<<<<<<< SKIP** wrapped in bold is content\n;; 1. <<<<<<< SKIP prefixed with numbering is content\n;; >>>>>>> SKIP with right brackets is content\n\n(defn greet [name]\n  (let [hint \"marker <<<<<<< SKIP inside string is inert\"\n        dup  \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"]\n    (str \"hello, \" (str/upper-case name) \" [\" hint \"|\" dup \"]\")))\n\n(defn -main [& args]\n  (println (greet (or (first args) \"world\"))))\n",
+  "expected": "(ns app.core\n  (:require [clojure.string :as str]))\n\n;; <<<<<<< SKIPS is not a marker, plain content\n;; **<<<<<<< SKIP** wrapped in bold is content\n;; 1. <<<<<<< SKIP prefixed with numbering is content\n;; >>>>>>> SKIP with right brackets is content\n\n(defn greet [name]\n  (let [hint \"marker <<<<<<< SKIP inside string is inert\"\n        dup  \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"]\n    (str \"hello, \" (str/upper-case name) \" [\" hint \"|\" dup \"]\")))\n\n(defn -main [& args]\n  (println (greet (or (first args) \"world\"))))\n"
+}

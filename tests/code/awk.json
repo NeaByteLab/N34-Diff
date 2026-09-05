@@ -1,0 +1,6 @@
+{
+  "section": "awk",
+  "original": "#!/usr/bin/awk -f\n\nBEGIN {\n    count = 0\n    total = 0\n}\n\n/^#/ { next }\n\nNF > 0 {\n    count += 1\n    total += $1\n}\n\nEND {\n    printf \"lines=%d sum=%.2f avg=%.4f\\n\", count, total, (count > 0 ? total / count : 0)\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nNF > 0 {\n    count += 1\n    total += $1\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    curly = \"curly “hi” with <<<<<<< skip inert\"\n\tflag = \"tab indent kept as-is\"\n    # awk comment: '<<<<<<< SKIP' inert as content\n}\n\nEND {\n<<<<<<< Skip\n",
+  "expected": "#!/usr/bin/awk -f\n\nBEGIN {\n    count = 0\n    total = 0\n}\n\n/^#/ { next }\n\nNF > 0 {\n    count += 1\n    total += $1\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    curly = \"curly “hi” with <<<<<<< skip inert\"\n\tflag = \"tab indent kept as-is\"\n    # awk comment: '<<<<<<< SKIP' inert as content\n}\n\nEND {\n    printf \"lines=%d sum=%.2f avg=%.4f\\n\", count, total, (count > 0 ? total / count : 0)\n}\n"
+}

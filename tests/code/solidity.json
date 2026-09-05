@@ -1,0 +1,6 @@
+{
+  "section": "solidity",
+  "original": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Hello {\n    string public greeting = \"hi\";\n    uint public version = 1;\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Hello {\n    string public greeting = \"hello world\";\n    uint public version = 2;\n    string public note = \"marker <<<<<<< SKIP inside string is inert\";\n}\n",
+  "expected": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Hello {\n    string public greeting = \"hello world\";\n    uint public version = 2;\n    string public note = \"marker <<<<<<< SKIP inside string is inert\";\n}\n"
+}

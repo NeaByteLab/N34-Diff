@@ -1,0 +1,6 @@
+{
+  "section": "racket",
+  "original": "#lang racket\n\n(define (greet name)\n  (string-append \"hello \" name))\n\n(displayln (greet \"world\"))\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n<<<<<<< Skip\n#lang racket\n<<<<<<< SKIP\n<<<<<<< skip\n; racket comment: '<<<<<<< SKIP' inert as content\n(define hint \"marker <<<<<<< SKIP inside string is inert\")\n(define curly \"curly “hi” with <<<<<<< skip inert\")\n\t(define tabbed \"tab indent kept as-is\")\n\n(define (greet name)\n  (string-append \"hello \" name \" | \" hint \" | \" curly \" | \" tabbed))\n<<<<<<< SKIP\n<<<<<<< Skip\n(displayln (greet \"world\"))\n<<<<<<< SKIP\n<<<<<<< SKIP\n",
+  "expected": "#lang racket\n\n; racket comment: '<<<<<<< SKIP' inert as content\n(define hint \"marker <<<<<<< SKIP inside string is inert\")\n(define curly \"curly “hi” with <<<<<<< skip inert\")\n\t(define tabbed \"tab indent kept as-is\")\n\n(define (greet name)\n  (string-append \"hello \" name \" | \" hint \" | \" curly \" | \" tabbed))\n\n(displayln (greet \"world\"))\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "toml",
+  "original": "[package]\nname = \"app\"\nversion = \"1.0.0\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n[package]\nname = \"app\"\nversion = \"2.0.0\"\ndescription = \"marker <<<<<<< SKIP inside string is inert\"\nnote = '''\ntriple-single with <<<<<<< SKIP inside is inert\n'''\nlong = \"\"\"\ntriple-double with <<<<<<< SKIP inside is inert\n\"\"\"\n",
+  "expected": "[package]\nname = \"app\"\nversion = \"2.0.0\"\ndescription = \"marker <<<<<<< SKIP inside string is inert\"\nnote = '''\ntriple-single with <<<<<<< SKIP inside is inert\n'''\nlong = \"\"\"\ntriple-double with <<<<<<< SKIP inside is inert\n\"\"\"\n"
+}

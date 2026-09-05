@@ -1,0 +1,6 @@
+{
+  "section": "graphql",
+  "original": "type Query {\n  user(id: ID!): User\n}\n\ntype User {\n  id: ID!\n  name: String!\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\"\"\"\nSchema description with marker <<<<<<< SKIP inside is inert.\nAlso '<<<<<<< skip' and `<<<<<<< SKIP` inert. Curly “quotes” preserved.\n\"\"\"\ntype Query {\n  # inline hint \"<<<<<<< SKIP\" inert in comment\n  user(id: ID!): User\n\tusers(limit: Int = 10): [User!]!\n}\n<<<<<<< SKIP\ntype User {\n  id: ID!\n  name: String! # note '<<<<<<< SKIP' inert\n  email: String\n}\n<<<<<<< SKIP\n",
+  "expected": "\"\"\"\nSchema description with marker <<<<<<< SKIP inside is inert.\nAlso '<<<<<<< skip' and `<<<<<<< SKIP` inert. Curly “quotes” preserved.\n\"\"\"\ntype Query {\n  # inline hint \"<<<<<<< SKIP\" inert in comment\n  user(id: ID!): User\n\tusers(limit: Int = 10): [User!]!\n}\n\ntype User {\n  id: ID!\n  name: String! # note '<<<<<<< SKIP' inert\n  email: String\n}\n"
+}

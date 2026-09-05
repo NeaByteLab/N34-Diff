@@ -1,0 +1,6 @@
+{
+  "section": "gleam",
+  "original": "import gleam/io\n\npub fn main() {\n  io.println(\"hi—legacy\")\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nimport gleam/io\nimport gleam/string\n\npub fn main() {\n  // inline hint \"<<<<<<< SKIP\" inert in gleam comment\n  let hint = \"marker <<<<<<< SKIP inside string is inert\"\n  let curl = \"curly “hi” and ‘lo’ with <<<<<<< skip inert\"\n\tlet tabbed = \"tab indent kept as-is\"\n  io.println(string.append(\"hello-world–modern | \", hint))\n  io.println(curl)\n  io.println(tabbed)\n}\n<<<<<<< Skip\n",
+  "expected": "import gleam/io\nimport gleam/string\n\npub fn main() {\n  // inline hint \"<<<<<<< SKIP\" inert in gleam comment\n  let hint = \"marker <<<<<<< SKIP inside string is inert\"\n  let curl = \"curly “hi” and ‘lo’ with <<<<<<< skip inert\"\n\tlet tabbed = \"tab indent kept as-is\"\n  io.println(string.append(\"hello-world–modern | \", hint))\n  io.println(curl)\n  io.println(tabbed)\n}\n"
+}

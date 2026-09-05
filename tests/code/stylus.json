@@ -1,0 +1,6 @@
+{
+  "section": "stylus",
+  "original": ".btn\n  color red\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n// inline hint \"<<<<<<< SKIP\" inert in stylus line comment\nprimary = #0055ff\n\n.btn\n  color primary\n  content \"marker <<<<<<< SKIP inside string is inert\"\n  curly \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed \"tab indent kept as-is\"\n<<<<<<< Skip\n",
+  "expected": "// inline hint \"<<<<<<< SKIP\" inert in stylus line comment\nprimary = #0055ff\n\n.btn\n  color primary\n  content \"marker <<<<<<< SKIP inside string is inert\"\n  curly \"curly “hi” with <<<<<<< skip inert\"\n\ttabbed \"tab indent kept as-is\"\n"
+}

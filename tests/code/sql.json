@@ -1,0 +1,6 @@
+{
+  "section": "sql",
+  "original": "SELECT id, name\nFROM users\nWHERE active = 1\nORDER BY id ASC;\n",
+  "edit": "SELECT id, name, email\nFROM users\nWHERE active = 1\n  AND note <> 'marker <<<<<<< SKIP inside literal is inert'\n  AND note <> 'also <<<<<<< SKIP and <<<<<<< SKIP inert'\nORDER BY id ASC;\n<<<<<<< SKIP\n<<<<<<< skip\n",
+  "expected": "SELECT id, name, email\nFROM users\nWHERE active = 1\n  AND note <> 'marker <<<<<<< SKIP inside literal is inert'\n  AND note <> 'also <<<<<<< SKIP and <<<<<<< SKIP inert'\nORDER BY id ASC;\n"
+}

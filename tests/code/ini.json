@@ -1,0 +1,6 @@
+{
+  "section": "ini",
+  "original": "[server]\nhost = localhost\nport = 8080\n\n[db]\ndsn = sqlite://./db.sqlite\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n[server]\nhost = 0.0.0.0\nport = 9090\nnote = marker <<<<<<< SKIP inside value is inert\n; comment: <<<<<<< SKIP inside semicolon comment is content, not a marker\n# comment: <<<<<<< SKIP inside hash comment is content, not a marker\n\n[db]\ndsn = sqlite://./db.sqlite\npool = 10\n",
+  "expected": "[server]\nhost = 0.0.0.0\nport = 9090\nnote = marker <<<<<<< SKIP inside value is inert\n; comment: <<<<<<< SKIP inside semicolon comment is content, not a marker\n# comment: <<<<<<< SKIP inside hash comment is content, not a marker\n\n[db]\ndsn = sqlite://./db.sqlite\npool = 10\n"
+}

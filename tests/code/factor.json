@@ -1,0 +1,6 @@
+{
+  "section": "factor",
+  "original": "USING: io ;\nIN: hello\n\n: greet ( -- ) \"hi\" print ;\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n<<<<<<< Skip\nUSING: io kernel ;\nIN: hello\n<<<<<<< KEEP\n<<<<<<< OMIT\n<<<<<<< SKIPPING\n! factor comment: '<<<<<<< SKIP' inert as content\n: hint ( -- str ) \"marker <<<<<<< SKIP inside string is inert\" ;\n: curly ( -- str ) \"curly “hi” with <<<<<<< skip inert\" ;\n\t: tabbed ( -- str ) \"tab indent kept as-is\" ;\n: greet ( -- ) \"hello world\" print hint print curly print tabbed print ;\n<<<<<<< SKIP\n",
+  "expected": "USING: io kernel ;\nIN: hello\n<<<<<<< KEEP\n<<<<<<< OMIT\n<<<<<<< SKIPPING\n! factor comment: '<<<<<<< SKIP' inert as content\n: hint ( -- str ) \"marker <<<<<<< SKIP inside string is inert\" ;\n: curly ( -- str ) \"curly “hi” with <<<<<<< skip inert\" ;\n\t: tabbed ( -- str ) \"tab indent kept as-is\" ;\n: greet ( -- ) \"hello world\" print hint print curly print tabbed print ;\n"
+}

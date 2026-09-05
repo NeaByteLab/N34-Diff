@@ -1,0 +1,6 @@
+{
+  "section": "javascript",
+  "original": "function add(a, b) {\n  return a - b\n}\n\nconsole.log(add(2, 3))",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunction add(a, b) {\n  // inline hint \"<<<<<<< SKIP\" inert in js line comment\n  /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n  const hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  const tpl  = `template <<<<<<< SKIP inside backtick is inert ${a + b}`\n  const curl = 'curly “hi” with <<<<<<< skip inert'\n\tconst tabbed = \"tab indent kept as-is\"\n  void hint; void tpl; void curl; void tabbed\n  return a + b\n}\n<<<<<<< Skip\nconsole.log(add(2, 3))\n<<<<<<< SKIP\n",
+  "expected": "function add(a, b) {\n  // inline hint \"<<<<<<< SKIP\" inert in js line comment\n  /* block hint \"<<<<<<<   SKIP with spaces\" inert */\n  const hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  const tpl  = `template <<<<<<< SKIP inside backtick is inert ${a + b}`\n  const curl = 'curly “hi” with <<<<<<< skip inert'\n\tconst tabbed = \"tab indent kept as-is\"\n  void hint; void tpl; void curl; void tabbed\n  return a + b\n}\n\nconsole.log(add(2, 3))"
+}

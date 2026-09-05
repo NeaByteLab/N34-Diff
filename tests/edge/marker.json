@@ -1,0 +1,86 @@
+[
+  {
+    "section": "marker-backslash",
+    "original": "bs1\nbs2\nbs3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP \\ single backslash continuation, content\n<<<<<<< SKIP \\\\ double backslash, content\n<<<<<<< SKIP\\ zero-space then backslash, content\nconst hint = \"inert <<<<<<< SKIP \\\\ inside string is inert\"\nconst raw = \"another <<<<<<< SKIP inline\"\nbs1\nbs2\nbs3\n<<<<<<< SKIP\n",
+    "expected": "<<<<<<< SKIP \\ single backslash continuation, content\n<<<<<<< SKIP \\\\ double backslash, content\n<<<<<<< SKIP\\ zero-space then backslash, content\nconst hint = \"inert <<<<<<< SKIP \\\\ inside string is inert\"\nconst raw = \"another <<<<<<< SKIP inline\"\nbs1\nbs2\nbs3\n"
+  },
+  {
+    "section": "marker-dupdouble",
+    "original": "a\nb\nc\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP\na\nb replaced \"inert <<<<<<< SKIP\"\nc\n<<<<<<< SKIP\n<<<<<<< SKIP\n",
+    "expected": "a\nb replaced \"inert <<<<<<< SKIP\"\nc\n"
+  },
+  {
+    "section": "marker-dupindent",
+    "original": "aaa\nbbb\nccc\n",
+    "edit": "<<<<<<< SKIP\n\t<<<<<<< SKIP\n   <<<<<<< SKIP\naaa\nbbb with \"inert <<<<<<< SKIP\"\nccc\n<<<<<<< SKIP\n",
+    "expected": "aaa\nbbb with \"inert <<<<<<< SKIP\"\nccc\n"
+  },
+  {
+    "section": "marker-duptriple",
+    "original": "x\ny\nz\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP\n<<<<<<< SKIP\nx\ny with \"inert <<<<<<< SKIP\"\nz\n<<<<<<< SKIP\n",
+    "expected": "x\ny with \"inert <<<<<<< SKIP\"\nz\n"
+  },
+  {
+    "section": "marker-extraspace",
+    "original": "k\nl\nm\n",
+    "edit": "<<<<<<<   SKIP\n\t<<<<<<<     SKIP\n   <<<<<<<\tSKIP\nk\nl with \"inert <<<<<<<   SKIP literal\" and \"another <<<<<<<     SKIP\"\nplus '<<<<<<< SKIP with nbsp inside'\nm\n<<<<<<<   SKIP\n",
+    "expected": "k\nl with \"inert <<<<<<<   SKIP literal\" and \"another <<<<<<<     SKIP\"\nplus '<<<<<<< SKIP with nbsp inside'\nm\n"
+  },
+  {
+    "section": "marker-extratokens",
+    "original": "et1\net2\net3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP foo has extra tokens, content\n<<<<<<< SKIP bar baz content\n<<<<<<< SKIP    trailing tokens with lots of space between, content\n<<<<<<< SKIP\tafter\ttabs, content\n<<<<<<< SKIP 12345 numbers as extras, content\nconst hint = \"inert <<<<<<< SKIP without extras, real marker below\"\net1\net2\net3\n<<<<<<< SKIP\n",
+    "expected": "<<<<<<< SKIP foo has extra tokens, content\n<<<<<<< SKIP bar baz content\n<<<<<<< SKIP    trailing tokens with lots of space between, content\n<<<<<<< SKIP\tafter\ttabs, content\n<<<<<<< SKIP 12345 numbers as extras, content\nconst hint = \"inert <<<<<<< SKIP without extras, real marker below\"\net1\net2\net3\n"
+  },
+  {
+    "section": "marker-gitconflict",
+    "original": "gc1\n<<<<<<< HEAD\nour side\n=======\ntheir side\n>>>>>>> feature\ngc2\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< skip\ngc1\n<<<<<<< HEAD\nour side updated with \"inert <<<<<<< SKIP marker\"\nour side curly “hi” with '<<<<<<< skip' inert\n\tour side tab-indent line\n=======\ntheir side\n>>>>>>> feature\ngc2\n<<<<<<< Skip\n",
+    "expected": "gc1\n<<<<<<< HEAD\nour side updated with \"inert <<<<<<< SKIP marker\"\nour side curly “hi” with '<<<<<<< skip' inert\n\tour side tab-indent line\n=======\ntheir side\n>>>>>>> feature\ngc2\n"
+  },
+  {
+    "section": "marker-inlinetwo",
+    "original": "in1\nin2\nin3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP inline text <<<<<<< SKIP two markers on one line is content\nprefix <<<<<<< SKIP mid text suffix content\na <<<<<<< SKIP b <<<<<<< SKIP c <<<<<<< SKIP d three markers, content\nconst hint = \"inert <<<<<<< SKIP and <<<<<<< SKIP in same string\"\nin1\nin2\nin3\n<<<<<<< SKIP\n",
+    "expected": "<<<<<<< SKIP inline text <<<<<<< SKIP two markers on one line is content\nprefix <<<<<<< SKIP mid text suffix content\na <<<<<<< SKIP b <<<<<<< SKIP c <<<<<<< SKIP d three markers, content\nconst hint = \"inert <<<<<<< SKIP and <<<<<<< SKIP in same string\"\nin1\nin2\nin3\n"
+  },
+  {
+    "section": "marker-lowercase",
+    "original": "one\ntwo\nthree\n",
+    "edit": "<<<<<<< skip\n<<<<<<< skip\n\t<<<<<<< skip\none\ntwo replaced \"inert <<<<<<< skip inside string\"\nand 'also <<<<<<< skip inline' with `template <<<<<<< skip too`\nthree\n<<<<<<< skip\n<<<<<<< skip\n",
+    "expected": "one\ntwo replaced \"inert <<<<<<< skip inside string\"\nand 'also <<<<<<< skip inline' with `template <<<<<<< skip too`\nthree\n"
+  },
+  {
+    "section": "marker-punctuation",
+    "original": "pu1\npu2\npu3\n",
+    "edit": "<<<<<<< SKIP\n<<<<<<< SKIP. period, content\n<<<<<<< SKIP! bang, content\n<<<<<<< SKIP? query, content\n<<<<<<< SKIP, comma, content\n<<<<<<< SKIP; semi, content\n<<<<<<< SKIP: colon, content\n<<<<<<< SKIP-DASH dash suffix, content\nconst hint = \"inert <<<<<<< SKIP followed by. period. is content\"\npu1\npu2\npu3\n<<<<<<< SKIP\n",
+    "expected": "<<<<<<< SKIP. period, content\n<<<<<<< SKIP! bang, content\n<<<<<<< SKIP? query, content\n<<<<<<< SKIP, comma, content\n<<<<<<< SKIP; semi, content\n<<<<<<< SKIP: colon, content\n<<<<<<< SKIP-DASH dash suffix, content\nconst hint = \"inert <<<<<<< SKIP followed by. period. is content\"\npu1\npu2\npu3\n"
+  },
+  {
+    "section": "marker-rightbrackets",
+    "original": "rb1\nrb2\nrb3\n",
+    "edit": "<<<<<<< SKIP\n>>>>>>> SKIP right brackets content\n>>>>>>> HEAD git conflict trailer content\n>>>>>>> feature/branch trailer content\n======= divider content, treated as content\n<<<<<< SKIP six-bracket content\n<<<<<<<< SKIP eight-bracket content\nconst hint = \"inert <<<<<<< SKIP among malformed markers\"\nrb1\nrb2\nrb3\n<<<<<<< SKIP\n",
+    "expected": ">>>>>>> SKIP right brackets content\n>>>>>>> HEAD git conflict trailer content\n>>>>>>> feature/branch trailer content\n======= divider content, treated as content\n<<<<<< SKIP six-bracket content\n<<<<<<<< SKIP eight-bracket content\nconst hint = \"inert <<<<<<< SKIP among malformed markers\"\nrb1\nrb2\nrb3\n"
+  },
+  {
+    "section": "marker-tabindent",
+    "original": "tab-a\ntab-b\ntab-c\n",
+    "edit": "\t<<<<<<< SKIP\ntab-a\ntab-b with \"inert <<<<<<< SKIP\"\ntab-c\n\t<<<<<<< SKIP\n",
+    "expected": "tab-a\ntab-b with \"inert <<<<<<< SKIP\"\ntab-c\n"
+  },
+  {
+    "section": "marker-titlecase",
+    "original": "p\nq\nr\n",
+    "edit": "<<<<<<< Skip\n<<<<<<< SKIP\n＜＜＜＜＜＜＜ SKIP\np\nq with \"inert <<<<<<< Skip literal\" and 'inert <<<<<<< SKIP' plus `<<<<<<< skip`\nr\n<<<<<<< Skip\n",
+    "expected": "p\nq with \"inert <<<<<<< Skip literal\" and 'inert <<<<<<< SKIP' plus `<<<<<<< skip`\nr\n"
+  },
+  {
+    "section": "marker-zerospace",
+    "original": "foo\nbar\nbaz\n",
+    "edit": "<<<<<<<SKIP\n<<<<<<<   SKIP\n<<<<<<<SKIP\nfoo\nbar with \"inert <<<<<<<SKIP no-space\" and \"inert <<<<<<<   SKIP extra-space\"\ntrailing `<<<<<<<SKIP in template`\nbaz\n<<<<<<<SKIP\n",
+    "expected": "foo\nbar with \"inert <<<<<<<SKIP no-space\" and \"inert <<<<<<<   SKIP extra-space\"\ntrailing `<<<<<<<SKIP in template`\nbaz\n"
+  }
+]

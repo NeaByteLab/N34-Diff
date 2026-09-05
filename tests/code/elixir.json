@@ -1,0 +1,6 @@
+{
+  "section": "elixir",
+  "original": "﻿defmodule App do\r\n  def greet(name) do\r\n    \"hello #{name}\"\r\n  end\r\nend\r\n\r\nIO.puts(App.greet(\"world\"))\r\n",
+  "edit": "﻿<<<<<<< SKIP\r\ndefmodule App do\r\n  @moduledoc \"\"\"\r\n  Marker <<<<<<< SKIP inside @moduledoc heredoc is inert.\r\n  \"\"\"\r\n\r\n  def greet(name) do\r\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\r\n    \"hello, #{String.upcase(name)} [#{hint}]\"\r\n  end\r\nend\r\n<<<<<<< SKIP\r\nIO.puts(App.greet(\"world\"))\r\n<<<<<<< SKIP\r\n",
+  "expected": "defmodule App do\n  @moduledoc \"\"\"\n  Marker <<<<<<< SKIP inside @moduledoc heredoc is inert.\n  \"\"\"\n\n  def greet(name) do\n    hint = \"marker <<<<<<< SKIP inside string is inert\"\n    \"hello, #{String.upcase(name)} [#{hint}]\"\n  end\nend\n\nIO.puts(App.greet(\"world\"))\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "markdown",
+  "original": "# Title\n\nHello world.\n\n## Notes\n\n- item one\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n# Title\n\nHello world.\n\n## Notes\n\n- item one\n- item two: contains `<<<<<<< SKIP` inline code, treated as content\n- item three: **<<<<<<< SKIP** wrapped in bold is content\n- item four: prefixed 1. <<<<<<< SKIP with numbering is content\n",
+  "expected": "# Title\n\nHello world.\n\n## Notes\n\n- item one\n- item two: contains `<<<<<<< SKIP` inline code, treated as content\n- item three: **<<<<<<< SKIP** wrapped in bold is content\n- item four: prefixed 1. <<<<<<< SKIP with numbering is content\n"
+}

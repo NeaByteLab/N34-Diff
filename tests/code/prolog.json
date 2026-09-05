@@ -1,0 +1,6 @@
+{
+  "section": "prolog",
+  "original": "greet(Name) :-\n    format(\"hello ~w~n\", [Name]).\n\n:- initialization(greet(world)).\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\ngreet(Name) :-\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    format(\"hello ~w | ~w~n\", [Name, Hint]).\n\n:- initialization(greet(world)).\n",
+  "expected": "greet(Name) :-\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    format(\"hello ~w | ~w~n\", [Name, Hint]).\n\n:- initialization(greet(world)).\n"
+}

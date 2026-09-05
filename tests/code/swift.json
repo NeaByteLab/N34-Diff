@@ -1,0 +1,6 @@
+{
+  "section": "swift",
+  "original": "func greet(_ name: String) -> String {\n    return \"hello \\(name)\"\n}\n\nprint(greet(\"world\"))",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nfunc greet(_ name: String) -> String {\n    let hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n    let raw  = #\"raw #string <<<<<<< SKIP inside is inert\"#\n    let curly = \"curly “hi” with <<<<<<< skip inert\"\n\tlet tabbed = \"tab indent kept as-is\"\n    // swift comment: '<<<<<<< SKIP' inert as content\n    let multi = \"\"\"\n    multi <<<<<<< SKIP inside is inert\n    \"\"\"\n    return \"hello \\(name) | \\(hint) | \\(raw) | \\(multi.count) | \\(curly) | \\(tabbed)\"\n}\n<<<<<<< Skip\nprint(greet(\"world\"))\n<<<<<<< SKIP\n",
+  "expected": "func greet(_ name: String) -> String {\n    let hint = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n    let raw  = #\"raw #string <<<<<<< SKIP inside is inert\"#\n    let curly = \"curly “hi” with <<<<<<< skip inert\"\n\tlet tabbed = \"tab indent kept as-is\"\n    // swift comment: '<<<<<<< SKIP' inert as content\n    let multi = \"\"\"\n    multi <<<<<<< SKIP inside is inert\n    \"\"\"\n    return \"hello \\(name) | \\(hint) | \\(raw) | \\(multi.count) | \\(curly) | \\(tabbed)\"\n}\n\nprint(greet(\"world\"))"
+}

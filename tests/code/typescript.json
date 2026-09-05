@@ -1,0 +1,6 @@
+{
+  "section": "typescript",
+  "original": "function add(a: number, b: number): number {\n  return a - b\n}\n\nconsole.log(add(2, 3))\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nfunction add(a: number, b: number): number {\n  const hint: string = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  const tpl: string = `template <<<<<<< SKIP inside backtick is inert ${a + b}`\n  void hint; void tpl\n  return a + b\n}\n\nconsole.log(add(2, 3))\n",
+  "expected": "function add(a: number, b: number): number {\n  const hint: string = \"marker \\\"<<<<<<< SKIP\\\" inside string is inert\"\n  const tpl: string = `template <<<<<<< SKIP inside backtick is inert ${a + b}`\n  void hint; void tpl\n  return a + b\n}\n\nconsole.log(add(2, 3))\n"
+}

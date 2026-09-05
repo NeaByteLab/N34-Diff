@@ -1,0 +1,6 @@
+{
+  "section": "elm",
+  "original": "module Main exposing (main)\n\nimport Html exposing (text)\n\nmain =\n    text \"hi\"\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\nmodule Main exposing (main)\n\nimport Html exposing (Html, div, text)\n\nhint : String\nhint =\n    \"marker <<<<<<< SKIP inside string is inert\"\n\n\n-- comment line contains <<<<<<< SKIP but the marker is not alone on this line\nmain : Html msg\nmain =\n    div [] [ text (\"hello | \" ++ hint) ]\n",
+  "expected": "module Main exposing (main)\n\nimport Html exposing (Html, div, text)\n\nhint : String\nhint =\n    \"marker <<<<<<< SKIP inside string is inert\"\n\n\n-- comment line contains <<<<<<< SKIP but the marker is not alone on this line\nmain : Html msg\nmain =\n    div [] [ text (\"hello | \" ++ hint) ]\n"
+}

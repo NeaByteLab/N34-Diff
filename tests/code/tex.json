@@ -1,0 +1,6 @@
+{
+  "section": "tex",
+  "original": "\\documentclass{article}\n\\begin{document}\nHello world.\n\\end{document}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n\\documentclass{article}\n\\usepackage{amsmath}\n% comment: <<<<<<< SKIP inside a TeX comment is content, not a marker\n\\newcommand{\\hint}{marker <<<<<<< SKIP inside macro body is inert}\n\\begin{document}\nHello world | \\hint\\ and inline math $a <<<<<<< SKIP b$ inert.\n\\begin{verbatim}\nverbatim <<<<<<< SKIP content is inert\nalso <<<<<<< skip inline\n\\end{verbatim}\n\\end{document}\n<<<<<<< SKIP\n",
+  "expected": "\\documentclass{article}\n\\usepackage{amsmath}\n% comment: <<<<<<< SKIP inside a TeX comment is content, not a marker\n\\newcommand{\\hint}{marker <<<<<<< SKIP inside macro body is inert}\n\\begin{document}\nHello world | \\hint\\ and inline math $a <<<<<<< SKIP b$ inert.\n\\begin{verbatim}\nverbatim <<<<<<< SKIP content is inert\nalso <<<<<<< skip inline\n\\end{verbatim}\n\\end{document}\n"
+}

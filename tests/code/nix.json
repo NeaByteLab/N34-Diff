@@ -1,0 +1,6 @@
+{
+  "section": "nix",
+  "original": "{ pkgs ? import <nixpkgs> {} }:\npkgs.mkShell {\n  buildInputs = [ pkgs.nodejs ];\n}\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n{ pkgs ? import <nixpkgs> {} }:\n# inline hint \"<<<<<<< SKIP\" inert in nix line comment\npkgs.mkShell {\n  buildInputs = [ pkgs.nodejs pkgs.git ];\n  curly = \"curly “hi” with <<<<<<< skip inert\";\n\ttabbed = \"tab indent kept as-is\";\n  shellHook = ''\n    echo \"marker <<<<<<< SKIP inside indented string is inert\"\n    echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n  '';\n}\n<<<<<<< Skip\n",
+  "expected": "{ pkgs ? import <nixpkgs> {} }:\n# inline hint \"<<<<<<< SKIP\" inert in nix line comment\npkgs.mkShell {\n  buildInputs = [ pkgs.nodejs pkgs.git ];\n  curly = \"curly “hi” with <<<<<<< skip inert\";\n\ttabbed = \"tab indent kept as-is\";\n  shellHook = ''\n    echo \"marker <<<<<<< SKIP inside indented string is inert\"\n    echo \"also <<<<<<< SKIP and <<<<<<< SKIP inert\"\n  '';\n}\n"
+}

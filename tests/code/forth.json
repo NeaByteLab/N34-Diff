@@ -1,0 +1,6 @@
+{
+  "section": "forth",
+  "original": ": greet ( -- ) .\" hello world\" cr ;\n\ngreet\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n: greet ( -- )\n    .\" hello world\" cr\n    .\" marker <<<<<<< SKIP inside .\" string is inert\" cr\n;\n\ngreet\n<<<<<<< SKIP\n",
+  "expected": ": greet ( -- )\n    .\" hello world\" cr\n    .\" marker <<<<<<< SKIP inside .\" string is inert\" cr\n;\n\ngreet\n"
+}

@@ -1,0 +1,6 @@
+{
+  "section": "preserve-case",
+  "original": "c1\nc2\nc3\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\nc1\nc2 has CamelCase snake_case SCREAMING_CASE \"inert <<<<<<< SKIP\"\nc3 curly “Hi” and ‘skip’ with <<<<<<< skip inert\n<<<<<<< Skip\n",
+  "expected": "c1\nc2 has CamelCase snake_case SCREAMING_CASE \"inert <<<<<<< SKIP\"\nc3 curly “Hi” and ‘skip’ with <<<<<<< skip inert\n"
+}

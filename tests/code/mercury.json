@@ -1,0 +1,6 @@
+{
+  "section": "mercury",
+  "original": ":- module hello.\n:- interface.\n:- import_module io.\n:- pred main(io::di, io::uo) is det.\n:- implementation.\nmain(!IO) :- io.write_string(\"hi\\n\", !IO).\n",
+  "edit": "<<<<<<< SKIP\n<<<<<<< skip\n\t<<<<<<< SKIP\n:- module hello.\n:- interface.\n:- import_module io.\n:- pred main(io::di, io::uo) is det.\n:- implementation.\n:- import_module string.\n\nmain(!IO) :-\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    io.format(\"hello world | %s\\n\", [s(Hint)], !IO).\n",
+  "expected": ":- module hello.\n:- interface.\n:- import_module io.\n:- pred main(io::di, io::uo) is det.\n:- implementation.\n:- import_module string.\n\nmain(!IO) :-\n    Hint = \"marker <<<<<<< SKIP inside string is inert\",\n    io.format(\"hello world | %s\\n\", [s(Hint)], !IO).\n"
+}

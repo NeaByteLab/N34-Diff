@@ -1,0 +1,38 @@
+[
+  {
+    "section": "llm-comma",
+    "original": "const arr = [\n  1,\n  2,\n  3\n]\n",
+    "edit": "<<<<<<< SKIP\nconst arr = [\n  1,\n  2,\n  3, // trailing comma added \"inert <<<<<<< SKIP\"\n]\n<<<<<<< SKIP\n",
+    "expected": "const arr = [\n  1,\n  2,\n  3, // trailing comma added \"inert <<<<<<< SKIP\"\n]\n"
+  },
+  {
+    "section": "llm-control",
+    "original": "sc1\nsc2\nsc3\n",
+    "edit": "<<<<<<< SKIP\nsc1\nsc2 with control\u0007bell and \bbackspace \"inert <<<<<<< SKIP\"\nsc3\n<<<<<<< SKIP\n",
+    "expected": "sc1\nsc2 with control\u0007bell and \bbackspace \"inert <<<<<<< SKIP\"\nsc3\n"
+  },
+  {
+    "section": "llm-drift",
+    "original": "top\n  a\n  b\n  c\n",
+    "edit": "<<<<<<< SKIP\ntop\n    a\n    b changed \"inert <<<<<<< SKIP\"\n    c\n<<<<<<< SKIP\n",
+    "expected": "top\n    a\n    b changed \"inert <<<<<<< SKIP\"\n    c\n"
+  },
+  {
+    "section": "llm-nobrace",
+    "original": "function foo() {\n\treturn 1\n}\n",
+    "edit": "function foo() {\n\tconst hint = \"inert <<<<<<< SKIP\"; // note: '<<<<<<< skip' also inert\n\tconst tpl = `template <<<<<<< SKIP inside “curly”`;\n\treturn 2\n",
+    "expected": "function foo() {\n\tconst hint = \"inert <<<<<<< SKIP\"; // note: '<<<<<<< skip' also inert\n\tconst tpl = `template <<<<<<< SKIP inside “curly”`;\n\treturn 2\n"
+  },
+  {
+    "section": "llm-swap",
+    "original": "line-one\nline-two\nline-three\n",
+    "edit": "line-two\nline-one\nline-three // hint \"inert <<<<<<< SKIP\"\n",
+    "expected": "line-two\nline-one\nline-three // hint \"inert <<<<<<< SKIP\"\n"
+  },
+  {
+    "section": "llm-truncated",
+    "original": "complete-a\ncomplete-b\ncomplete-c\n",
+    "edit": "complete-a-updated // \"inert <<<<<<< SKIP\"\ncomplete-b-updated // 'inert <<<<<<< skip",
+    "expected": "complete-a-updated // \"inert <<<<<<< SKIP\"\ncomplete-b-updated // 'inert <<<<<<< skip\n"
+  }
+]
