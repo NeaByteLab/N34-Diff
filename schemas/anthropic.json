@@ -1,0 +1,21 @@
+{
+  "name": "apply_edit",
+  "description": "Apply a file text edit using N34 SKIP-marker diff format.\n\n# Format\n\nThe \"content\" argument contains one or more edit blocks separated by `<<<<<<< SKIP` markers on their own line.\n\n## Single Edit\n\nWrite the changed lines directly:\n\n```\n{changed_lines}\n```\n\n## Multiple Edits in One Call\n\nWrite each edit block back-to-back with exactly one `<<<<<<< SKIP` marker between adjacent edits, and no marker at the start or end of the content:\n\n```\n{edit_1_lines}\n<<<<<<< SKIP\n{edit_2_lines}\n<<<<<<< SKIP\n{edit_3_lines}\n```\n\n# Rules\n\n- For a single edit, write the changed lines directly with no `<<<<<<< SKIP` marker.\n- For multiple edits, place exactly one `<<<<<<< SKIP` marker between edits, never at start or end.\n- Include enough context in each edit block so the engine anchors the change unambiguously.\n- For deletions, keep context before and after the removed lines and omit the deleted lines.\n- Preserve the original indentation character-for-character in every edit block.\n- Send all edits to the engine in a single apply_edit call within one content string.\n- Do NOT wrap content in code fences, backticks, or quotes, send raw text with no framing.\n\n# Examples\n\nSingle change:\n\n```\nfunction add(a, b) {\n  return a + b\n}\n```\n\nMulti change (two edits in one file):\n\n```\nfunction add(a, b) {\n  return a + b\n}\n<<<<<<< SKIP\nfunction sub(a, b) {\n  return a - b\n}\n```\n\nMulti change (three edits in one file):\n\n```\nfunction add(a, b) {\n  return a + b\n}\n<<<<<<< SKIP\nfunction sub(a, b) {\n  return a - b\n}\n<<<<<<< SKIP\nfunction mul(a, b) {\n  return a * b\n}\n```",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "path": {
+        "type": "string",
+        "description": "The absolute path to the file to modify"
+      },
+      "content": {
+        "type": "string",
+        "description": "N34 edit body, single edit as plain lines or multiple edits separated by `<<<<<<< SKIP` markers"
+      }
+    },
+    "required": [
+      "path",
+      "content"
+    ]
+  }
+}
