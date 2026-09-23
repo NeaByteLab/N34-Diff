@@ -1,9 +1,3 @@
-> deno task bench
-Task bench deno fmt bench/ && deno lint bench/ && deno bench --allow-read bench/
-Checked 2 files
-Checked 2 files
-Check bench/apply.bench.ts
-Check bench/stream.bench.ts
     CPU | Apple M3 Pro
 Runtime | Deno 2.9.5 (aarch64-apple-darwin)
 
@@ -13,224 +7,223 @@ file:///Volumes/MasterData/Project-Sandbox/N34-Diff/bench/apply.bench.ts
 | --------------------------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
 
 group apply-corpus
-| apply corpus - 100 langs, 43742 bytes   |          1.5 ms |         669.2 | (  1.4 ms …   1.8 ms) |   1.5 ms |   1.7 ms |   1.7 ms |
+| apply corpus - 100 langs, 43742 bytes   |          2.3 ms |         442.3 | (  1.7 ms …   4.5 ms) |   2.4 ms |   4.0 ms |   4.2 ms |
 
 group apply-lang
-| apply - ada                             |         17.2 µs |        58,220 | ( 15.3 µs … 110.5 µs) |  17.0 µs |  23.4 µs |  43.5 µs |
-| apply - agda                            |         10.3 µs |        97,500 | (  9.4 µs …  86.2 µs) |  10.2 µs |  13.4 µs |  18.1 µs |
-| apply - apl                             |         10.7 µs |        93,820 | ( 10.1 µs …  81.4 µs) |  10.6 µs |  13.7 µs |  15.8 µs |
-| apply - assembly                        |         16.9 µs |        59,120 | ( 14.6 µs … 512.7 µs) |  16.6 µs |  25.0 µs |  43.7 µs |
-| apply - astro                           |         27.5 µs |        36,360 | ( 23.5 µs … 409.2 µs) |  27.0 µs |  47.3 µs |  78.3 µs |
-| apply - awk                             |         16.8 µs |        59,630 | ( 14.9 µs … 513.0 µs) |  16.6 µs |  22.2 µs |  27.2 µs |
-| apply - bash                            |         12.3 µs |        81,510 | ( 11.0 µs … 318.2 µs) |  12.2 µs |  15.8 µs |  17.7 µs |
-| apply - batch                           |          5.6 µs |       178,400 | (  5.5 µs …   5.8 µs) |   5.7 µs |   5.8 µs |   5.8 µs |
-| apply - c                               |         13.6 µs |        73,270 | ( 12.5 µs … 111.0 µs) |  13.5 µs |  17.7 µs |  21.5 µs |
-| apply - c++                             |         12.7 µs |        78,450 | ( 11.5 µs … 397.9 µs) |  12.5 µs |  17.2 µs |  20.8 µs |
-| apply - clojure                         |          9.2 µs |       108,700 | (  9.1 µs …   9.3 µs) |   9.3 µs |   9.3 µs |   9.3 µs |
-| apply - cobol                           |         15.7 µs |        63,660 | ( 14.9 µs … 124.0 µs) |  15.6 µs |  20.1 µs |  23.3 µs |
-| apply - coffeescript                    |          9.5 µs |       105,800 | (  9.1 µs …   9.8 µs) |   9.5 µs |   9.8 µs |   9.8 µs |
-| apply - coq                             |          9.0 µs |       111,300 | (  8.8 µs …   9.2 µs) |   9.1 µs |   9.2 µs |   9.2 µs |
-| apply - crystal                         |          9.6 µs |       104,100 | (  9.5 µs …   9.7 µs) |   9.6 µs |   9.7 µs |   9.7 µs |
-| apply - csharp                          |         13.9 µs |        71,980 | ( 13.2 µs …  77.9 µs) |  13.8 µs |  18.0 µs |  21.7 µs |
-| apply - css                             |         15.7 µs |        63,770 | ( 14.9 µs … 101.7 µs) |  15.6 µs |  20.1 µs |  23.2 µs |
-| apply - d                               |         16.9 µs |        59,240 | ( 16.2 µs … 116.4 µs) |  16.8 µs |  21.8 µs |  26.2 µs |
-| apply - dart                            |         11.9 µs |        84,300 | ( 11.2 µs …  83.8 µs) |  11.8 µs |  15.3 µs |  19.0 µs |
-| apply - diff                            |          7.3 µs |       136,900 | (  7.2 µs …   7.4 µs) |   7.3 µs |   7.4 µs |   7.4 µs |
-| apply - dockerfile                      |          7.5 µs |       132,500 | (  7.4 µs …   7.7 µs) |   7.6 µs |   7.7 µs |   7.7 µs |
-| apply - elisp                           |          9.4 µs |       106,300 | (  9.2 µs …   9.9 µs) |   9.5 µs |   9.9 µs |   9.9 µs |
-| apply - elixir                          |         14.1 µs |        70,710 | ( 13.4 µs … 120.2 µs) |  14.1 µs |  18.1 µs |  20.2 µs |
-| apply - elm                             |         11.7 µs |        85,190 | ( 11.0 µs … 128.8 µs) |  11.8 µs |  15.0 µs |  16.1 µs |
-| apply - erlang                          |         12.6 µs |        79,280 | ( 11.7 µs … 164.9 µs) |  12.6 µs |  15.8 µs |  17.2 µs |
-| apply - factor                          |         19.6 µs |        51,060 | ( 18.6 µs … 134.8 µs) |  19.5 µs |  24.4 µs |  26.7 µs |
-| apply - fish                            |         12.7 µs |        79,030 | ( 11.8 µs … 100.7 µs) |  12.7 µs |  15.9 µs |  16.3 µs |
-| apply - forth                           |          9.0 µs |       111,200 | (  8.9 µs …   9.1 µs) |   9.0 µs |   9.1 µs |   9.1 µs |
-| apply - fortran                         |          9.9 µs |       101,400 | (  9.4 µs …  85.7 µs) |   9.8 µs |  12.6 µs |  13.0 µs |
-| apply - fsharp                          |         13.3 µs |        75,230 | ( 12.6 µs … 138.8 µs) |  13.2 µs |  16.9 µs |  17.6 µs |
-| apply - gleam                           |         15.2 µs |        65,820 | ( 14.5 µs …  80.4 µs) |  15.2 µs |  19.2 µs |  20.2 µs |
-| apply - go                              |         17.2 µs |        58,100 | ( 16.4 µs … 112.7 µs) |  17.2 µs |  21.7 µs |  23.2 µs |
-| apply - graphql                         |         16.8 µs |        59,540 | ( 15.8 µs … 113.2 µs) |  16.8 µs |  21.5 µs |  24.6 µs |
-| apply - groovy                          |         17.7 µs |        56,550 | ( 16.7 µs … 117.4 µs) |  17.6 µs |  22.5 µs |  25.1 µs |
-| apply - haskell                         |         12.0 µs |        83,280 | ( 11.4 µs … 121.0 µs) |  12.0 µs |  15.4 µs |  16.7 µs |
-| apply - haxe                            |          7.7 µs |       130,000 | (  7.6 µs …   7.8 µs) |   7.7 µs |   7.8 µs |   7.8 µs |
-| apply - hcl                             |         13.3 µs |        75,090 | ( 12.6 µs … 133.5 µs) |  13.3 µs |  16.9 µs |  17.3 µs |
-| apply - html                            |         27.4 µs |        36,490 | ( 26.0 µs … 125.0 µs) |  27.3 µs |  34.2 µs |  35.3 µs |
-| apply - idris                           |         13.2 µs |        75,640 | ( 12.2 µs … 152.7 µs) |  13.2 µs |  16.5 µs |  17.2 µs |
-| apply - ini                             |          9.2 µs |       109,200 | (  9.0 µs …   9.4 µs) |   9.2 µs |   9.4 µs |   9.4 µs |
-| apply - io                              |          8.9 µs |       112,700 | (  8.8 µs …   9.0 µs) |   8.9 µs |   9.0 µs |   9.0 µs |
-| apply - java                            |         26.7 µs |        37,390 | ( 25.4 µs … 126.9 µs) |  26.7 µs |  33.6 µs |  36.9 µs |
-| apply - javascript                      |         16.1 µs |        62,130 | ( 15.2 µs … 121.6 µs) |  16.1 µs |  20.1 µs |  21.1 µs |
-| apply - json                            |         15.2 µs |        65,830 | ( 14.3 µs … 129.0 µs) |  15.2 µs |  19.0 µs |  19.5 µs |
-| apply - jsx                             |         17.2 µs |        58,000 | ( 16.5 µs … 134.5 µs) |  17.2 µs |  22.1 µs |  25.0 µs |
-| apply - julia                           |         14.5 µs |        68,870 | ( 13.8 µs … 125.8 µs) |  14.5 µs |  18.6 µs |  20.5 µs |
-| apply - kotlin                          |         10.1 µs |        99,090 | (  9.5 µs …  94.8 µs) |  10.0 µs |  13.0 µs |  16.1 µs |
-| apply - lean                            |          7.6 µs |       131,400 | (  7.5 µs …   7.7 µs) |   7.6 µs |   7.7 µs |   7.7 µs |
-| apply - less                            |         10.7 µs |        93,410 | ( 10.0 µs … 104.6 µs) |  10.6 µs |  14.0 µs |  17.7 µs |
-| apply - lua                             |          9.9 µs |       101,200 | (  9.6 µs …  10.2 µs) |   9.9 µs |  10.2 µs |  10.2 µs |
-| apply - makefile                        |          9.8 µs |       101,800 | (  8.1 µs …  24.6 µs) |   8.8 µs |  24.6 µs |  24.6 µs |
-| apply - markdown                        |          8.9 µs |       111,900 | (  8.8 µs …   9.4 µs) |   8.9 µs |   9.4 µs |   9.4 µs |
-| apply - matlab                          |         15.5 µs |        64,660 | ( 14.8 µs … 103.8 µs) |  15.4 µs |  19.9 µs |  22.7 µs |
-| apply - mercury                         |         10.8 µs |        92,700 | ( 10.2 µs …  98.8 µs) |  10.8 µs |  13.8 µs |  14.9 µs |
-| apply - nim                             |          8.7 µs |       114,500 | (  8.5 µs …  10.2 µs) |   8.6 µs |  10.2 µs |  10.2 µs |
-| apply - nix                             |         15.7 µs |        63,760 | ( 14.2 µs … 157.5 µs) |  15.4 µs |  22.5 µs |  29.5 µs |
-| apply - objective-c                     |         19.4 µs |        51,420 | ( 17.5 µs … 107.4 µs) |  19.1 µs |  29.5 µs |  42.3 µs |
-| apply - ocaml                           |         12.3 µs |        81,210 | ( 10.9 µs … 206.4 µs) |  12.0 µs |  19.8 µs |  23.9 µs |
-| apply - odin                            |         18.2 µs |        54,860 | ( 16.3 µs … 140.9 µs) |  17.9 µs |  28.2 µs |  41.3 µs |
-| apply - perl                            |         11.4 µs |        87,350 | ( 10.5 µs … 269.2 µs) |  11.2 µs |  17.1 µs |  20.3 µs |
-| apply - php                             |         16.4 µs |        60,930 | ( 15.2 µs … 120.2 µs) |  16.2 µs |  23.1 µs |  27.3 µs |
-| apply - powershell                      |         18.6 µs |        53,720 | ( 17.3 µs … 115.5 µs) |  18.4 µs |  26.1 µs |  30.2 µs |
-| apply - prolog                          |          6.7 µs |       149,000 | (  6.6 µs …   6.9 µs) |   6.8 µs |   6.9 µs |   6.9 µs |
-| apply - protobuf                        |         14.8 µs |        67,620 | ( 14.1 µs … 102.8 µs) |  14.7 µs |  19.0 µs |  21.9 µs |
-| apply - pug                             |          8.3 µs |       120,700 | (  8.2 µs …   8.4 µs) |   8.3 µs |   8.4 µs |   8.4 µs |
-| apply - purescript                      |          9.1 µs |       110,200 | (  8.9 µs …   9.4 µs) |   9.2 µs |   9.4 µs |   9.4 µs |
-| apply - python                          |         12.4 µs |        80,810 | ( 11.8 µs …  86.8 µs) |  12.3 µs |  15.8 µs |  16.3 µs |
-| apply - r                               |         14.5 µs |        68,880 | ( 13.8 µs …  90.0 µs) |  14.4 µs |  18.7 µs |  21.6 µs |
-| apply - racket                          |         20.7 µs |        48,320 | ( 19.8 µs … 103.1 µs) |  20.5 µs |  26.7 µs |  30.0 µs |
-| apply - raku                            |         15.8 µs |        63,120 | ( 14.8 µs … 114.7 µs) |  15.8 µs |  20.1 µs |  23.0 µs |
-| apply - reasonml                        |         10.0 µs |        99,740 | (  8.5 µs …  22.2 µs) |   9.1 µs |  22.2 µs |  22.2 µs |
-| apply - rescript                        |          8.5 µs |       117,100 | (  8.5 µs …   8.8 µs) |   8.6 µs |   8.8 µs |   8.8 µs |
-| apply - roc                             |          9.4 µs |       106,600 | (  9.3 µs …   9.6 µs) |   9.4 µs |   9.6 µs |   9.6 µs |
-| apply - ruby                            |         15.3 µs |        65,180 | ( 14.8 µs …  80.6 µs) |  15.3 µs |  18.5 µs |  20.3 µs |
-| apply - rust                            |         11.6 µs |        86,220 | ( 11.0 µs …  85.5 µs) |  11.5 µs |  15.0 µs |  17.3 µs |
-| apply - sass                            |          8.2 µs |       122,600 | (  8.0 µs …   8.5 µs) |   8.3 µs |   8.5 µs |   8.5 µs |
-| apply - scala                           |         13.6 µs |        73,520 | ( 12.0 µs …   3.5 ms) |  12.9 µs |  30.5 µs |  43.0 µs |
-| apply - scheme                          |          8.4 µs |       119,600 | (  8.0 µs …   8.5 µs) |   8.5 µs |   8.5 µs |   8.5 µs |
-| apply - solidity                        |         10.2 µs |        97,800 | (  9.5 µs … 104.8 µs) |  10.0 µs |  14.5 µs |  18.8 µs |
-| apply - sql                             |          7.9 µs |       127,300 | (  7.3 µs …   9.8 µs) |   8.0 µs |   9.8 µs |   9.8 µs |
-| apply - stylus                          |         13.8 µs |        72,220 | ( 13.1 µs … 134.4 µs) |  13.6 µs |  20.9 µs |  23.5 µs |
-| apply - svelte                          |          7.7 µs |       129,700 | (  7.3 µs …   8.5 µs) |   7.9 µs |   8.5 µs |   8.5 µs |
-| apply - swift                           |         18.1 µs |        55,220 | ( 17.0 µs … 205.2 µs) |  17.8 µs |  25.8 µs |  33.5 µs |
-| apply - tcl                             |         13.8 µs |        72,310 | ( 13.3 µs …  91.9 µs) |  13.8 µs |  18.0 µs |  21.6 µs |
-| apply - terraform                       |         15.9 µs |        63,080 | ( 15.2 µs …  75.2 µs) |  15.8 µs |  20.3 µs |  23.9 µs |
-| apply - tex                             |         10.1 µs |        98,890 | (  9.4 µs …  10.8 µs) |  10.3 µs |  10.8 µs |  10.8 µs |
-| apply - thrift                          |         15.5 µs |        64,350 | ( 14.3 µs … 123.5 µs) |  15.4 µs |  21.5 µs |  34.2 µs |
-| apply - toml                            |         12.3 µs |        81,560 | (  9.8 µs …   2.2 ms) |  10.8 µs |  35.5 µs |  55.6 µs |
-| apply - tsx                             |         20.1 µs |        49,800 | ( 18.9 µs … 132.0 µs) |  19.9 µs |  27.6 µs |  30.3 µs |
-| apply - typescript                      |          8.9 µs |       112,800 | (  8.6 µs …   9.4 µs) |   9.0 µs |   9.4 µs |   9.4 µs |
-| apply - v                               |         13.5 µs |        74,110 | ( 12.7 µs … 137.3 µs) |  13.3 µs |  19.0 µs |  21.8 µs |
-| apply - verilog                         |         14.2 µs |        70,540 | ( 13.3 µs … 132.3 µs) |  13.9 µs |  21.5 µs |  24.7 µs |
-| apply - vhdl                            |         15.6 µs |        64,160 | ( 14.3 µs … 770.8 µs) |  15.2 µs |  28.2 µs |  41.2 µs |
-| apply - vim                             |         13.8 µs |        72,470 | ( 13.2 µs … 103.4 µs) |  13.8 µs |  17.6 µs |  21.0 µs |
-| apply - vue                             |         18.4 µs |        54,480 | ( 17.6 µs … 132.9 µs) |  18.3 µs |  23.8 µs |  26.8 µs |
-| apply - wasm                            |          7.8 µs |       128,300 | (  7.3 µs …   8.8 µs) |   7.9 µs |   8.8 µs |   8.8 µs |
-| apply - xml                             |          8.4 µs |       119,300 | (  8.3 µs …   8.7 µs) |   8.4 µs |   8.7 µs |   8.7 µs |
-| apply - yaml                            |         13.3 µs |        75,080 | ( 12.8 µs … 140.0 µs) |  13.3 µs |  17.1 µs |  20.7 µs |
-| apply - zig                             |         18.6 µs |        53,910 | ( 18.0 µs … 121.2 µs) |  18.5 µs |  23.0 µs |  27.0 µs |
-| apply - zsh                             |          8.0 µs |       124,400 | (  8.0 µs …   8.3 µs) |   8.0 µs |   8.3 µs |   8.3 µs |
+| apply - ada                             |         27.2 µs |        36,730 | ( 21.7 µs … 351.1 µs) |  24.5 µs |  96.2 µs | 114.4 µs |
+| apply - agda                            |         11.2 µs |        89,400 | (  9.0 µs … 199.1 µs) |  10.1 µs |  43.7 µs |  61.8 µs |
+| apply - apl                             |         26.4 µs |        37,850 | ( 18.4 µs …  11.5 ms) |  20.1 µs | 111.0 µs | 162.6 µs |
+| apply - assembly                        |         24.5 µs |        40,770 | ( 19.2 µs …   6.8 ms) |  21.2 µs |  92.2 µs | 116.1 µs |
+| apply - astro                           |         41.5 µs |        24,120 | ( 31.4 µs … 823.2 µs) |  36.0 µs | 145.5 µs | 169.0 µs |
+| apply - awk                             |         19.9 µs |        50,280 | ( 15.8 µs … 302.8 µs) |  17.8 µs |  73.0 µs |  98.3 µs |
+| apply - bash                            |         12.6 µs |        79,270 | ( 10.6 µs … 241.3 µs) |  11.6 µs |  39.9 µs |  55.5 µs |
+| apply - batch                           |          8.0 µs |       125,100 | (  6.7 µs …   9.9 µs) |   8.6 µs |   9.9 µs |   9.9 µs |
+| apply - c                               |         16.7 µs |        59,930 | ( 11.7 µs … 797.6 µs) |  13.5 µs |  68.3 µs |  93.4 µs |
+| apply - c++                             |         19.5 µs |        51,290 | ( 11.5 µs …  16.3 ms) |  15.0 µs |  69.6 µs |  97.6 µs |
+| apply - clojure                         |         12.8 µs |        78,210 | (  9.7 µs … 605.6 µs) |  10.9 µs |  46.8 µs |  59.9 µs |
+| apply - cobol                           |         25.0 µs |        40,010 | ( 18.8 µs …   2.1 ms) |  20.7 µs | 113.5 µs | 148.2 µs |
+| apply - coffeescript                    |         10.6 µs |        94,110 | (  8.5 µs …   1.1 ms) |   9.4 µs |  44.2 µs |  69.4 µs |
+| apply - coq                             |         10.2 µs |        97,570 | (  8.5 µs … 229.8 µs) |   9.5 µs |  31.1 µs |  48.3 µs |
+| apply - crystal                         |         10.1 µs |        98,540 | (  9.0 µs …   1.5 ms) |   9.8 µs |  21.6 µs |  29.1 µs |
+| apply - csharp                          |         12.4 µs |        80,630 | ( 11.3 µs … 194.7 µs) |  12.3 µs |  15.5 µs |  17.8 µs |
+| apply - css                             |         19.2 µs |        52,110 | ( 17.8 µs … 201.0 µs) |  19.0 µs |  24.4 µs |  35.4 µs |
+| apply - d                               |         21.5 µs |        46,590 | ( 19.2 µs … 307.7 µs) |  20.8 µs |  48.8 µs |  64.6 µs |
+| apply - dart                            |         14.7 µs |        67,920 | ( 13.4 µs … 333.8 µs) |  14.5 µs |  19.4 µs |  34.3 µs |
+| apply - diff                            |          7.6 µs |       131,500 | (  7.5 µs …   7.8 µs) |   7.6 µs |   7.8 µs |   7.8 µs |
+| apply - dockerfile                      |          8.7 µs |       115,000 | (  8.6 µs …   8.9 µs) |   8.7 µs |   8.9 µs |   8.9 µs |
+| apply - elisp                           |          9.7 µs |       102,600 | (  8.9 µs … 204.8 µs) |   9.6 µs |  12.6 µs |  20.8 µs |
+| apply - elixir                          |         13.4 µs |        74,350 | ( 12.1 µs … 261.0 µs) |  13.2 µs |  29.8 µs |  35.0 µs |
+| apply - elm                             |         12.3 µs |        81,250 | ( 11.2 µs … 218.5 µs) |  12.1 µs |  16.5 µs |  26.0 µs |
+| apply - erlang                          |         12.7 µs |        78,600 | ( 11.6 µs … 241.6 µs) |  12.6 µs |  15.8 µs |  20.0 µs |
+| apply - factor                          |         19.3 µs |        51,920 | ( 18.0 µs … 161.5 µs) |  19.0 µs |  24.0 µs |  43.8 µs |
+| apply - fish                            |         17.4 µs |        57,540 | ( 15.8 µs … 216.8 µs) |  17.0 µs |  36.7 µs |  49.0 µs |
+| apply - forth                           |          6.3 µs |       160,000 | (  6.1 µs …   7.4 µs) |   6.2 µs |   7.4 µs |   7.4 µs |
+| apply - fortran                         |         16.6 µs |        60,300 | ( 15.2 µs … 258.4 µs) |  16.3 µs |  23.0 µs |  41.4 µs |
+| apply - fsharp                          |         12.3 µs |        81,320 | ( 11.3 µs … 197.6 µs) |  12.2 µs |  15.9 µs |  20.8 µs |
+| apply - gleam                           |         24.3 µs |        41,200 | ( 22.5 µs … 228.5 µs) |  24.0 µs |  30.0 µs |  42.0 µs |
+| apply - go                              |         15.5 µs |        64,500 | ( 14.0 µs … 221.6 µs) |  15.3 µs |  21.0 µs |  35.2 µs |
+| apply - graphql                         |         21.8 µs |        45,840 | ( 19.5 µs … 604.8 µs) |  21.2 µs |  50.8 µs |  68.5 µs |
+| apply - groovy                          |         22.2 µs |        45,130 | ( 20.5 µs … 221.0 µs) |  21.9 µs |  28.4 µs |  52.7 µs |
+| apply - haskell                         |         11.2 µs |        89,040 | ( 10.1 µs … 264.1 µs) |  11.1 µs |  14.1 µs |  17.8 µs |
+| apply - haxe                            |          7.1 µs |       140,100 | (  6.9 µs …   7.8 µs) |   7.2 µs |   7.8 µs |   7.8 µs |
+| apply - hcl                             |         20.4 µs |        49,100 | ( 16.1 µs …   3.1 ms) |  17.6 µs |  81.8 µs | 112.3 µs |
+| apply - html                            |         33.2 µs |        30,110 | ( 24.9 µs …   4.5 ms) |  27.5 µs | 142.0 µs | 187.0 µs |
+| apply - idris                           |         12.8 µs |        77,950 | (  9.5 µs …   1.7 ms) |  10.7 µs |  59.9 µs |  86.2 µs |
+| apply - ini                             |         13.1 µs |        76,080 | (  9.2 µs …   1.4 ms) |  10.6 µs |  61.2 µs |  91.2 µs |
+| apply - io                              |          6.8 µs |       147,100 | (  5.5 µs … 429.2 µs) |   6.2 µs |  23.3 µs |  42.4 µs |
+| apply - java                            |         27.3 µs |        36,600 | ( 23.5 µs … 525.5 µs) |  25.6 µs |  86.9 µs | 121.0 µs |
+| apply - javascript                      |         20.6 µs |        48,550 | ( 19.0 µs … 210.0 µs) |  20.3 µs |  27.2 µs |  49.8 µs |
+| apply - json                            |         18.4 µs |        54,260 | ( 17.0 µs … 205.9 µs) |  18.2 µs |  22.5 µs |  29.4 µs |
+| apply - jsx                             |         22.2 µs |        45,040 | ( 19.9 µs … 662.4 µs) |  21.6 µs |  47.3 µs |  64.7 µs |
+| apply - julia                           |         18.6 µs |        53,830 | ( 17.2 µs … 222.3 µs) |  18.4 µs |  23.3 µs |  33.2 µs |
+| apply - kotlin                          |          9.1 µs |       109,800 | (  8.7 µs …  11.2 µs) |   9.1 µs |  11.2 µs |  11.2 µs |
+| apply - lean                            |          7.6 µs |       131,700 | (  7.3 µs …   8.1 µs) |   7.7 µs |   8.1 µs |   8.1 µs |
+| apply - less                            |         15.0 µs |        66,810 | ( 13.8 µs … 180.6 µs) |  14.8 µs |  19.1 µs |  26.5 µs |
+| apply - lua                             |         10.4 µs |        96,550 | (  9.4 µs … 219.7 µs) |  10.2 µs |  14.4 µs |  22.8 µs |
+| apply - makefile                        |          9.6 µs |       104,700 | (  8.7 µs … 185.9 µs) |   9.5 µs |  12.5 µs |  18.2 µs |
+| apply - markdown                        |          8.3 µs |       120,000 | (  8.0 µs …   9.3 µs) |   8.3 µs |   9.3 µs |   9.3 µs |
+| apply - matlab                          |         20.9 µs |        47,910 | ( 19.5 µs … 225.4 µs) |  20.8 µs |  25.3 µs |  28.2 µs |
+| apply - mercury                         |         11.0 µs |        91,310 | (  9.7 µs … 198.6 µs) |  10.6 µs |  23.2 µs |  31.9 µs |
+| apply - nim                             |          8.9 µs |       112,800 | (  8.5 µs …   9.6 µs) |   9.0 µs |   9.6 µs |   9.6 µs |
+| apply - nix                             |         19.0 µs |        52,580 | ( 17.0 µs … 457.9 µs) |  18.2 µs |  49.8 µs |  76.8 µs |
+| apply - objective-c                     |         22.2 µs |        45,070 | ( 20.8 µs … 337.6 µs) |  22.0 µs |  27.2 µs |  33.1 µs |
+| apply - ocaml                           |          8.8 µs |       114,200 | (  8.3 µs …   9.7 µs) |   9.1 µs |   9.7 µs |   9.7 µs |
+| apply - odin                            |         20.3 µs |        49,200 | ( 18.7 µs … 260.5 µs) |  19.9 µs |  33.2 µs |  55.8 µs |
+| apply - perl                            |         10.9 µs |        91,370 | (  9.8 µs … 196.8 µs) |  10.6 µs |  24.2 µs |  33.5 µs |
+| apply - php                             |         21.3 µs |        46,860 | ( 18.5 µs … 464.0 µs) |  20.0 µs |  66.5 µs | 105.5 µs |
+| apply - powershell                      |         23.2 µs |        43,010 | ( 19.9 µs … 549.4 µs) |  21.8 µs |  72.8 µs | 110.2 µs |
+| apply - prolog                          |          6.9 µs |       144,500 | (  6.6 µs …   8.0 µs) |   7.0 µs |   8.0 µs |   8.0 µs |
+| apply - protobuf                        |         20.2 µs |        49,510 | ( 17.5 µs … 268.9 µs) |  19.1 µs |  63.3 µs |  91.8 µs |
+| apply - pug                             |          8.3 µs |       120,100 | (  8.1 µs …   8.9 µs) |   8.5 µs |   8.9 µs |   8.9 µs |
+| apply - purescript                      |          8.5 µs |       117,400 | (  8.1 µs …   9.0 µs) |   8.7 µs |   9.0 µs |   9.0 µs |
+| apply - python                          |         12.4 µs |        80,860 | ( 10.9 µs … 418.5 µs) |  12.0 µs |  23.3 µs |  38.5 µs |
+| apply - r                               |         23.7 µs |        42,150 | ( 17.1 µs …   5.6 ms) |  18.9 µs | 117.4 µs | 168.3 µs |
+| apply - racket                          |         20.5 µs |        48,720 | ( 17.9 µs … 291.2 µs) |  19.6 µs |  56.0 µs |  85.3 µs |
+| apply - raku                            |         25.3 µs |        39,490 | ( 18.5 µs …   1.3 ms) |  20.4 µs | 134.0 µs | 185.5 µs |
+| apply - reasonml                        |          6.5 µs |       152,800 | (  6.2 µs …   7.2 µs) |   6.6 µs |   7.2 µs |   7.2 µs |
+| apply - rescript                        |          6.4 µs |       155,600 | (  6.1 µs …   7.0 µs) |   6.6 µs |   7.0 µs |   7.0 µs |
+| apply - roc                             |          9.1 µs |       110,100 | (  8.8 µs …   9.4 µs) |   9.3 µs |   9.4 µs |   9.4 µs |
+| apply - ruby                            |         19.7 µs |        50,730 | ( 18.1 µs … 357.9 µs) |  19.4 µs |  27.0 µs |  50.2 µs |
+| apply - rust                            |         10.9 µs |        91,840 | (  9.9 µs … 233.5 µs) |  10.8 µs |  15.0 µs |  24.2 µs |
+| apply - sass                            |          6.7 µs |       149,000 | (  6.5 µs …   7.6 µs) |   6.7 µs |   7.6 µs |   7.6 µs |
+| apply - scala                           |         12.8 µs |        78,210 | ( 11.5 µs … 246.5 µs) |  12.5 µs |  27.1 µs |  33.6 µs |
+| apply - scheme                          |          7.3 µs |       137,500 | (  7.0 µs …   8.1 µs) |   7.4 µs |   8.1 µs |   8.1 µs |
+| apply - solidity                        |          9.7 µs |       103,400 | (  8.6 µs … 211.0 µs) |   9.5 µs |  17.8 µs |  22.5 µs |
+| apply - sql                             |          8.1 µs |       123,600 | (  7.7 µs …   9.1 µs) |   8.2 µs |   9.1 µs |   9.1 µs |
+| apply - stylus                          |         14.2 µs |        70,460 | ( 12.5 µs … 410.2 µs) |  13.7 µs |  32.8 µs |  42.9 µs |
+| apply - svelte                          |          7.7 µs |       130,400 | (  7.1 µs …  12.8 µs) |   7.6 µs |  12.8 µs |  12.8 µs |
+| apply - swift                           |         28.2 µs |        35,470 | ( 20.8 µs …   1.6 ms) |  23.0 µs | 130.7 µs | 180.0 µs |
+| apply - tcl                             |         18.6 µs |        53,800 | ( 16.8 µs … 299.2 µs) |  18.0 µs |  44.1 µs |  62.4 µs |
+| apply - terraform                       |         19.9 µs |        50,290 | ( 17.6 µs … 228.8 µs) |  19.0 µs |  48.3 µs |  65.0 µs |
+| apply - tex                             |         11.9 µs |        83,780 | ( 10.6 µs … 396.5 µs) |  11.5 µs |  28.0 µs |  39.9 µs |
+| apply - thrift                          |         23.9 µs |        41,790 | ( 19.2 µs …   1.1 ms) |  20.8 µs | 103.8 µs | 152.3 µs |
+| apply - toml                            |         12.7 µs |        78,700 | (  9.3 µs …   3.4 ms) |  10.5 µs |  52.9 µs |  84.0 µs |
+| apply - tsx                             |         46.2 µs |        21,640 | ( 24.3 µs …   7.4 ms) |  48.9 µs | 262.5 µs | 380.9 µs |
+| apply - typescript                      |         10.7 µs |        93,260 | (  8.5 µs … 433.1 µs) |   9.3 µs |  43.1 µs |  61.6 µs |
+| apply - v                               |         20.8 µs |        48,150 | ( 16.3 µs …   1.3 ms) |  17.8 µs |  83.3 µs | 113.3 µs |
+| apply - verilog                         |         19.3 µs |        51,870 | ( 16.8 µs … 607.3 µs) |  18.1 µs |  54.3 µs |  84.4 µs |
+| apply - vhdl                            |         20.9 µs |        47,760 | ( 17.9 µs … 250.3 µs) |  19.6 µs |  63.1 µs |  88.2 µs |
+| apply - vim                             |         20.2 µs |        49,520 | ( 17.2 µs … 318.3 µs) |  18.8 µs |  65.6 µs |  88.7 µs |
+| apply - vue                             |         27.2 µs |        36,800 | ( 24.5 µs … 330.3 µs) |  26.5 µs |  62.8 µs |  81.9 µs |
+| apply - wasm                            |          7.8 µs |       128,600 | (  7.3 µs …   8.7 µs) |   7.9 µs |   8.7 µs |   8.7 µs |
+| apply - xml                             |          9.7 µs |       103,300 | (  9.4 µs …  10.4 µs) |   9.8 µs |  10.4 µs |  10.4 µs |
+| apply - yaml                            |         17.3 µs |        57,690 | ( 16.2 µs … 193.4 µs) |  17.2 µs |  21.4 µs |  32.0 µs |
+| apply - zig                             |         24.0 µs |        41,750 | ( 21.9 µs … 276.3 µs) |  23.6 µs |  35.1 µs |  58.1 µs |
+| apply - zsh                             |          8.3 µs |       120,100 | (  8.1 µs …   8.6 µs) |   8.5 µs |   8.6 µs |   8.6 µs |
 
 summary
-  apply - batch
-     1.20x faster than apply - prolog
-     1.30x faster than apply - diff
-     1.35x faster than apply - dockerfile
-     1.36x faster than apply - lean
-     1.37x faster than apply - haxe
-     1.38x faster than apply - svelte
-     1.39x faster than apply - wasm
-     1.40x faster than apply - sql
-     1.43x faster than apply - zsh
-     1.46x faster than apply - sass
-     1.48x faster than apply - pug
-     1.49x faster than apply - scheme
-     1.50x faster than apply - xml
-     1.52x faster than apply - rescript
-     1.56x faster than apply - nim
-     1.58x faster than apply - typescript
-     1.58x faster than apply - io
-     1.59x faster than apply - markdown
-     1.60x faster than apply - coq
-     1.60x faster than apply - forth
-     1.62x faster than apply - purescript
-     1.63x faster than apply - ini
-     1.64x faster than apply - clojure
-     1.67x faster than apply - roc
-     1.68x faster than apply - elisp
-     1.69x faster than apply - coffeescript
-     1.71x faster than apply - crystal
-     1.75x faster than apply - makefile
-     1.76x faster than apply - fortran
-     1.76x faster than apply - lua
-     1.79x faster than apply - reasonml
-     1.80x faster than apply - kotlin
-     1.80x faster than apply - tex
-     1.82x faster than apply - solidity
-     1.83x faster than apply - agda
-     1.90x faster than apply - apl
-     1.91x faster than apply - less
-     1.92x faster than apply - mercury
-     2.04x faster than apply - perl
-     2.07x faster than apply - rust
-     2.09x faster than apply - elm
-     2.12x faster than apply - dart
-     2.14x faster than apply - haskell
-     2.19x faster than apply - toml
-     2.19x faster than apply - bash
-     2.20x faster than apply - ocaml
-     2.21x faster than apply - python
-     2.25x faster than apply - erlang
-     2.26x faster than apply - fish
-     2.27x faster than apply - c++
-     2.36x faster than apply - idris
-     2.37x faster than apply - fsharp
-     2.38x faster than apply - hcl
-     2.38x faster than apply - yaml
-     2.41x faster than apply - v
-     2.43x faster than apply - scala
-     2.43x faster than apply - c
-     2.46x faster than apply - vim
-     2.47x faster than apply - tcl
-     2.47x faster than apply - stylus
-     2.48x faster than apply - csharp
-     2.52x faster than apply - elixir
-     2.53x faster than apply - verilog
-     2.59x faster than apply - r
-     2.59x faster than apply - julia
-     2.64x faster than apply - protobuf
-     2.71x faster than apply - json
-     2.71x faster than apply - gleam
-     2.74x faster than apply - ruby
-     2.76x faster than apply - matlab
-     2.77x faster than apply - thrift
-     2.78x faster than apply - vhdl
-     2.80x faster than apply - css
-     2.80x faster than apply - nix
-     2.80x faster than apply - cobol
-     2.83x faster than apply - raku
-     2.83x faster than apply - terraform
-     2.87x faster than apply - javascript
-     2.93x faster than apply - php
-     2.99x faster than apply - awk
-     3.00x faster than apply - graphql
-     3.01x faster than apply - d
-     3.02x faster than apply - assembly
-     3.06x faster than apply - ada
-     3.07x faster than apply - go
-     3.08x faster than apply - jsx
-     3.15x faster than apply - groovy
-     3.23x faster than apply - swift
+  apply - forth
+     1.03x faster than apply - rescript
+     1.05x faster than apply - reasonml
+     1.07x faster than apply - sass
+     1.09x faster than apply - io
+     1.11x faster than apply - prolog
+     1.14x faster than apply - haxe
+     1.16x faster than apply - scheme
+     1.21x faster than apply - lean
+     1.22x faster than apply - diff
+     1.23x faster than apply - svelte
+     1.24x faster than apply - wasm
+     1.28x faster than apply - batch
+     1.29x faster than apply - sql
+     1.33x faster than apply - zsh
+     1.33x faster than apply - pug
+     1.33x faster than apply - markdown
+     1.36x faster than apply - purescript
+     1.39x faster than apply - dockerfile
+     1.40x faster than apply - ocaml
+     1.42x faster than apply - nim
+     1.45x faster than apply - roc
+     1.46x faster than apply - kotlin
+     1.53x faster than apply - makefile
+     1.55x faster than apply - solidity
+     1.55x faster than apply - xml
+     1.56x faster than apply - elisp
+     1.62x faster than apply - crystal
+     1.64x faster than apply - coq
+     1.66x faster than apply - lua
+     1.70x faster than apply - coffeescript
+     1.72x faster than apply - typescript
+     1.74x faster than apply - rust
+     1.75x faster than apply - perl
+     1.75x faster than apply - mercury
+     1.79x faster than apply - agda
+     1.80x faster than apply - haskell
+     1.91x faster than apply - tex
+     1.97x faster than apply - fsharp
+     1.97x faster than apply - elm
+     1.98x faster than apply - python
+     1.98x faster than apply - csharp
+     2.02x faster than apply - bash
+     2.03x faster than apply - toml
+     2.04x faster than apply - erlang
+     2.05x faster than apply - clojure
+     2.05x faster than apply - scala
+     2.05x faster than apply - idris
+     2.10x faster than apply - ini
+     2.15x faster than apply - elixir
+     2.27x faster than apply - stylus
+     2.35x faster than apply - dart
+     2.40x faster than apply - less
+     2.48x faster than apply - go
+     2.65x faster than apply - fortran
+     2.67x faster than apply - c
+     2.77x faster than apply - yaml
+     2.78x faster than apply - fish
+     2.95x faster than apply - json
+     2.97x faster than apply - julia
+     2.97x faster than apply - tcl
+     3.04x faster than apply - nix
+     3.07x faster than apply - css
+     3.08x faster than apply - factor
+     3.08x faster than apply - verilog
+     3.12x faster than apply - c++
+     3.15x faster than apply - ruby
+     3.18x faster than apply - terraform
+     3.18x faster than apply - awk
+     3.23x faster than apply - vim
+     3.23x faster than apply - protobuf
      3.25x faster than apply - odin
-     3.27x faster than apply - vue
-     3.31x faster than apply - zig
-     3.32x faster than apply - powershell
-     3.47x faster than apply - objective-c
-     3.49x faster than apply - factor
-     3.58x faster than apply - tsx
-     3.69x faster than apply - racket
-     4.77x faster than apply - java
-     4.89x faster than apply - html
-     4.91x faster than apply - astro
+     3.26x faster than apply - hcl
+     3.28x faster than apply - racket
+     3.29x faster than apply - javascript
+     3.32x faster than apply - v
+     3.34x faster than apply - matlab
+     3.35x faster than apply - vhdl
+     3.41x faster than apply - php
+     3.43x faster than apply - d
+     3.49x faster than apply - graphql
+     3.54x faster than apply - groovy
+     3.55x faster than apply - objective-c
+     3.55x faster than apply - jsx
+     3.72x faster than apply - powershell
+     3.80x faster than apply - r
+     3.83x faster than apply - thrift
+     3.83x faster than apply - zig
+     3.88x faster than apply - gleam
+     3.92x faster than apply - assembly
+     4.00x faster than apply - cobol
+     4.05x faster than apply - raku
+     4.23x faster than apply - apl
+     4.35x faster than apply - vue
+     4.36x faster than apply - ada
+     4.37x faster than apply - java
+     4.51x faster than apply - swift
+     5.31x faster than apply - html
+     6.63x faster than apply - astro
+     7.39x faster than apply - tsx
 
 group apply-scale
-| apply scale - 64 lines                  |         53.5 µs |        18,690 | ( 49.2 µs …   1.1 ms) |  51.3 µs | 123.2 µs | 146.4 µs |
-| apply scale - 256 lines                 |        664.3 µs |         1,505 | (629.5 µs … 882.7 µs) | 669.8 µs | 757.6 µs | 781.2 µs |
-| apply scale - 1024 lines                |         10.6 ms |          94.0 | (  9.8 ms …  24.0 ms) |  10.6 ms |  24.0 ms |  24.0 ms |
-| apply scale - 4096 lines                |        138.7 ms |           7.2 | (136.8 ms … 141.3 ms) | 139.0 ms | 141.3 ms | 141.3 ms |
+| apply scale - 64 lines                  |         18.5 µs |        53,980 | ( 16.5 µs … 321.8 µs) |  18.1 µs |  38.5 µs |  42.4 µs |
+| apply scale - 256 lines                 |         67.2 µs |        14,890 | ( 59.9 µs …   1.5 ms) |  64.8 µs | 169.2 µs | 206.4 µs |
+| apply scale - 1024 lines                |        252.5 µs |         3,960 | (232.9 µs … 701.0 µs) | 251.5 µs | 384.8 µs | 427.6 µs |
+| apply scale - 4096 lines                |          1.0 ms |         971.5 | (936.6 µs …   2.0 ms) |   1.0 ms |   1.5 ms |   1.8 ms |
 
 summary
   apply scale - 64 lines
-    12.41x faster than apply scale - 256 lines
-   198.80x faster than apply scale - 1024 lines
-     2591x faster than apply scale - 4096 lines
-
+     3.62x faster than apply scale - 256 lines
+    13.63x faster than apply scale - 1024 lines
+    55.57x faster than apply scale - 4096 lines
 
 file:///Volumes/MasterData/Project-Sandbox/N34-Diff/bench/stream.bench.ts
 
@@ -238,91 +231,90 @@ file:///Volumes/MasterData/Project-Sandbox/N34-Diff/bench/stream.bench.ts
 | -------------------------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
 
 group stream-corpus
-| stream corpus - 20 specs               |        335.3 µs |         2,982 | (305.2 µs … 898.2 µs) | 349.2 µs | 428.6 µs | 445.4 µs |
+| stream corpus - 21 specs               |        361.0 µs |         2,770 | (305.5 µs …   2.1 ms) | 344.8 µs | 972.2 µs |   1.2 ms |
 
 group stream-spec
-| stream - stream-bytebyte               |         85.7 µs |        11,670 | ( 79.0 µs … 173.0 µs) |  87.8 µs | 120.3 µs | 124.4 µs |
-| stream - stream-casemix                |          8.2 µs |       121,800 | (  8.1 µs …   8.3 µs) |   8.2 µs |   8.3 µs |   8.3 µs |
-| stream - stream-chaos                  |         14.5 µs |        69,000 | ( 13.2 µs … 100.3 µs) |  14.4 µs |  20.7 µs |  26.3 µs |
-| stream - stream-crlf                   |          8.0 µs |       125,000 | (  7.5 µs …  80.1 µs) |   8.0 µs |  10.2 µs |  13.1 µs |
-| stream - stream-delete                 |          6.4 µs |       155,400 | (  6.3 µs …   6.7 µs) |   6.4 µs |   6.7 µs |   6.7 µs |
-| stream - stream-empty                  |         10.7 µs |        93,840 | (  9.7 µs … 157.6 µs) |  10.6 µs |  17.5 µs |  20.5 µs |
-| stream - stream-fullwidth              |          8.9 µs |       112,200 | (  8.4 µs …   9.2 µs) |   9.1 µs |   9.2 µs |   9.2 µs |
-| stream - stream-latecb                 |          6.0 µs |       167,000 | (  5.8 µs …   6.4 µs) |   6.1 µs |   6.4 µs |   6.4 µs |
-| stream - stream-midbracket             |          7.8 µs |       128,800 | (  7.7 µs …   8.0 µs) |   7.8 µs |   8.0 µs |   8.0 µs |
-| stream - stream-midword                |          7.9 µs |       127,400 | (  7.8 µs …   8.1 µs) |   7.9 µs |   8.1 µs |   8.1 µs |
-| stream - stream-multihunk              |         14.1 µs |        70,710 | ( 13.1 µs … 115.1 µs) |  13.9 µs |  22.0 µs |  25.7 µs |
-| stream - stream-nbsp                   |          8.4 µs |       119,400 | (  8.3 µs …   8.5 µs) |   8.4 µs |   8.5 µs |   8.5 µs |
-| stream - stream-newline                |          9.9 µs |       100,500 | (  9.7 µs …  10.3 µs) |  10.0 µs |  10.3 µs |  10.3 µs |
-| stream - stream-noclose                |          7.6 µs |       130,900 | (  6.6 µs …  11.0 µs) |   7.5 µs |  11.0 µs |  11.0 µs |
-| stream - stream-nomarkers              |          7.5 µs |       132,800 | (  7.2 µs …   8.1 µs) |   7.7 µs |   8.1 µs |   8.1 µs |
-| stream - stream-notrailing             |         10.2 µs |        98,070 | (  9.4 µs … 161.6 µs) |  10.1 µs |  14.2 µs |  18.2 µs |
-| stream - stream-oneshot                |          8.1 µs |       124,200 | (  7.9 µs …   8.3 µs) |   8.1 µs |   8.3 µs |   8.3 µs |
-| stream - stream-parity                 |          6.0 µs |       167,800 | (  5.8 µs …   6.0 µs) |   6.0 µs |   6.0 µs |   6.0 µs |
-| stream - stream-pendingcr              |          7.2 µs |       139,100 | (  7.0 µs …   7.4 µs) |   7.3 µs |   7.4 µs |   7.4 µs |
-| stream - stream-smallchunks            |         70.8 µs |        14,130 | ( 63.7 µs …   1.2 ms) |  69.8 µs | 129.0 µs | 228.9 µs |
+| stream - stream-bytebyte               |         89.7 µs |        11,150 | ( 79.8 µs … 526.4 µs) |  87.2 µs | 233.4 µs | 262.3 µs |
+| stream - stream-casemix                |          8.2 µs |       122,500 | (  7.9 µs …   9.3 µs) |   8.3 µs |   9.3 µs |   9.3 µs |
+| stream - stream-chaos                  |         19.0 µs |        52,500 | ( 15.5 µs … 437.8 µs) |  17.5 µs |  54.2 µs | 102.6 µs |
+| stream - stream-crlf                   |          9.8 µs |       102,000 | (  8.3 µs …  12.1 µs) |  10.3 µs |  12.1 µs |  12.1 µs |
+| stream - stream-delete                 |          7.3 µs |       137,600 | (  6.9 µs …   7.7 µs) |   7.4 µs |   7.7 µs |   7.7 µs |
+| stream - stream-empty                  |         12.0 µs |        83,080 | (  9.8 µs … 542.8 µs) |  11.0 µs |  30.2 µs |  58.2 µs |
+| stream - stream-fullwidth              |          9.8 µs |       101,800 | (  8.4 µs …  11.7 µs) |  10.1 µs |  11.7 µs |  11.7 µs |
+| stream - stream-latecb                 |          6.5 µs |       154,400 | (  5.8 µs …   7.3 µs) |   6.6 µs |   7.3 µs |   7.3 µs |
+| stream - stream-midbracket             |          7.9 µs |       126,500 | (  7.6 µs …   9.5 µs) |   8.0 µs |   9.5 µs |   9.5 µs |
+| stream - stream-midword                |          9.1 µs |       109,500 | (  7.8 µs …  10.2 µs) |   9.9 µs |  10.2 µs |  10.2 µs |
+| stream - stream-multihunk              |         18.6 µs |        53,830 | ( 12.5 µs …   2.3 ms) |  14.8 µs |  88.9 µs | 132.6 µs |
+| stream - stream-nbsp                   |          8.3 µs |       119,800 | (  8.1 µs …   8.7 µs) |   8.5 µs |   8.7 µs |   8.7 µs |
+| stream - stream-newline                |         10.4 µs |        95,900 | (  9.0 µs … 367.0 µs) |  10.1 µs |  22.5 µs |  24.9 µs |
+| stream - stream-noclose                |          7.1 µs |       140,900 | (  6.6 µs …   8.1 µs) |   7.3 µs |   8.1 µs |   8.1 µs |
+| stream - stream-nomarkers              |          9.1 µs |       110,300 | (  8.8 µs …   9.4 µs) |   9.1 µs |   9.4 µs |   9.4 µs |
+| stream - stream-notrailing             |          6.9 µs |       144,600 | (  6.8 µs …   7.8 µs) |   6.9 µs |   7.8 µs |   7.8 µs |
+| stream - stream-oneshot                |          8.9 µs |       112,000 | (  8.6 µs …   9.5 µs) |   8.9 µs |   9.5 µs |   9.5 µs |
+| stream - stream-parity                 |          5.8 µs |       172,400 | (  5.7 µs …   6.6 µs) |   5.8 µs |   6.6 µs |   6.6 µs |
+| stream - stream-pendingcr              |          7.0 µs |       143,100 | (  6.8 µs …   7.8 µs) |   7.0 µs |   7.8 µs |   7.8 µs |
+| stream - stream-smallchunks            |         72.4 µs |        13,810 | ( 66.7 µs … 834.2 µs) |  70.9 µs | 126.5 µs | 274.0 µs |
+| stream - stream-split-crlf             |          8.0 µs |       124,900 | (  7.8 µs …   8.5 µs) |   8.1 µs |   8.5 µs |   8.5 µs |
 
 summary
   stream - stream-parity
-     1.00x faster than stream - stream-latecb
-     1.08x faster than stream - stream-delete
+     1.12x faster than stream - stream-latecb
+     1.19x faster than stream - stream-notrailing
      1.21x faster than stream - stream-pendingcr
-     1.26x faster than stream - stream-nomarkers
-     1.28x faster than stream - stream-noclose
-     1.30x faster than stream - stream-midbracket
-     1.32x faster than stream - stream-midword
-     1.34x faster than stream - stream-crlf
-     1.35x faster than stream - stream-oneshot
-     1.38x faster than stream - stream-casemix
-     1.41x faster than stream - stream-nbsp
-     1.50x faster than stream - stream-fullwidth
-     1.67x faster than stream - stream-newline
-     1.71x faster than stream - stream-notrailing
-     1.79x faster than stream - stream-empty
-     2.37x faster than stream - stream-multihunk
-     2.43x faster than stream - stream-chaos
-    11.88x faster than stream - stream-smallchunks
-    14.38x faster than stream - stream-bytebyte
+     1.22x faster than stream - stream-noclose
+     1.25x faster than stream - stream-delete
+     1.36x faster than stream - stream-midbracket
+     1.38x faster than stream - stream-split-crlf
+     1.41x faster than stream - stream-casemix
+     1.44x faster than stream - stream-nbsp
+     1.54x faster than stream - stream-oneshot
+     1.56x faster than stream - stream-nomarkers
+     1.57x faster than stream - stream-midword
+     1.69x faster than stream - stream-crlf
+     1.69x faster than stream - stream-fullwidth
+     1.80x faster than stream - stream-newline
+     2.08x faster than stream - stream-empty
+     3.20x faster than stream - stream-multihunk
+     3.28x faster than stream - stream-chaos
+    12.48x faster than stream - stream-smallchunks
+    15.46x faster than stream - stream-bytebyte
 
 group stream-scale-64
-| stream scale - 64 lines, chunk=1       |        155.9 µs |         6,416 | (139.7 µs … 840.2 µs) | 156.5 µs | 315.7 µs | 345.0 µs |
-| stream scale - 64 lines, chunk=16      |         62.8 µs |        15,920 | ( 57.8 µs …   1.7 ms) |  62.7 µs |  93.2 µs | 119.7 µs |
-| stream scale - 64 lines, chunk=256     |         55.0 µs |        18,180 | ( 52.0 µs … 223.0 µs) |  54.8 µs |  66.6 µs |  70.5 µs |
+| stream scale - 64 lines, chunk=1       |        120.9 µs |         8,269 | (110.8 µs …   1.7 ms) | 118.1 µs | 336.1 µs | 414.4 µs |
+| stream scale - 64 lines, chunk=16      |         27.3 µs |        36,670 | ( 24.2 µs … 327.5 µs) |  26.9 µs |  39.4 µs |  67.0 µs |
+| stream scale - 64 lines, chunk=256     |         20.9 µs |        47,790 | ( 19.1 µs … 198.8 µs) |  20.8 µs |  26.2 µs |  32.6 µs |
 
 summary
   stream scale - 64 lines, chunk=256
-     1.14x faster than stream scale - 64 lines, chunk=16
-     2.83x faster than stream scale - 64 lines, chunk=1
+     1.30x faster than stream scale - 64 lines, chunk=16
+     5.78x faster than stream scale - 64 lines, chunk=1
 
 group stream-scale-256
-| stream scale - 256 lines, chunk=1      |        784.4 µs |         1,275 | (729.2 µs …   1.2 ms) | 792.4 µs |   1.1 ms |   1.1 ms |
-| stream scale - 256 lines, chunk=16     |        722.4 µs |         1,384 | (641.7 µs …   3.5 ms) | 718.3 µs |   1.5 ms |   1.8 ms |
-| stream scale - 256 lines, chunk=256    |        695.7 µs |         1,437 | (636.4 µs …   1.1 ms) | 710.5 µs | 869.4 µs | 909.1 µs |
+| stream scale - 256 lines, chunk=1      |        173.3 µs |         5,770 | (159.5 µs … 763.0 µs) | 171.5 µs | 347.8 µs | 398.3 µs |
+| stream scale - 256 lines, chunk=16     |         74.8 µs |        13,360 | ( 69.6 µs … 414.1 µs) |  74.5 µs |  97.6 µs | 185.8 µs |
+| stream scale - 256 lines, chunk=256    |         69.2 µs |        14,460 | ( 63.5 µs … 269.7 µs) |  68.8 µs |  96.6 µs | 177.3 µs |
 
 summary
   stream scale - 256 lines, chunk=256
-     1.04x faster than stream scale - 256 lines, chunk=16
-     1.13x faster than stream scale - 256 lines, chunk=1
+     1.08x faster than stream scale - 256 lines, chunk=16
+     2.51x faster than stream scale - 256 lines, chunk=1
 
 group stream-scale-1024
-| stream scale - 1024 lines, chunk=1     |         10.6 ms |          94.7 | (  9.9 ms …  11.6 ms) |  10.9 ms |  11.6 ms |  11.6 ms |
-| stream scale - 1024 lines, chunk=16    |         10.2 ms |          98.4 | (  9.7 ms …  11.4 ms) |  10.3 ms |  11.4 ms |  11.4 ms |
-| stream scale - 1024 lines, chunk=256   |          9.9 ms |         100.5 | (  9.7 ms …  10.5 ms) |  10.0 ms |  10.5 ms |  10.5 ms |
+| stream scale - 1024 lines, chunk=1     |        377.9 µs |         2,646 | (345.1 µs … 945.3 µs) | 373.4 µs | 640.7 µs | 804.3 µs |
+| stream scale - 1024 lines, chunk=16    |        270.4 µs |         3,698 | (253.1 µs … 994.0 µs) | 270.4 µs | 430.9 µs | 457.2 µs |
+| stream scale - 1024 lines, chunk=256   |        271.4 µs |         3,685 | (247.5 µs …   1.5 ms) | 266.0 µs | 530.2 µs | 621.7 µs |
 
 summary
-  stream scale - 1024 lines, chunk=256
-     1.02x faster than stream scale - 1024 lines, chunk=16
-     1.06x faster than stream scale - 1024 lines, chunk=1
+  stream scale - 1024 lines, chunk=16
+     1.00x faster than stream scale - 1024 lines, chunk=256
+     1.40x faster than stream scale - 1024 lines, chunk=1
 
 group stream-scale-4096
-| stream scale - 4096 lines, chunk=1     |        133.5 ms |           7.5 | (132.1 ms … 136.4 ms) | 133.9 ms | 136.4 ms | 136.4 ms |
-| stream scale - 4096 lines, chunk=16    |        133.6 ms |           7.5 | (132.4 ms … 137.5 ms) | 133.9 ms | 137.5 ms | 137.5 ms |
-| stream scale - 4096 lines, chunk=256   |        134.5 ms |           7.4 | (132.0 ms … 139.0 ms) | 135.6 ms | 139.0 ms | 139.0 ms |
+| stream scale - 4096 lines, chunk=1     |          1.1 ms |         875.4 | (  1.1 ms …   1.5 ms) |   1.1 ms |   1.4 ms |   1.4 ms |
+| stream scale - 4096 lines, chunk=16    |          1.0 ms |         963.2 | (972.7 µs …   1.8 ms) |   1.0 ms |   1.4 ms |   1.4 ms |
+| stream scale - 4096 lines, chunk=256   |          1.0 ms |         959.6 | (965.8 µs …   2.0 ms) |   1.0 ms |   1.4 ms |   1.7 ms |
 
 summary
-  stream scale - 4096 lines, chunk=1
-     1.00x faster than stream scale - 4096 lines, chunk=16
-     1.01x faster than stream scale - 4096 lines, chunk=256
-
-
-/Volumes/MasterData/Project-Sandbox/N34-Diff | on main ?14                                                                               took 1m 59s | at 13:39:52
+  stream scale - 4096 lines, chunk=16
+     1.00x faster than stream scale - 4096 lines, chunk=256
+     1.10x faster than stream scale - 4096 lines, chunk=1

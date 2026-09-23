@@ -12,7 +12,7 @@ N34 is a fuzzy diff engine that applies LLM-generated edits to source text witho
 
 Inspired by [Morph Fast Apply](https://docs.morphllm.com/sdk/components/fast-apply) - the hosted merge model wired into agents like [Cursor](https://www.morphllm.com/blog/cursor-mcps), [Windsurf](https://www.morphllm.com/setup), [Claude Code](https://www.morphllm.com/setup), [Codex](https://www.morphllm.com/setup), [Amp](https://www.morphllm.com/setup), [OpenCode](https://github.com/morphllm/opencode-morph-plugin), [Kilo Code](https://www.youtube.com/watch?v=04_3foVQ89c), and [Antigravity](https://www.morphllm.com/setup). N34 keeps the same "apply LLM edits without line numbers" idea but runs fully in-process with zero dependencies and zero network calls, so it works the same in a browser tab, a Deno script, or an offline CLI.
 
-Local file editing at 669 apply/s and 99% accuracy across 100 languages with $0.00 cost, 0 network calls, 0 dependencies.
+Local file editing at 442 apply/s across 100 languages, and 691 apply/s at 4096 lines, with $0.00 cost, 0 network calls, 0 dependencies.
 
 ## Installation
 
@@ -72,10 +72,10 @@ console.log(result.after)
 
 console.log(result.diff)
 // [
-//   { type: 'equal',  value: 'function add(a, b) {', oldLine: 1, newLine: 1 },
-//   { type: 'delete', value: '  return a - b',       oldLine: 2, newLine: null },
-//   { type: 'add',    value: '  return a + b',       oldLine: null, newLine: 2 },
-//   { type: 'equal',  value: '}',                    oldLine: 3, newLine: 3 }
+//   { newLine: 1, oldLine: 1, type: 'equal', value: 'function add(a, b) {' },
+//   { newLine: null, oldLine: 2, type: 'delete', value: '  return a - b' },
+//   { newLine: 2, oldLine: null, type: 'add', value: '  return a + b' },
+//   { newLine: 3, oldLine: 3, type: 'equal', value: '}' }
 // ]
 ```
 
@@ -130,16 +130,16 @@ Default timeout is `60000` ms. Pass `Infinity` to disable.
 
 ```ts
 type ApplyResult = {
-  before: string // Original source text
   after: string // Patched output text
+  before: string // Original source text
   diff: DiffLine[] // Structured line-by-line diff
 }
 
 type DiffLine = {
+  newLine: number | null // Result line number (null for deletes)
+  oldLine: number | null // Source line number (null for adds)
   type: 'add' | 'delete' | 'equal'
   value: string // Line content
-  oldLine: number | null // Source line number (null for adds)
-  newLine: number | null // Result line number (null for deletes)
 }
 ```
 
@@ -157,8 +157,8 @@ The stream idle timeout resets on every `push()`. If no chunk arrives within the
 ```ts
 type StreamHandle = {
   callback(listener: ((patch: ApplyResult) => void) | null): void
-  push(chunk: string): void
   end(): void
+  push(chunk: string): void
 }
 ```
 
@@ -194,12 +194,6 @@ deno task test
 ```bash
 deno task bench
 ```
-
-<div align='center'>
-
-<img src="./assets/benchmark.webp" alt="N34 Diff Benchmark" width="100%">
-
-</div>
 
 Runnable end-to-end benchmarks live in [`bench/`](bench/):
 
