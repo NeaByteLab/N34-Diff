@@ -3,16 +3,16 @@
  * @description Result of matcher pinpointing hunk to source range.
  */
 export type AnchorHit = {
-  /** Zero-based source line where match starts */
-  sourceStart: number
-  /** Match end source line, exclusive */
-  sourceEnd: number
   /** Anchored line pair count */
   chainLength: number
   /** Zero-based hunk index of chain head */
   hunkHead: number
   /** Zero-based hunk index of chain tail */
   hunkTail: number
+  /** Match end source line, exclusive */
+  sourceEnd: number
+  /** Zero-based source line where match starts */
+  sourceStart: number
 }
 
 /**
@@ -40,10 +40,10 @@ export type ApplyOption = {
  * @description Bundle of original text, patched text, and diff.
  */
 export type ApplyResult = {
-  /** Original source before applying edit */
-  before: string
   /** Patched source after applying edit */
   after: string
+  /** Original source before applying edit */
+  before: string
   /** Structured line-by-line diff records */
   diff: DiffLine[]
 }
@@ -53,35 +53,24 @@ export type ApplyResult = {
  * @description Return shape of Pipeline.assemble merge step.
  */
 export type AssembleResult = {
-  /** Merged output lines in source order */
-  output: string[]
   /** Output line count per hunk end */
   hunkEnd: number[]
+  /** Merged output lines in source order */
+  output: string[]
 }
 
 /** Canonicalization mode used by the matcher */
 export type CanonMode = 'anchor' | 'soft'
 
 /**
- * Traversal frame during chain enumeration.
- * @description Path accumulator used by longest chain search.
- */
-export type ChainFrame = {
-  /** Node indices visited so far */
-  path: number[]
-  /** Current node index being expanded */
-  node: number
-}
-
-/**
  * Wall-clock deadline window for apply.
  * @description Start time paired with elapsed budget in milliseconds.
  */
 export type DeadlineWindow = {
-  /** performance.now value at start */
-  start: number
   /** Timeout budget in milliseconds */
   limit: number
+  /** performance.now value at start */
+  start: number
 }
 
 /**
@@ -89,14 +78,14 @@ export type DeadlineWindow = {
  * @description Add, delete, or equal line with position data.
  */
 export type DiffLine = {
+  /** Output line number or null */
+  newLine: number | null
+  /** Source line number or null */
+  oldLine: number | null
   /** Kind of change for this line */
   type: DiffType
   /** Line content without trailing newline */
   value: string
-  /** Source line number or null */
-  oldLine: number | null
-  /** Output line number or null */
-  newLine: number | null
 }
 
 /** Change kind for diff line */
@@ -134,14 +123,14 @@ export type HunkListener = (hunk: ApplyResult) => void
  * @description Source span paired with match quality tier.
  */
 export type HunkPlacement = {
-  /** Source span the hunk replaces */
-  spot: HunkSpot
-  /** Quality tier assigned to this placement */
-  quality: MatchQuality
   /** Zero-based first anchored hunk line */
   hunkHead: number
   /** Zero-based last anchored hunk line */
   hunkTail: number
+  /** Quality tier assigned to this placement */
+  quality: MatchQuality
+  /** Source span the hunk replaces */
+  spot: HunkSpot
 }
 
 /**
@@ -149,12 +138,12 @@ export type HunkPlacement = {
  * @description Line range plus new hunk lines to insert.
  */
 export type HunkSpot = {
-  /** Zero-based source line where span starts */
-  sourceStart: number
-  /** Span end source line, exclusive */
-  sourceEnd: number
   /** New lines emitted for this span */
   lines: string[]
+  /** Span end source line, exclusive */
+  sourceEnd: number
+  /** Zero-based source line where span starts */
+  sourceStart: number
 }
 
 /**
@@ -195,22 +184,24 @@ export type StreamHandle = {
  * @description Buffers, flags, and listener wiring for stream core.
  */
 export type StreamState = {
-  /** Pending text buffer between newlines */
-  buffer: string
-  /** True when last chunk ended CR */
-  pendingCR: boolean
-  /** Segmenter accumulating edit segments */
-  segmenter: EditSegmenter
   /** Patches queued before listener attached */
   backlog: ApplyResult[]
+  /** Pending text buffer between newlines */
+  buffer: string
   /** Registered patch listener or null */
   callback: HunkListener | null
   /** True when the stream is closed */
   closed: boolean
-  /** True after idle timeout elapsed */
-  timedOut: boolean
-  /** True after the first push arrived */
-  pushed: boolean
   /** True after a listener callback threw */
   errored: boolean
+  /** True when last chunk ended CR */
+  pendingCR: boolean
+  /** True after the first push arrived */
+  pushed: boolean
+  /** Unconsumed buffer start index */
+  scan: number
+  /** Segmenter accumulating edit segments */
+  segmenter: EditSegmenter
+  /** True after idle timeout elapsed */
+  timedOut: boolean
 }

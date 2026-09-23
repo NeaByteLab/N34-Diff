@@ -13,31 +13,29 @@ export default class Pipeline {
    * @param segments - Parsed edit segments
    * @param source - Source lines being patched
    * @param placements - Resolved hunk placements per segment
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @returns Merged output plus per-hunk end positions
    */
   static assemble(
     segments: Types.EditSegment[],
     source: string[],
     placements: Types.HunkPlacement[],
-    hunkAt: number[]
+    indexes: number[]
   ): Types.AssembleResult {
     const output: string[] = []
-    const hunkEnd: number[] = new Array(hunkAt.length)
+    const stops: number[] = new Array(indexes.length)
     const length = source.length
     let cursor = 0
-    let hunkStep = 0
+    let step = 0
     for (const segment of segments) {
       if (segment.kind === 'keep') {
-        const laterStart = hunkStep < hunkAt.length
-          ? placements[hunkAt[hunkStep]!]!.spot.sourceStart
-          : length
-        if (cursor < laterStart) {
-          for (let at = cursor; at < laterStart; at += 1) {
-            output.push(source[at]!)
+        const next = step < indexes.length ? placements[indexes[step]!]!.spot.sourceStart : length
+        if (cursor < next) {
+          for (let mark = cursor; mark < next; mark += 1) {
+            output.push(source[mark]!)
           }
-          cursor = laterStart
-        } else if (hunkStep > 0 && hunkStep < hunkAt.length) {
+          cursor = next
+        } else if (step > 0 && step < indexes.length) {
           for (const indent of segment.lines) {
             if (indent.length > 0) {
               output.push(indent)
@@ -46,20 +44,20 @@ export default class Pipeline {
         }
         continue
       }
-      const spot = placements[hunkAt[hunkStep]!]!.spot
-      for (let at = cursor; at < spot.sourceStart; at += 1) {
-        output.push(source[at]!)
+      const spot = placements[indexes[step]!]!.spot
+      for (let mark = cursor; mark < spot.sourceStart; mark += 1) {
+        output.push(source[mark]!)
       }
       const span = spot.sourceEnd - spot.sourceStart
-      for (let row = 0; row < spot.lines.length; row += 1) {
-        const target = span === 0 ? '' : source[spot.sourceStart + Math.min(row, span - 1)]!
-        output.push(Quote.restyle(spot.lines[row]!, target))
+      for (let rank = 0; rank < spot.lines.length; rank += 1) {
+        const target = span === 0 ? '' : source[spot.sourceStart + Math.min(rank, span - 1)]!
+        output.push(Quote.restyle(spot.lines[rank]!, target))
       }
       cursor = Math.max(cursor, spot.sourceEnd)
-      hunkEnd[hunkStep] = output.length
-      hunkStep += 1
+      stops[step] = output.length
+      step += 1
     }
-    return { output, hunkEnd }
+    return { hunkEnd: stops, output }
   }
 
   /**
@@ -87,13 +85,13 @@ export default class Pipeline {
    * @returns Ordered indexes of hunk segments
    */
   static collectHunks(segments: Types.EditSegment[]): number[] {
-    const hunkAt: number[] = []
+    const indexes: number[] = []
     for (let index = 0; index < segments.length; index += 1) {
       if (segments[index]!.kind === 'hunk') {
-        hunkAt.push(index)
+        indexes.push(index)
       }
     }
-    return hunkAt
+    return indexes
   }
 
   /**
@@ -102,16 +100,16 @@ export default class Pipeline {
    * @param placements - Resolved placements array by segment index
    * @param segments - Parsed edit segments
    * @param source - Source lines used for edge alignment
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    */
   static extendBoundary(
     placements: (Types.HunkPlacement | null)[],
     segments: Types.EditSegment[],
     source: string[],
-    hunkAt: number[]
+    indexes: number[]
   ): void {
-    const first = hunkAt[0]!
-    const last = hunkAt[hunkAt.length - 1]!
+    const first = indexes[0]!
+    const last = indexes[indexes.length - 1]!
     if (segments[0]!.kind !== 'keep' && placements[first]!.quality !== 'gapfill') {
       placements[first]!.spot.sourceStart = 0
     }
@@ -126,53 +124,53 @@ export default class Pipeline {
    * @param placements - Resolved placements array by segment index
    * @param segments - Parsed edit segments
    * @param source - Source lines used for gap derivation
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @throws RangeError When neighbor edges yield a negative span
    */
   static fillGaps(
     placements: (Types.HunkPlacement | null)[],
     segments: Types.EditSegment[],
     source: string[],
-    hunkAt: number[]
+    indexes: number[]
   ): void {
     const length = source.length
-    for (let step = 0; step < hunkAt.length; step += 1) {
-      const index = hunkAt[step]!
+    for (let step = 0; step < indexes.length; step += 1) {
+      const index = indexes[step]!
       if (placements[index]) {
         continue
       }
-      const priorKeep = index > 0 && segments[index - 1]!.kind === 'keep'
-      const laterKeep = index + 1 < segments.length && segments[index + 1]!.kind === 'keep'
-      const priorEnd = this.neighborEdge(placements, hunkAt, step, -1)
-      const laterStart = this.neighborEdge(placements, hunkAt, step, 1)
+      const before = index > 0 && segments[index - 1]!.kind === 'keep'
+      const after = index + 1 < segments.length && segments[index + 1]!.kind === 'keep'
+      const tail = this.neighborEdge(placements, indexes, step, -1)
+      const next = this.neighborEdge(placements, indexes, step, 1)
       let start: number
       let end: number
-      if (priorEnd === null && laterStart === null && priorKeep && laterKeep) {
+      if (tail === null && next === null && before && after) {
         start = 0
         end = length
       } else {
-        start = priorEnd ?? (priorKeep ? length : 0)
-        end = laterStart ?? (laterKeep ? 0 : length)
+        start = tail ?? (before ? length : 0)
+        end = next ?? (after ? 0 : length)
         if (end < start) {
           throw new RangeError(
-            `apply hunk ${step} derived a negative span [${start}, ${end}) from reordered neighbors`
+            `apply hunk ${step} derived a negative span from ${start} to ${end} from reordered neighbors`
           )
         }
       }
-      if (priorKeep && start < end && Matcher.isBlank(source[start] ?? '')) {
+      if (before && start < end && Matcher.isBlank(source[start] ?? '')) {
         start += 1
       }
-      if (laterKeep && end > start && Matcher.isBlank(source[end - 1] ?? '')) {
+      if (after && end > start && Matcher.isBlank(source[end - 1] ?? '')) {
         end -= 1
       }
       if (end < start) {
         end = start
       }
       placements[index] = {
-        spot: { sourceStart: start, sourceEnd: end, lines: segments[index]!.lines },
-        quality: 'gapfill',
         hunkHead: 0,
-        hunkTail: segments[index]!.lines.length - 1
+        hunkTail: segments[index]!.lines.length - 1,
+        quality: 'gapfill',
+        spot: { lines: segments[index]!.lines, sourceEnd: end, sourceStart: start }
       }
     }
   }
@@ -183,30 +181,30 @@ export default class Pipeline {
    * @param spot - Hunk spot being widened backward
    * @param source - Source lines to compare against
    * @param hunk - Hunk lines used for kin comparison
-   * @param hunkProbe - Starting hunk index moving backward
+   * @param probe - Starting hunk index moving backward
    * @param floor - Lower bound the source cursor may reach
    */
   static growBackward(
     spot: Types.HunkSpot,
     source: string[],
     hunk: string[],
-    hunkProbe: number,
+    probe: number,
     floor: number
   ): void {
-    let hunkCursor = hunkProbe
-    while (hunkCursor >= 0 && spot.sourceStart > floor) {
-      const probeIndex = spot.sourceStart - 1
-      const probe = source[probeIndex]!
-      const hunkLine = hunk[hunkCursor]!
-      if (Matcher.kin(probe, hunkLine)) {
+    let cursor = probe
+    while (cursor >= 0 && spot.sourceStart > floor) {
+      const mark = spot.sourceStart - 1
+      const line = source[mark]!
+      const goal = hunk[cursor]!
+      if (Matcher.kin(line, goal)) {
         spot.sourceStart -= 1
-        hunkCursor -= 1
+        cursor -= 1
         continue
       }
-      const hopIndex = probeIndex - 1
-      if (Matcher.isBlank(probe) && hopIndex >= floor && Matcher.kin(source[hopIndex]!, hunkLine)) {
+      const hop = mark - 1
+      if (Matcher.isBlank(line) && hop >= floor && Matcher.kin(source[hop]!, goal)) {
         spot.sourceStart -= 2
-        hunkCursor -= 1
+        cursor -= 1
         continue
       }
       return
@@ -219,34 +217,34 @@ export default class Pipeline {
    * @param spot - Hunk spot being widened forward
    * @param source - Source lines to compare against
    * @param hunk - Hunk lines used for kin comparison
-   * @param hunkProbe - Starting hunk index moving forward
+   * @param probe - Starting hunk index moving forward
    * @param ceiling - Upper bound the source cursor may reach
    */
   static growForward(
     spot: Types.HunkSpot,
     source: string[],
     hunk: string[],
-    hunkProbe: number,
+    probe: number,
     ceiling: number
   ): void {
-    let hunkCursor = hunkProbe
-    while (hunkCursor < hunk.length && spot.sourceEnd < ceiling) {
-      const probeIndex = spot.sourceEnd
-      const probe = source[probeIndex]!
-      const hunkLine = hunk[hunkCursor]!
-      if (Matcher.kin(probe, hunkLine)) {
+    let cursor = probe
+    while (cursor < hunk.length && spot.sourceEnd < ceiling) {
+      const mark = spot.sourceEnd
+      const line = source[mark]!
+      const goal = hunk[cursor]!
+      if (Matcher.kin(line, goal)) {
         spot.sourceEnd += 1
-        hunkCursor += 1
+        cursor += 1
         continue
       }
-      const hopIndex = probeIndex + 1
+      const hop = mark + 1
       if (
-        Matcher.isBlank(probe) &&
-        hopIndex < ceiling &&
-        Matcher.kin(source[hopIndex]!, hunkLine)
+        Matcher.isBlank(line) &&
+        hop < ceiling &&
+        Matcher.kin(source[hop]!, goal)
       ) {
         spot.sourceEnd += 2
-        hunkCursor += 1
+        cursor += 1
         continue
       }
       return
@@ -258,7 +256,7 @@ export default class Pipeline {
    * @description Runs anchor and fuzzy passes then repairs the map.
    * @param segments - Parsed edit segments
    * @param source - Source lines being patched
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @param deadline - Deadline window or null to skip check
    * @returns Placements array aligned with segments length
    * @throws SyntaxError When a hunk cannot be anchored or overlaps
@@ -267,60 +265,56 @@ export default class Pipeline {
   static locate(
     segments: Types.EditSegment[],
     source: string[],
-    hunkAt: number[],
+    indexes: number[],
     deadline: Types.DeadlineWindow | null
   ): Types.HunkPlacement[] {
     const length = source.length
-    const sourceAnchor = source.map((line) => Matcher.canonical(line, 'anchor'))
-    let canonCache: string[] | null = null
-    const resolveCanon = (): string[] => {
-      if (canonCache === null) {
-        canonCache = source.map((line) => Matcher.canonical(line, 'soft'))
-      }
-      return canonCache
-    }
+    const anchor = source.map((line) => Matcher.canonical(line, 'anchor'))
+    const catalog = Matcher.anchorIndex(anchor)
+    let cache: string[] | null = null
     const placements: (Types.HunkPlacement | null)[] = new Array(segments.length).fill(null)
-    if (segments.length === 1 && hunkAt.length === 1) {
-      const hunk = segments[hunkAt[0]!]!.lines
-      placements[hunkAt[0]!] = {
-        spot: { sourceStart: 0, sourceEnd: length, lines: hunk },
-        quality: 'full',
+    if (segments.length === 1 && indexes.length === 1) {
+      const hunk = segments[indexes[0]!]!.lines
+      placements[indexes[0]!] = {
         hunkHead: 0,
-        hunkTail: hunk.length - 1
+        hunkTail: hunk.length - 1,
+        quality: 'full',
+        spot: { lines: hunk, sourceEnd: length, sourceStart: 0 }
       }
       return placements as Types.HunkPlacement[]
     }
     let cursor = 0
-    for (let step = 0; step < hunkAt.length; step += 1) {
+    for (let step = 0; step < indexes.length; step += 1) {
       this.checkDeadline(deadline)
-      const index = hunkAt[step]!
+      const index = indexes[step]!
       const hunk = segments[index]!.lines
-      const hunkAnchor = hunk.map((line) => Matcher.canonical(line, 'anchor'))
-      const hit = Matcher.anchor(hunk, hunkAnchor, sourceAnchor, cursor, length) ??
-        Matcher.fuzzy(
+      const exact = hunk.map((line) => Matcher.canonical(line, 'anchor'))
+      const soft = hunk.map((line) => Matcher.canonical(line, 'soft'))
+      const hit = Matcher.anchor(hunk, exact, catalog, cursor, length) ??
+        (Matcher.lengthReject(anchor, exact, cursor, length) ? null : Matcher.fuzzy(
           hunk,
-          hunk.map((line) => Matcher.canonical(line, 'soft')),
-          resolveCanon(),
+          soft,
+          cache ??= source.map((line) => Matcher.canonical(line, 'soft')),
           cursor,
           length
-        )
+        ))
       if (!hit) {
         continue
       }
-      const nonBlank = Matcher.countLive(hunk)
+      const live = Matcher.countLive(hunk)
       placements[index] = {
-        spot: { sourceStart: hit.sourceStart, sourceEnd: hit.sourceEnd, lines: hunk },
-        quality: nonBlank > 0 && hit.chainLength >= nonBlank ? 'full' : 'partial',
         hunkHead: hit.hunkHead,
-        hunkTail: hit.hunkTail
+        hunkTail: hit.hunkTail,
+        quality: live > 0 && hit.chainLength >= live ? 'full' : 'partial',
+        spot: { lines: hunk, sourceEnd: hit.sourceEnd, sourceStart: hit.sourceStart }
       }
       cursor = hit.sourceEnd
     }
-    this.rejectUnresolvable(placements, segments, source, hunkAt)
-    this.fillGaps(placements, segments, source, hunkAt)
-    this.stretch(placements, segments, source, hunkAt)
-    this.extendBoundary(placements, segments, source, hunkAt)
-    this.rejectSpans(placements, hunkAt)
+    this.rejectUnresolvable(placements, segments, source, indexes)
+    this.fillGaps(placements, segments, source, indexes)
+    this.stretch(placements, segments, source, indexes)
+    this.extendBoundary(placements, segments, source, indexes)
+    this.rejectSpans(placements, indexes)
     return placements as Types.HunkPlacement[]
   }
 
@@ -328,19 +322,19 @@ export default class Pipeline {
    * Find neighbor edge in placements.
    * @description Scans direction until a resolved placement appears.
    * @param placements - Resolved placements array by segment index
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @param step - Starting hunk step to scan from
-   * @param direction - Scan direction over hunkAt
+   * @param direction - Scan direction over indexes
    * @returns Neighbor source edge or null when none found
    */
   static neighborEdge(
     placements: (Types.HunkPlacement | null)[],
-    hunkAt: number[],
+    indexes: number[],
     step: number,
     direction: Types.ScanDirection
   ): number | null {
-    for (let scan = step + direction; scan >= 0 && scan < hunkAt.length; scan += direction) {
-      const placement = placements[hunkAt[scan]!]
+    for (let scan = step + direction; scan >= 0 && scan < indexes.length; scan += direction) {
+      const placement = placements[indexes[scan]!]
       if (placement) {
         return direction === -1 ? placement.spot.sourceEnd : placement.spot.sourceStart
       }
@@ -352,21 +346,21 @@ export default class Pipeline {
    * Reject reordered or overlapping hunk spans.
    * @description Guards apply against unsound placement orderings.
    * @param placements - Resolved placements array by segment index
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @throws SyntaxError When hunks reorder or overlap in source
    */
   static rejectSpans(
     placements: (Types.HunkPlacement | null)[],
-    hunkAt: number[]
+    indexes: number[]
   ): void {
-    for (let index = 1; index < hunkAt.length; index += 1) {
-      const prior = placements[hunkAt[index - 1]!]!.spot
-      const current = placements[hunkAt[index]!]!.spot
+    for (let index = 1; index < indexes.length; index += 1) {
+      const prior = placements[indexes[index - 1]!]!.spot
+      const current = placements[indexes[index]!]!.spot
       if (current.sourceStart < prior.sourceStart) {
         throw new SyntaxError(
-          `apply hunk ${index} at [${current.sourceStart}, ${current.sourceEnd}) lands before hunk ${
+          `apply hunk ${index} at ${current.sourceStart} to ${current.sourceEnd} lands before hunk ${
             index - 1
-          } at [${prior.sourceStart}, ${prior.sourceEnd})`
+          } at ${prior.sourceStart} to ${prior.sourceEnd}`
         )
       }
       if (
@@ -377,7 +371,7 @@ export default class Pipeline {
         throw new SyntaxError(
           `apply hunks ${
             index - 1
-          } and ${index} overlap on source span [${prior.sourceStart}, ${prior.sourceEnd}) vs [${current.sourceStart}, ${current.sourceEnd})`
+          } and ${index} overlap on source span ${prior.sourceStart} to ${prior.sourceEnd} vs ${current.sourceStart} to ${current.sourceEnd}`
         )
       }
     }
@@ -389,28 +383,28 @@ export default class Pipeline {
    * @param placements - Resolved placements array by segment index
    * @param segments - Parsed edit segments
    * @param source - Source lines used for anchor context
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    * @throws SyntaxError When a hunk cannot be anchored anywhere
    */
   static rejectUnresolvable(
     placements: (Types.HunkPlacement | null)[],
     segments: Types.EditSegment[],
     source: string[],
-    hunkAt: number[]
+    indexes: number[]
   ): void {
     if (source.length === 0) {
       return
     }
-    for (let step = 0; step < hunkAt.length; step += 1) {
-      const index = hunkAt[step]!
+    for (let step = 0; step < indexes.length; step += 1) {
+      const index = indexes[step]!
       if (placements[index]) {
         continue
       }
-      const priorKeep = index > 0 && segments[index - 1]!.kind === 'keep'
-      const laterKeep = index + 1 < segments.length && segments[index + 1]!.kind === 'keep'
-      const priorEnd = this.neighborEdge(placements, hunkAt, step, -1)
-      const laterStart = this.neighborEdge(placements, hunkAt, step, 1)
-      if (!priorKeep && !laterKeep && priorEnd === null && laterStart === null) {
+      const before = index > 0 && segments[index - 1]!.kind === 'keep'
+      const after = index + 1 < segments.length && segments[index + 1]!.kind === 'keep'
+      const tail = this.neighborEdge(placements, indexes, step, -1)
+      const next = this.neighborEdge(placements, indexes, step, 1)
+      if (!before && !after && tail === null && next === null) {
         const preview = segments[index]!.lines.slice(0, 3).join('\n')
         throw new SyntaxError(
           `apply hunk ${step} has zero anchor and zero neighbor keeps. Preview\n${preview}`
@@ -431,7 +425,7 @@ export default class Pipeline {
       return { clear: () => {}, reset: () => {} }
     }
     let handle: ReturnType<typeof setTimeout> | null = null
-    const arm = (): void => {
+    const reset = (): void => {
       if (handle !== null) {
         clearTimeout(handle)
       }
@@ -441,7 +435,7 @@ export default class Pipeline {
         unref.call(handle)
       }
     }
-    arm()
+    reset()
     return {
       clear: () => {
         if (handle !== null) {
@@ -449,7 +443,7 @@ export default class Pipeline {
           handle = null
         }
       },
-      reset: arm
+      reset
     }
   }
 
@@ -459,24 +453,24 @@ export default class Pipeline {
    * @param placements - Resolved placements array by segment index
    * @param segments - Parsed edit segments
    * @param source - Source lines being patched
-   * @param hunkAt - Indexes of hunk segments inside segments
+   * @param indexes - Indexes of hunk segments inside segments
    */
   static stretch(
     placements: (Types.HunkPlacement | null)[],
     segments: Types.EditSegment[],
     source: string[],
-    hunkAt: number[]
+    indexes: number[]
   ): void {
     const length = source.length
-    for (let step = 0; step < hunkAt.length; step += 1) {
-      const index = hunkAt[step]!
+    for (let step = 0; step < indexes.length; step += 1) {
+      const index = indexes[step]!
       const placement = placements[index]!
       if (placement.quality !== 'full' || placement.spot.sourceEnd <= placement.spot.sourceStart) {
         continue
       }
       const hunk = segments[index]!.lines
       if (index > 0 && segments[index - 1]!.kind === 'keep' && placement.hunkHead > 0) {
-        const floor = this.neighborEdge(placements, hunkAt, step, -1) ?? 0
+        const floor = this.neighborEdge(placements, indexes, step, -1) ?? 0
         this.growBackward(placement.spot, source, hunk, placement.hunkHead - 1, floor)
       }
       if (
@@ -484,7 +478,7 @@ export default class Pipeline {
         segments[index + 1]!.kind === 'keep' &&
         placement.hunkTail < hunk.length - 1
       ) {
-        const ceiling = this.neighborEdge(placements, hunkAt, step, 1) ?? length
+        const ceiling = this.neighborEdge(placements, indexes, step, 1) ?? length
         this.growForward(placement.spot, source, hunk, placement.hunkTail + 1, ceiling)
       }
     }

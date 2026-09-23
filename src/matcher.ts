@@ -6,8 +6,6 @@ import Unicode from '@app/unicode.ts'
  * @description Combines anchor chaining with edit-distance fallback.
  */
 export default class Matcher {
-  /** Cap on enumerated chain paths */
-  private static readonly chainLimit = 4096
   /** Minimum similarity accepted by fuzzy match */
   private static readonly fuzzyThreshold = 0.85
   /** Minimum similarity accepted by kin check */
@@ -19,27 +17,188 @@ export default class Matcher {
    * Anchor a hunk to source.
    * @description Builds pairs and picks longest ordered chain.
    * @param hunk - Hunk lines to place inside source
-   * @param hunkAnchor - Canonicalized hunk lines for anchor mode
-   * @param sourceAnchor - Canonicalized source lines for anchor mode
+   * @param anchor - Canonicalized hunk lines for anchor mode
+   * @param catalog - Canonical line index built from the source
    * @param cursor - Lower search bound in source
    * @param ceiling - Upper search bound in source
    * @returns Anchor hit describing the match or null
    */
   static anchor(
     hunk: string[],
-    hunkAnchor: string[],
-    sourceAnchor: string[],
+    anchor: string[],
+    catalog: Map<string, number[]>,
     cursor: number,
     ceiling: number
   ): Types.AnchorHit | null {
     if (hunk.length === 0 || cursor >= ceiling) {
       return null
     }
-    const pairs = this.buildPair(hunk, hunkAnchor, sourceAnchor, cursor, ceiling)
+    const pairs: Types.AnchorPair[] = []
+    for (let mark = 0; mark < hunk.length; mark += 1) {
+      if (this.isBlank(hunk[mark]!)) {
+        continue
+      }
+      const hits = catalog.get(anchor[mark]!)
+      if (!hits) {
+        continue
+      }
+      for (const offset of hits) {
+        if (offset >= cursor && offset < ceiling) {
+          pairs.push({ hunkIndex: mark, sourceIndex: offset })
+        }
+      }
+    }
     if (pairs.length === 0) {
       return null
     }
-    return this.chooseChain(pairs, hunk)
+    const size = pairs.length
+    const lengths = new Int32Array(size).fill(1)
+    const previous = new Int32Array(size).fill(-1)
+    let span = 0
+    for (const pair of pairs) {
+      if (pair.sourceIndex > span) {
+        span = pair.sourceIndex
+      }
+    }
+    const dense = size * 4 > span
+    const ranks = dense
+      ? null
+      : [...new Set(pairs.map((pair) => pair.sourceIndex))].sort((origin, goal) => origin - goal)
+    const rank = dense ? null : new Map(ranks!.map((offset, slot) => [offset, slot]))
+    let leaf = 1
+    const limit = dense ? span + 1 : ranks!.length
+    while (leaf < limit) {
+      leaf <<= 1
+    }
+    const winner = new Int32Array(leaf << 1).fill(-1)
+    const prefer = (origin: number, goal: number): boolean =>
+      origin >= 0 &&
+      (goal < 0 || lengths[origin]! > lengths[goal]! ||
+        (lengths[origin] === lengths[goal] && origin < goal))
+    let longest = 1
+    let group = 0
+    let hop = 0
+    while (group < size) {
+      let stop = group + 1
+      while (stop < size && pairs[stop]!.hunkIndex === pairs[group]!.hunkIndex) {
+        stop += 1
+      }
+      for (let index = group; index < stop; index += 1) {
+        let bound = pairs[index]!.sourceIndex
+        if (!dense) {
+          while (hop < ranks!.length && ranks![hop]! < bound) {
+            hop += 1
+          }
+          bound = hop
+        }
+        let origin = leaf
+        let goal = leaf + bound
+        let best = -1
+        while (origin < goal) {
+          if ((origin & 1) === 1) {
+            if (prefer(winner[origin]!, best)) {
+              best = winner[origin]!
+            }
+            origin += 1
+          }
+          if ((goal & 1) === 1) {
+            goal -= 1
+            if (prefer(winner[goal]!, best)) {
+              best = winner[goal]!
+            }
+          }
+          origin >>= 1
+          goal >>= 1
+        }
+        const prior = best
+        if (prior !== -1) {
+          lengths[index] = lengths[prior]! + 1
+          previous[index] = prior
+        }
+        if (lengths[index]! > longest) {
+          longest = lengths[index]!
+        }
+      }
+      for (let index = group; index < stop; index += 1) {
+        const slot = leaf +
+          (dense ? pairs[index]!.sourceIndex : rank!.get(pairs[index]!.sourceIndex)!)
+        if (prefer(index, winner[slot]!)) {
+          winner[slot] = index
+        }
+      }
+      for (let slot = leaf - 1; slot > 0; slot -= 1) {
+        const origin = winner[slot << 1]!
+        const goal = winner[(slot << 1) + 1]!
+        winner[slot] = prefer(origin, goal) ? origin : goal
+      }
+      group = stop
+    }
+    let chosen = -1
+    let tightest = Number.POSITIVE_INFINITY
+    let earliest = Number.POSITIVE_INFINITY
+    for (let index = 0; index < size; index += 1) {
+      if (lengths[index] !== longest) {
+        continue
+      }
+      let link = index
+      let head = index
+      while (previous[link] !== -1) {
+        link = previous[link]!
+        head = link
+      }
+      const tightness = pairs[index]!.sourceIndex - pairs[head]!.sourceIndex + 1
+      const origin = pairs[head]!.sourceIndex
+      if (tightness < tightest || (tightness === tightest && origin < earliest)) {
+        tightest = tightness
+        earliest = origin
+        chosen = index
+      }
+    }
+    if (chosen === -1) {
+      return null
+    }
+    const live = this.countLive(hunk)
+    if (longest < 2 && (live === 0 ? 0 : longest / live) < this.minCoverage) {
+      return null
+    }
+    let link = chosen
+    let origin = chosen
+    while (previous[link] !== -1) {
+      link = previous[link]!
+      origin = link
+    }
+    const head = pairs[origin]!
+    const tail = pairs[chosen]!
+    return {
+      chainLength: longest,
+      hunkHead: head.hunkIndex,
+      hunkTail: tail.hunkIndex,
+      sourceEnd: tail.sourceIndex + 1,
+      sourceStart: head.sourceIndex
+    }
+  }
+
+  /**
+   * Index anchor lines once per apply.
+   * @description Maps each canonical line to its source positions.
+   * @param anchor - Canonicalized source lines for anchor mode
+   * @returns Map from canonical line to ascending source indexes
+   */
+  static anchorIndex(anchor: string[]): Map<string, number[]> {
+    const index = new Map<string, number[]>()
+    for (let cursor = 0; cursor < anchor.length; cursor += 1) {
+      const needle = anchor[cursor]!
+      if (needle.length === 0) {
+        continue
+      }
+      const hits = index.get(needle)
+      if (hits) {
+        hits.push(cursor)
+      } else {
+        index.set(needle, [cursor])
+      }
+    }
+    return index
   }
 
   /**
@@ -50,6 +209,66 @@ export default class Matcher {
    * @returns Canonicalized line string
    */
   static canonical(line: string, mode: Types.CanonMode): string {
+    if (mode === 'anchor') {
+      let folded = ''
+      let start = 0
+      let ascii = true
+      for (let index = 0; index < line.length; index += 1) {
+        const code = line.charCodeAt(index)
+        if (code >= 0x80) {
+          ascii = false
+          break
+        }
+        if (code <= 0x20 || code === 0x22 || code === 0x27) {
+          folded = `${folded}${line.slice(start, index)}`
+          if (code === 0x22 || code === 0x27) {
+            folded = `${folded}"`
+          }
+          start = index + 1
+        }
+      }
+      if (ascii) {
+        return start === 0 ? line : `${folded}${line.slice(start)}`
+      }
+    } else {
+      let first = 0
+      while (first < line.length && line.charCodeAt(first) <= 0x20) {
+        first += 1
+      }
+      let last = line.length
+      while (last > first && line.charCodeAt(last - 1) <= 0x20) {
+        last -= 1
+      }
+      let folded = ''
+      let start = first
+      let gap = false
+      let ascii = true
+      for (let index = first; index < last; index += 1) {
+        const code = line.charCodeAt(index)
+        if (code >= 0x80) {
+          ascii = false
+          break
+        }
+        if (code === 0x22 || code === 0x27) {
+          folded = `${folded}${line.slice(start, index)}"`
+          start = index + 1
+          gap = false
+        } else if (code === 0x09 || code === 0x20) {
+          if (!gap) {
+            folded = `${folded}${line.slice(start, index)} `
+          }
+          start = index + 1
+          gap = true
+        } else {
+          gap = false
+        }
+      }
+      if (ascii) {
+        return start === first && folded === ''
+          ? line.slice(first, last)
+          : `${folded}${line.slice(start, last)}`
+      }
+    }
     const folded = Unicode.normalize(line).replace(/["']/g, '"')
     return mode === 'anchor' ? folded.replace(/\s+/g, '') : folded.replace(/[ \t]+/g, ' ').trim()
   }
@@ -74,16 +293,16 @@ export default class Matcher {
    * Fuzzy-match a hunk against source window.
    * @description Scans windows and picks the highest similarity.
    * @param hunk - Original hunk lines used for size only
-   * @param hunkCanon - Canonicalized hunk lines in soft mode
-   * @param sourceCanon - Canonicalized source lines in soft mode
+   * @param canon - Canonicalized hunk lines in soft mode
+   * @param source - Canonicalized source lines in soft mode
    * @param cursor - Lower search bound in source
    * @param ceiling - Upper search bound in source
    * @returns Anchor hit at the best window or null
    */
   static fuzzy(
     hunk: string[],
-    hunkCanon: string[],
-    sourceCanon: string[],
+    canon: string[],
+    source: string[],
     cursor: number,
     ceiling: number
   ): Types.AnchorHit | null {
@@ -91,14 +310,71 @@ export default class Matcher {
     if (size === 0 || ceiling - cursor < size) {
       return null
     }
-    const joined = hunkCanon.join('\n')
+    const joined = canon.join('\n')
     let start = -1
     let score = -1
-    for (let offset = cursor; offset <= ceiling - size; offset += 1) {
-      const similarity = this.similarity(
-        sourceCanon.slice(offset, offset + size).join('\n'),
-        joined
-      )
+    const last = ceiling - size
+    for (let offset = cursor; offset <= last; offset += 1) {
+      const window = source.slice(offset, offset + size).join('\n')
+      const span = Math.max(window.length, joined.length)
+      if (span === 0) {
+        if (score < 1) {
+          score = 1
+          start = offset
+        }
+        continue
+      }
+      const limit = Math.floor((1 - Math.max(score, this.fuzzyThreshold)) * span)
+      const edits = ((): number => {
+        if (Math.abs(window.length - joined.length) > limit) {
+          return limit + 1
+        }
+        if (window === joined) {
+          return 0
+        }
+        const width = joined.length + 1
+        let prior = new Int32Array(width)
+        let active = new Int32Array(width)
+        for (let column = 0; column < width; column += 1) {
+          prior[column] = column
+        }
+        for (let row = 1; row <= window.length; row += 1) {
+          active[0] = row
+          const code = window.charCodeAt(row - 1)
+          const from = Math.max(1, row - limit)
+          const to = Math.min(joined.length, row + limit)
+          let best = row
+          for (let column = 1; column < from; column += 1) {
+            active[column] = limit + 1
+          }
+          for (let column = from; column <= to; column += 1) {
+            const cost = code === joined.charCodeAt(column - 1) ? 0 : 1
+            const cell = Math.min(
+              active[column - 1]! + 1,
+              prior[column]! + 1,
+              prior[column - 1]! + cost
+            )
+            active[column] = cell
+            if (cell < best) {
+              best = cell
+            }
+          }
+          for (let column = to + 1; column < width; column += 1) {
+            active[column] = limit + 1
+          }
+          if (best > limit) {
+            return limit + 1
+          }
+          const swap = prior
+          prior = active
+          active = swap
+        }
+        return prior[joined.length]!
+      })()
+      if (edits > limit) {
+        continue
+      }
+      const similarity = 1 - edits / span
       if (similarity > score) {
         score = similarity
         start = offset
@@ -108,11 +384,11 @@ export default class Matcher {
       return null
     }
     return {
-      sourceStart: start,
-      sourceEnd: start + size,
       chainLength: size,
       hunkHead: 0,
-      hunkTail: size - 1
+      hunkTail: size - 1,
+      sourceEnd: start + size,
+      sourceStart: start
     }
   }
 
@@ -129,18 +405,56 @@ export default class Matcher {
   /**
    * Decide whether two lines are kin.
    * @description Compares soft canonical forms via similarity.
-   * @param sourceLine - Line from the source text
-   * @param hunkLine - Line from the hunk being placed
+   * @param source - Line from the source text
+   * @param hunk - Line from the hunk being placed
    * @returns True when similarity clears the kin threshold
    */
-  static kin(sourceLine: string, hunkLine: string): boolean {
-    if (this.isBlank(sourceLine) || this.isBlank(hunkLine)) {
+  static kin(source: string, hunk: string): boolean {
+    if (this.isBlank(source) || this.isBlank(hunk)) {
       return false
     }
     return this.similarity(
-      this.canonical(sourceLine, 'soft'),
-      this.canonical(hunkLine, 'soft')
+      this.canonical(source, 'soft'),
+      this.canonical(hunk, 'soft')
     ) >= this.kinThreshold
+  }
+
+  /**
+   * Reject windows below fuzzy threshold.
+   * @description Compares non-space lengths against the similarity bound.
+   * @param source - Source lines whose fuzzy range is being tested
+   * @param hunk - Soft canonical hunk lines
+   * @param cursor - Lower search bound in source
+   * @param ceiling - Upper search bound in source
+   * @returns True when every window misses the similarity threshold
+   */
+  static lengthReject(
+    source: string[],
+    hunk: string[],
+    cursor: number,
+    ceiling: number
+  ): boolean {
+    const size = hunk.length
+    if (size === 0 || ceiling - cursor < size) {
+      return true
+    }
+    let goal = Math.max(0, size - 1)
+    for (const line of hunk) {
+      goal += line.length
+    }
+    const prefix = new Int32Array(ceiling - cursor + 1)
+    for (let index = cursor; index < ceiling; index += 1) {
+      prefix[index - cursor + 1] = prefix[index - cursor]! + source[index]!.length
+    }
+    const windows = ceiling - cursor - size + 1
+    for (let offset = 0; offset < windows; offset += 1) {
+      const window = prefix[offset + size]! - prefix[offset]! + Math.max(0, size - 1)
+      const limit = Math.floor((1 - this.fuzzyThreshold) * Math.max(window, goal))
+      if (Math.abs(window - goal) <= limit) {
+        return false
+      }
+    }
+    return true
   }
 
   /**
@@ -155,215 +469,37 @@ export default class Matcher {
     if (span === 0) {
       return 1
     }
-    return 1 - this.distance(left, right) / span
-  }
-
-  /**
-   * Collect anchor pairs for hunk.
-   * @description Emits equal-anchor pairs sorted by hunk index.
-   * @param hunk - Raw hunk lines used for blank filtering
-   * @param hunkAnchor - Canonicalized hunk lines in anchor mode
-   * @param sourceAnchor - Canonicalized source lines in anchor mode
-   * @param cursor - Lower search bound in source
-   * @param ceiling - Upper search bound in source
-   * @returns Sorted array of anchor pairs
-   */
-  private static buildPair(
-    hunk: string[],
-    hunkAnchor: string[],
-    sourceAnchor: string[],
-    cursor: number,
-    ceiling: number
-  ): Types.AnchorPair[] {
-    const pairs: Types.AnchorPair[] = []
-    for (let row = 0; row < hunk.length; row += 1) {
-      if (this.isBlank(hunk[row]!)) {
-        continue
-      }
-      const needle = hunkAnchor[row]!
-      if (needle.length === 0) {
-        continue
-      }
-      for (let col = cursor; col < ceiling; col += 1) {
-        if (sourceAnchor[col] === needle) {
-          pairs.push({ hunkIndex: row, sourceIndex: col })
-        }
-      }
-    }
-    pairs.sort((left, right) =>
-      left.hunkIndex - right.hunkIndex || left.sourceIndex - right.sourceIndex
-    )
-    return pairs
-  }
-
-  /**
-   * Choose best chain from pairs.
-   * @description Picks the tightest longest chain over pair graph.
-   * @param pairs - Sorted anchor pairs to search over
-   * @param hunk - Hunk lines used for coverage check
-   * @returns Anchor hit describing the chosen chain or null
-   */
-  private static chooseChain(pairs: Types.AnchorPair[], hunk: string[]): Types.AnchorHit | null {
-    const size = pairs.length
-    const lengths = new Int32Array(size).fill(1)
-    const parents: number[][] = Array.from({ length: size }, () => [])
-    let longest = 1
-    for (let index = 0; index < size; index += 1) {
-      const pair = pairs[index]!
-      for (let prior = 0; prior < index; prior += 1) {
-        const earlier = pairs[prior]!
-        if (earlier.hunkIndex >= pair.hunkIndex || earlier.sourceIndex >= pair.sourceIndex) {
-          continue
-        }
-        const candidate = lengths[prior]! + 1
-        if (candidate > lengths[index]!) {
-          lengths[index] = candidate
-          parents[index] = [prior]
-        } else if (candidate === lengths[index]!) {
-          parents[index]!.push(prior)
-        }
-      }
-      if (lengths[index]! > longest) {
-        longest = lengths[index]!
-      }
-    }
-    const chains = this.enumerateChain(lengths, parents, longest)
-    if (chains.length === 0) {
-      return null
-    }
-    let bestChain: number[] | null = null
-    let bestTightness = Number.POSITIVE_INFINITY
-    let bestIndices: number[] | null = null
-    for (const chain of chains) {
-      const head = pairs[chain[0]!]!
-      const tail = pairs[chain[chain.length - 1]!]!
-      const tightness = tail.sourceIndex - head.sourceIndex + 1
-      if (tightness > bestTightness) {
-        continue
-      }
-      const indices = chain.map((node) => pairs[node]!.sourceIndex)
-      if (
-        tightness < bestTightness ||
-        bestIndices === null ||
-        this.compareVectors(indices, bestIndices) < 0
-      ) {
-        bestTightness = tightness
-        bestIndices = indices
-        bestChain = chain
-      }
-    }
-    if (!bestChain) {
-      return null
-    }
-    const nonBlank = this.countLive(hunk)
-    if (longest < 2 && (nonBlank === 0 ? 0 : longest / nonBlank) < this.minCoverage) {
-      return null
-    }
-    const head = pairs[bestChain[0]!]!
-    const tail = pairs[bestChain[bestChain.length - 1]!]!
-    return {
-      sourceStart: head.sourceIndex,
-      sourceEnd: tail.sourceIndex + 1,
-      chainLength: longest,
-      hunkHead: head.hunkIndex,
-      hunkTail: tail.hunkIndex
-    }
-  }
-
-  /**
-   * Lexicographically compare two number vectors.
-   * @description Returns negative, zero, or positive per usual convention.
-   * @param left - Left vector operand
-   * @param right - Right vector operand
-   * @returns Signed integer indicating relative order
-   */
-  private static compareVectors(left: number[], right: number[]): number {
-    const size = Math.min(left.length, right.length)
-    for (let index = 0; index < size; index += 1) {
-      const diff = left[index]! - right[index]!
-      if (diff !== 0) {
-        return diff
-      }
-    }
-    return left.length - right.length
-  }
-
-  /**
-   * Levenshtein edit distance between two strings.
-   * @description Rolling two-row dynamic programming implementation.
-   * @param left - Left string operand
-   * @param right - Right string operand
-   * @returns Edit distance as a non-negative integer
-   */
-  private static distance(left: string, right: string): number {
+    let edits: number
     if (left === right) {
-      return 0
-    }
-    if (left.length === 0) {
-      return right.length
-    }
-    if (right.length === 0) {
-      return left.length
-    }
-    const width = right.length + 1
-    let prev = new Int32Array(width)
-    let curr = new Int32Array(width)
-    for (let col = 0; col < width; col += 1) {
-      prev[col] = col
-    }
-    for (let row = 1; row <= left.length; row += 1) {
-      curr[0] = row
-      const code = left.charCodeAt(row - 1)
-      for (let col = 1; col < width; col += 1) {
-        const cost = code === right.charCodeAt(col - 1) ? 0 : 1
-        curr[col] = Math.min(curr[col - 1]! + 1, prev[col]! + 1, prev[col - 1]! + cost)
+      edits = 0
+    } else if (left.length === 0) {
+      edits = right.length
+    } else if (right.length === 0) {
+      edits = left.length
+    } else {
+      const width = right.length + 1
+      let prior = new Int32Array(width)
+      let active = new Int32Array(width)
+      for (let offset = 0; offset < width; offset += 1) {
+        prior[offset] = offset
       }
-      const swap = prev
-      prev = curr
-      curr = swap
-    }
-    return prev[right.length]!
-  }
-
-  /**
-   * Enumerate longest chains from parent links.
-   * @description Walks parent pointers backward up to chain limit.
-   * @param lengths - Chain length per pair index
-   * @param parents - Parent index sets per pair
-   * @param longest - Length target for enumerated chains
-   * @returns Array of chains as ordered pair index arrays
-   */
-  private static enumerateChain(
-    lengths: Int32Array,
-    parents: number[][],
-    longest: number
-  ): number[][] {
-    const size = lengths.length
-    const chains: number[][] = []
-    const stack: Types.ChainFrame[] = []
-    for (let index = 0; index < size; index += 1) {
-      if (lengths[index] === longest) {
-        stack.push({ path: [index], node: index })
-      }
-    }
-    while (stack.length > 0) {
-      const { path, node } = stack.pop()!
-      const parentNodes = parents[node]!
-      if (parentNodes.length === 0) {
-        const reversed = new Array<number>(path.length)
-        for (let index = 0; index < path.length; index += 1) {
-          reversed[index] = path[path.length - 1 - index]!
+      for (let cursor = 1; cursor <= left.length; cursor += 1) {
+        active[0] = cursor
+        const code = left.charCodeAt(cursor - 1)
+        for (let offset = 1; offset < width; offset += 1) {
+          const cost = code === right.charCodeAt(offset - 1) ? 0 : 1
+          active[offset] = Math.min(
+            active[offset - 1]! + 1,
+            prior[offset]! + 1,
+            prior[offset - 1]! + cost
+          )
         }
-        chains.push(reversed)
-        if (chains.length >= this.chainLimit) {
-          break
-        }
-        continue
+        const swap = prior
+        prior = active
+        active = swap
       }
-      for (const parent of parentNodes) {
-        stack.push({ path: [...path, parent], node: parent })
-      }
+      edits = prior[right.length]!
     }
-    return chains
+    return 1 - edits / span
   }
 }
