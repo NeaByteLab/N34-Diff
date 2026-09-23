@@ -9,25 +9,21 @@ export default class Parser {
   /** Regex matching leading whitespace */
   private static readonly indentPattern = /^[ \t]*/
   /** Regex matching a SKIP marker line */
-  private static readonly markerPattern = /^([ \t]*)<<<<<<<[ \t]*SKIP[ \t]*$/i
+  private static readonly markerPattern = /^\uFEFF?([ \t]*)<<<<<<<[ \t]*SKIP[ \t]*$/i
 
-  /**
-   * Create a fresh incremental edit segmenter.
-   * @description Returns a segmenter with feed and flush controls.
-   * @returns Segmenter instance ready to accept lines
-   */
+  /** Create a fresh incremental edit segmenter */
   static createSegmenter(): Types.EditSegmenter {
     const segments: Types.EditSegment[] = []
     let buffer: string[] = []
     const pending: string[] = []
-    const commitHunk = (): void => {
+    const publish = (): void => {
       if (buffer.length === 0) {
         return
       }
       segments.push({ kind: 'hunk', lines: buffer })
       buffer = []
     }
-    const commitKeep = (): void => {
+    const retain = (): void => {
       if (pending.length === 0) {
         return
       }
@@ -38,18 +34,18 @@ export default class Parser {
       feed(line: string): void {
         const indent = Parser.matchMarker(line)
         if (indent !== null) {
-          commitHunk()
+          publish()
           if (pending.length === 0 || pending[pending.length - 1] !== indent) {
             pending.push(indent)
           }
           return
         }
-        commitKeep()
+        retain()
         buffer.push(line)
       },
       flush(): Types.EditSegment[] {
-        commitHunk()
-        commitKeep()
+        publish()
+        retain()
         return segments
       },
       segments
@@ -77,7 +73,8 @@ export default class Parser {
     if (this.markerPattern.test(line)) {
       return this.indentPattern.exec(line)![0]
     }
-    if (!this.markerPattern.test(Unicode.stripZero(Unicode.normalize(line.normalize('NFKC'))))) {
+    const folded = line.normalize('NFKC').replace(Unicode.zeroWidth, '')
+    if (!this.markerPattern.test(Unicode.normalize(folded))) {
       return null
     }
     return this.indentPattern.exec(line)![0]
@@ -111,9 +108,19 @@ export default class Parser {
     if (text === '') {
       return []
     }
-    const lines = (text.charCodeAt(0) === 0xFEFF ? text.slice(1) : text).split('\n')
-    if (lines[lines.length - 1] === '') {
-      lines.pop()
+    const lines: string[] = []
+    let start = text.charCodeAt(0) === 0xFEFF ? 1 : 0
+    const length = text.length
+    for (let index = start; index < length; index += 1) {
+      if (text.charCodeAt(index) !== 0x0a) {
+        continue
+      }
+      const end = index > start && text.charCodeAt(index - 1) === 0x0d ? index - 1 : index
+      lines.push(text.substring(start, end))
+      start = index + 1
+    }
+    if (start < length) {
+      lines.push(text.substring(start))
     }
     return lines
   }

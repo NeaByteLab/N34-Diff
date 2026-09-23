@@ -3,6 +3,8 @@
  * @description Normalize confusable glyphs and strip zero-width characters.
  */
 export default class Unicode {
+  /** Regex matching zero-width joiner glyphs */
+  static readonly zeroWidth = /[\u200B\u200C\u200D\u2060\uFEFF]/g
   /** Confusable glyphs folded to ASCII */
   private static readonly replacements: Readonly<Record<string, string>> = {
     '\u2010': '-',
@@ -39,17 +41,8 @@ export default class Unicode {
     '\u205F': ' ',
     '\u3000': ' '
   }
-  /** Regex matching any replacement key */
-  private static readonly replacer = new RegExp(
-    `[${Object.keys(Unicode.replacements).join('')}]`,
-    'g'
-  )
-  /** Regex matching fullwidth ASCII glyphs */
-  private static readonly wideAscii = /[\uFF01-\uFF5E]/g
   /** Offset between fullwidth ASCII and ASCII */
   private static readonly wideOffset = 0xfee0
-  /** Regex matching zero-width joiner glyphs */
-  private static readonly zeroWidth = /[\u200B\u200C\u200D\u2060\uFEFF]/g
 
   /**
    * Fold text to ASCII-friendly form.
@@ -58,22 +51,26 @@ export default class Unicode {
    * @returns Normalized text with confusables folded
    */
   static normalize(text: string): string {
+    for (let index = 0; index < text.length; index += 1) {
+      if (text.charCodeAt(index) >= 0x80) {
+        text = text.normalize('NFC')
+        let folded = ''
+        let start = 0
+        for (let cursor = 0; cursor < text.length; cursor += 1) {
+          const code = text.charCodeAt(cursor)
+          const wide = code >= 0xff01 && code <= 0xff5e
+            ? String.fromCharCode(code - this.wideOffset)
+            : undefined
+          const piece = wide ?? this.replacements[text[cursor]!]
+          if (piece === undefined) {
+            continue
+          }
+          folded = `${folded}${text.slice(start, cursor)}${piece}`
+          start = cursor + 1
+        }
+        return start === 0 ? text : `${folded}${text.slice(start)}`
+      }
+    }
     return text
-      .normalize('NFC')
-      .replace(
-        this.wideAscii,
-        (glyph) => String.fromCharCode(glyph.charCodeAt(0) - this.wideOffset)
-      )
-      .replace(this.replacer, (glyph) => this.replacements[glyph]!)
-  }
-
-  /**
-   * Remove zero-width joiner glyphs from text.
-   * @description Strips characters that vanish visually but affect matching.
-   * @param text - Input text to clean
-   * @returns Text without zero-width glyphs
-   */
-  static stripZero(text: string): string {
-    return text.replace(this.zeroWidth, '')
   }
 }
