@@ -1,7 +1,7 @@
 {
   "name": "@neabyte/n34-diff",
   "description": "Apply LLM code edits with streaming and fuzzy matching",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "Apache-2.0",
   "exports": "./src/index.ts",
