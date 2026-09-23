@@ -71,16 +71,16 @@ export default class N34 {
       return this.defaultTimeout
     }
     if (typeof timeout !== 'number') {
-      throw new TypeError(`options.timeout must be a number but got ${typeof timeout}`)
+      throw new TypeError(`options timeout must be a number but got ${typeof timeout}`)
     }
     if (Number.isNaN(timeout)) {
-      throw new RangeError('options.timeout must not be NaN')
+      throw new RangeError('options timeout must not be NaN')
     }
     if (!Number.isFinite(timeout)) {
       return Number.POSITIVE_INFINITY
     }
     if (timeout < 0) {
-      throw new RangeError(`options.timeout must be zero or greater but got ${timeout}`)
+      throw new RangeError(`options timeout must be zero or greater but got ${timeout}`)
     }
     return timeout
   }
