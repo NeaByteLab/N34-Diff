@@ -359,5 +359,16 @@
       "\n"
     ],
     "expectedFinal": "sm-a\nsm-b changed \"<<<<<<< SKIP inert\"\nsm-c\n"
+  },
+  {
+    "section": "stream-split-crlf",
+    "original": "edge-a\nedge-b\nedge-c\n",
+    "chunks": [
+      "<<<<<<< SKIP\r",
+      "\nedge-a\r",
+      "\nedge-b changed across a split CRLF\r\nedge-c\r\n<<<<<<< SKIP"
+    ],
+    "expectedFinal": "edge-a\nedge-b changed across a split CRLF\nedge-c\n",
+    "expectedHunkCount": 1
   }
 ]

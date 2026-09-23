@@ -1,0 +1,32 @@
+[
+  {
+    "section": "scale-lone-cr",
+    "original": "lone-a\rlone-b\rlone-c\r",
+    "edit": "<<<<<<< SKIP\nlone-a\nlone-b replaced with lone CR source\nlone-c\n<<<<<<< SKIP\n",
+    "expected": "lone-a\nlone-b replaced with lone CR source\nlone-c\n"
+  },
+  {
+    "section": "scale-nbsp-marker",
+    "original": "nbsp-a\nnbsp-b\nnbsp-c\n",
+    "edit": "<<<<<<<\u00A0SKIP\nnbsp-a\nnbsp-b changed through nbsp marker\nnbsp-c\n<<<<<<<\u00A0SKIP\n",
+    "expected": "nbsp-a\nnbsp-b changed through nbsp marker\nnbsp-c\n"
+  },
+  {
+    "section": "scale-surrogate",
+    "original": "before\nemoji 👨‍👩‍👧‍👦 stays\nafter\n",
+    "edit": "<<<<<<< SKIP\nbefore\nemoji 👨‍👩‍👧‍👦 stays and grows\nafter\n<<<<<<< SKIP\n",
+    "expected": "before\nemoji 👨‍👩‍👧‍👦 stays and grows\nafter\n"
+  },
+  {
+    "section": "scale-fullwidth-space",
+    "original": "ideo-a\nideo-b\nideo-c\n",
+    "edit": "<<<<<<<\u3000SKIP\nideo-a\nideo-b changed through ideographic space\nideo-c\n<<<<<<<\u3000SKIP\n",
+    "expected": "ideo-a\nideo-b changed through ideographic space\nideo-c\n"
+  },
+  {
+    "section": "scale-bom-edit",
+    "original": "bom-a\nbom-b\nbom-c\n",
+    "edit": "\uFEFF<<<<<<< SKIP\nbom-a\nbom-b changed after a leading BOM\nbom-c\n<<<<<<< SKIP\n",
+    "expected": "bom-a\nbom-b changed after a leading BOM\nbom-c\n"
+  }
+]

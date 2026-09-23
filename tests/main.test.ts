@@ -291,13 +291,9 @@ Deno.test('stream timeout - negative rejects at construction', () => {
   Assert.assertThrows(() => N34.stream('a\nb\n', { timeout: -1 }), RangeError)
 })
 
-Deno.test({
-  name: 'stream timeout - zero timeout eagerly rejects push',
-  ignore: true,
-  fn: () => {
-    const handle = N34.stream('a\nb\n', { timeout: 0 })
-    Assert.assertThrows(() => handle.push('<<<<<<< SKIP\n'), RangeError)
-  }
+Deno.test('stream timeout - zero timeout eagerly rejects push', () => {
+  const handle = N34.stream('a\nb\n', { timeout: 0 })
+  Assert.assertThrows(() => handle.push('<<<<<<< SKIP\n'), RangeError)
 })
 
 Deno.test('stream typecheck - non-string original throws TypeError', () => {
