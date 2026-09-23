@@ -23,19 +23,19 @@ export default class Core {
     const trailing = source.endsWith('\n')
     const lines = Parser.splitLines(source)
     const segments = Parser.parseEdit(edit.replace(/\r\n?/g, '\n'))
-    const hunkAt = Pipeline.collectHunks(segments)
-    if (hunkAt.length === 0) {
-      return { before: source, after: source, diff: Refiner.buildDiff(lines, lines) }
+    const indexes = Pipeline.collectHunks(segments)
+    if (indexes.length === 0) {
+      return { after: source, before: source, diff: Refiner.buildDiff(lines, lines) }
     }
     const deadline: Types.DeadlineWindow | null = Number.isFinite(timeout)
-      ? { start: performance.now(), limit: timeout }
+      ? { limit: timeout, start: performance.now() }
       : null
     Pipeline.checkDeadline(deadline)
-    const placements = Pipeline.locate(segments, lines, hunkAt, deadline)
+    const placements = Pipeline.locate(segments, lines, indexes, deadline)
     Pipeline.checkDeadline(deadline)
-    const merged = Pipeline.assemble(segments, lines, placements, hunkAt).output
+    const merged = Pipeline.assemble(segments, lines, placements, indexes).output
     const after = Parser.joinLines(merged, trailing)
-    return { before: source, after, diff: Refiner.buildDiff(lines, merged) }
+    return { after, before: source, diff: Refiner.buildDiff(lines, merged) }
   }
 
   /**
@@ -49,18 +49,19 @@ export default class Core {
    */
   static streamCore(original: string, timeout: number): Types.StreamHandle {
     const source = original.replace(/\r\n?/g, '\n')
-    const sourceTrailing = source.endsWith('\n')
-    const sourceLines = Parser.splitLines(source)
+    const ending = source.endsWith('\n')
+    const origin = Parser.splitLines(source)
     const state: Types.StreamState = {
-      buffer: '',
-      pendingCR: false,
-      segmenter: Parser.createSegmenter(),
       backlog: [],
+      buffer: '',
       callback: null,
       closed: false,
-      timedOut: false,
+      errored: false,
+      pendingCR: false,
       pushed: false,
-      errored: false
+      scan: 0,
+      segmenter: Parser.createSegmenter(),
+      timedOut: false
     }
     const deliver = (listener: Types.HunkListener, hunk: Types.ApplyResult): void => {
       try {
@@ -81,57 +82,6 @@ export default class Core {
         state.backlog.push(hunk)
       }
     }
-    const finalize = (): void => {
-      if (!state.pushed) {
-        return
-      }
-      const segments = state.segmenter.flush()
-      const hunkAt = Pipeline.collectHunks(segments)
-      if (hunkAt.length === 0) {
-        if (sourceLines.length > 0) {
-          emit({
-            before: source,
-            after: source,
-            diff: Refiner.buildDiff(sourceLines, sourceLines)
-          })
-        }
-        return
-      }
-      const places = Pipeline.locate(segments, sourceLines, hunkAt, null)
-      const { output, hunkEnd } = Pipeline.assemble(segments, sourceLines, places, hunkAt)
-      const fullDiff = Refiner.buildDiff(sourceLines, output)
-      let sourceCursor = 0
-      let outputCursor = 0
-      let diffCursor = 0
-      for (let index = 0; index < hunkAt.length; index += 1) {
-        const spot = places[hunkAt[index]!]!.spot
-        const isLast = index === hunkAt.length - 1
-        const sourceEnd = isLast ? sourceLines.length : spot.sourceEnd
-        const outputEnd = isLast ? output.length : hunkEnd[index]!
-        const beforeLines = sourceLines.slice(sourceCursor, sourceEnd)
-        const afterLines = output.slice(outputCursor, outputEnd)
-        let diffEnd = diffCursor
-        while (diffEnd < fullDiff.length) {
-          const record = fullDiff[diffEnd]!
-          if (
-            (record.oldLine !== null && record.oldLine > sourceEnd) ||
-            (record.newLine !== null && record.newLine > outputEnd)
-          ) {
-            break
-          }
-          diffEnd += 1
-        }
-        const trailing = isLast ? sourceTrailing : true
-        emit({
-          before: Parser.joinLines(beforeLines, trailing && beforeLines.length > 0),
-          after: Parser.joinLines(afterLines, trailing && afterLines.length > 0),
-          diff: fullDiff.slice(diffCursor, diffEnd)
-        })
-        sourceCursor = spot.sourceEnd
-        outputCursor = outputEnd
-        diffCursor = diffEnd
-      }
-    }
     const idle = Pipeline.scheduleIdle(timeout, () => {
       if (state.closed) {
         return
@@ -139,14 +89,6 @@ export default class Core {
       state.timedOut = true
       state.closed = true
     })
-    const guardOpen = (): void => {
-      if (state.timedOut) {
-        throw new RangeError(`stream idle timeout of ${timeout}ms has elapsed`)
-      }
-      if (state.closed) {
-        throw new TypeError('stream is already closed and rejects further pushes')
-      }
-    }
     return {
       callback(listener) {
         if (listener !== null && typeof listener !== 'function') {
@@ -169,40 +111,103 @@ export default class Core {
         idle.clear()
         state.closed = true
         if (state.pendingCR) {
-          state.buffer += '\n'
+          state.buffer = `${state.buffer}\n`
           state.pendingCR = false
         }
-        if (state.buffer.length > 0) {
-          state.segmenter.feed(state.buffer)
+        if (state.scan < state.buffer.length) {
+          const tail = state.buffer.substring(state.scan).replace(/\r\n?/g, '\n')
+          if (tail.length > 0) {
+            state.segmenter.feed(tail)
+          }
           state.buffer = ''
+          state.scan = 0
         }
-        finalize()
+        if (!state.pushed) {
+          return
+        }
+        const segments = state.segmenter.flush()
+        const indexes = Pipeline.collectHunks(segments)
+        if (indexes.length === 0) {
+          if (origin.length > 0) {
+            emit({
+              before: source,
+              after: source,
+              diff: Refiner.buildDiff(origin, origin)
+            })
+          }
+          return
+        }
+        const places = Pipeline.locate(segments, origin, indexes, null)
+        const { output, hunkEnd: stops } = Pipeline.assemble(segments, origin, places, indexes)
+        const script = Refiner.buildDiff(origin, output)
+        let from = 0
+        let into = 0
+        let mark = 0
+        for (let rank = 0; rank < indexes.length; rank += 1) {
+          const spot = places[indexes[rank]!]!.spot
+          const final = rank === indexes.length - 1
+          const stop = final ? origin.length : spot.sourceEnd
+          const until = final ? output.length : stops[rank]!
+          const past = origin.slice(from, stop)
+          const next = output.slice(into, until)
+          let edge = mark
+          while (edge < script.length) {
+            const record = script[edge]!
+            if (
+              (record.oldLine !== null && record.oldLine > stop) ||
+              (record.newLine !== null && record.newLine > until)
+            ) {
+              break
+            }
+            edge += 1
+          }
+          const trailing = final ? ending : true
+          emit({
+            before: Parser.joinLines(past, trailing && past.length > 0),
+            after: Parser.joinLines(next, trailing && next.length > 0),
+            diff: script.slice(mark, edge)
+          })
+          from = spot.sourceEnd
+          into = until
+          mark = edge
+        }
       },
       push(chunk) {
-        guardOpen()
+        if (timeout === 0 || state.timedOut) {
+          throw new RangeError(`stream idle timeout of ${timeout}ms has elapsed`)
+        }
+        if (state.closed) {
+          throw new TypeError('stream is already closed and rejects further pushes')
+        }
         if (typeof chunk !== 'string') {
-          throw new TypeError(`stream.push chunk must be a string but got ${typeof chunk}`)
+          throw new TypeError(`stream push chunk must be a string but got ${typeof chunk}`)
         }
         state.pushed = true
         idle.reset()
         if (chunk.length === 0) {
           return
         }
-        let normalized = chunk
         if (state.pendingCR) {
-          normalized = `\r${normalized}`
+          chunk = `\r${chunk}`
           state.pendingCR = false
         }
-        if (normalized.charCodeAt(normalized.length - 1) === 0x0d) {
+        if (chunk.charCodeAt(chunk.length - 1) === 0x0d) {
           state.pendingCR = true
-          normalized = normalized.substring(0, normalized.length - 1)
+          chunk = chunk.substring(0, chunk.length - 1)
+          if (chunk.length === 0) {
+            return
+          }
         }
-        state.buffer += normalized.replace(/\r\n?/g, '\n')
-        let newline = state.buffer.indexOf('\n')
+        state.buffer = `${state.buffer}${chunk.replace(/\r\n?/g, '\n')}`
+        let newline = state.buffer.indexOf('\n', state.scan)
         while (newline !== -1) {
-          state.segmenter.feed(state.buffer.substring(0, newline))
-          state.buffer = state.buffer.substring(newline + 1)
-          newline = state.buffer.indexOf('\n')
+          state.segmenter.feed(state.buffer.substring(state.scan, newline))
+          state.scan = newline + 1
+          newline = state.buffer.indexOf('\n', state.scan)
+        }
+        if (state.scan > 0) {
+          state.buffer = state.buffer.substring(state.scan)
+          state.scan = 0
         }
       }
     }

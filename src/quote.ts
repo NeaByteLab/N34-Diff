@@ -44,7 +44,17 @@ export default class Quote {
     if (!this.straight.test(line) && !this.curly.test(line)) {
       return line
     }
-    const reference = this.locate(target, line)
+    let reference: string | null = null
+    if (line.length > 0) {
+      if (target.indexOf(line) !== -1) {
+        reference = line
+      } else {
+        const index = Unicode.normalize(target).indexOf(Unicode.normalize(line))
+        if (index !== -1) {
+          reference = target.substring(index, index + line.length)
+        }
+      }
+    }
     if (reference !== null) {
       return this.preserve(line, reference)
     }
@@ -66,15 +76,15 @@ export default class Quote {
   private static curlify(text: string, mark: string, left: string, right: string): string {
     const chars = [...text]
     const result: string[] = new Array(chars.length)
-    let insideBacktick = false
+    let quoted = false
     for (let index = 0; index < chars.length; index += 1) {
       const glyph = chars[index]!
       if (glyph === '`') {
-        insideBacktick = !insideBacktick
+        quoted = !quoted
         result[index] = glyph
         continue
       }
-      if (insideBacktick || glyph !== mark) {
+      if (quoted || glyph !== mark) {
         result[index] = glyph
         continue
       }
@@ -92,27 +102,6 @@ export default class Quote {
   }
 
   /**
-   * Find needle inside source text.
-   * @description Falls back to Unicode-normalized comparison on miss.
-   * @param source - Source text to search inside
-   * @param needle - Needle text to locate
-   * @returns Matched substring from source or null
-   */
-  private static locate(source: string, needle: string): string | null {
-    if (needle.length === 0) {
-      return null
-    }
-    if (source.indexOf(needle) !== -1) {
-      return needle
-    }
-    const index = Unicode.normalize(source).indexOf(Unicode.normalize(needle))
-    if (index === -1) {
-      return null
-    }
-    return source.substring(index, index + needle.length)
-  }
-
-  /**
    * Copy curly quote style from reference.
    * @description Restyles line quotes to match reference glyphs used.
    * @param line - Line whose quote style is being replaced
@@ -123,16 +112,16 @@ export default class Quote {
     if (line === reference) {
       return line
     }
-    const hasDouble = reference.includes(this.leftDouble) || reference.includes(this.rightDouble)
-    const hasSingle = reference.includes(this.leftSingle) || reference.includes(this.rightSingle)
-    if (!hasDouble && !hasSingle) {
+    const doubled = reference.includes(this.leftDouble) || reference.includes(this.rightDouble)
+    const singled = reference.includes(this.leftSingle) || reference.includes(this.rightSingle)
+    if (!doubled && !singled) {
       return line
     }
     let styled = line
-    if (hasDouble) {
+    if (doubled) {
       styled = this.curlify(styled, '"', this.leftDouble, this.rightDouble)
     }
-    if (hasSingle) {
+    if (singled) {
       styled = this.curlify(styled, "'", this.leftSingle, this.rightSingle)
     }
     return styled
